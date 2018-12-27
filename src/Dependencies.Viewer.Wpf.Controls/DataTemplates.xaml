@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewModels"
+                    xmlns:v="clr-namespace:Dependencies.Viewer.Wpf.Controls.Views">
+
+    <DataTemplate DataType="{x:Type vm:AssemblyParentsViewModel}">
+        <v:AssemblyParentsView DataContext="{Binding}"/>
+    </DataTemplate>
+
+</ResourceDictionary>

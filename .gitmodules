@@ -1,0 +1,3 @@
+[submodule "external/Analyser"]
+	path = external/Analyser
+	url = https://github.com/iceman63/Dependencies.Analyser.git
