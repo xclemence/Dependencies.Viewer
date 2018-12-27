@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using System.Windows;
 using CommonServiceLocator;
 using Dependencies.Viewer.Wpf.Controls.ViewModels;
 

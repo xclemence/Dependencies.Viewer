@@ -15,7 +15,7 @@
                    BorderThickness="1"
                    x:Name="view"
                    mc:Ignorable="d"
-                   Title="Dependencies Analyser" Height="450" Width="800">
+                   Title="Dependencies Viewer" Height="450" Width="800">
     <Grid>
         <materialDesign:DialogHost Identifier="RootDialog" CloseOnClickAway="True">
             <daw:AnalyserView/>
