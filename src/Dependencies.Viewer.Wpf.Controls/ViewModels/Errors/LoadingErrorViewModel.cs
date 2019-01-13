@@ -4,19 +4,19 @@ using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
-namespace Dependencies.Viewer.Wpf.Controls.ViewModels.ReferenceDetails
+namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
 {
-    public class MismatchVersionViewModel : ReferenceListViewModel
+    public class LoadingErrorViewModel : ErrorListViewModel
     {
-        public override string Title => "Mismatch Version";
+        public override string Title => "Error Loading";
 
         protected override IEnumerable<ReferenceModel> GetResults(AssemblyInformation information)
         {
             return information?.GetAllLinks()
-                               .Where(x => x.LinkVersion != x.Assembly.LoadedVersion)
                                .Distinct()
+                               .Where(x => !x.Assembly.IsResolved)
                                .Select(x => new ReferenceModel(x))
-                               .OrderBy(x => x.ToString());
+                               .OrderBy(x => x.Link.Assembly.Name);
         }
     }
 }

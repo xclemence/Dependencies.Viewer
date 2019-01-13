@@ -3,11 +3,11 @@
 namespace Dependencies.Viewer.Wpf.Controls.Views
 {
     /// <summary>
-    /// Interaction logic for ReferenceDetailsView.xaml
+    /// Interaction logic for AnalyseResultView.xaml
     /// </summary>
-    public partial class AnalyseResultView : UserControl
+    public partial class ReferencesView : UserControl
     {
-        public AnalyseResultView()
+        public ReferencesView()
         {
             InitializeComponent();
         }

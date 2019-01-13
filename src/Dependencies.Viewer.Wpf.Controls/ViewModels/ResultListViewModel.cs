@@ -8,15 +8,15 @@ using Dependencies.Analyser.Base.Models;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 
-namespace Dependencies.Viewer.Wpf.Controls.ViewModels
+namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
 {
-    public abstract class DisplayResultListViewModel<T> : ViewModelBase
+    public abstract class ResultListViewModel<T> : ViewModelBase
     {
         private AssemblyInformation assemblyInformation;
         private T selectedItem;
         private IEnumerable<T> displayResults;
 
-        protected DisplayResultListViewModel()
+        protected ResultListViewModel()
         {
             OpenResult = new RelayCommand<T>(async (x) => await OnOpenResultAsync(x));
             CopyToClipboardCommand = new RelayCommand(CopyAllToClipboard, () => displayResults.Any());

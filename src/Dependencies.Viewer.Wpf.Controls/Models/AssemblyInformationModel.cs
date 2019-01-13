@@ -34,7 +34,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
             set
             {
                 if (Set(ref links, value))
-                    FilteredLinks = value?.GetCollectionView(predicate); 
+                    FilteredLinks = value?.GetCollectionView(predicate);
             }
         }
 

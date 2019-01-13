@@ -34,6 +34,7 @@
 
                 <ResourceDictionary Source="Styles/TreeviewStyle.xaml"/>
                 <ResourceDictionary Source="Styles/GroupBoxStyle.xaml"/>
+                <ResourceDictionary Source="Styles/RadioButtonStyle.xaml"/>
 
                 <ResourceDictionary Source="pack://application:,,,/Dependencies.Viewer.Wpf.Controls;component/DataTemplates.xaml"/>
 

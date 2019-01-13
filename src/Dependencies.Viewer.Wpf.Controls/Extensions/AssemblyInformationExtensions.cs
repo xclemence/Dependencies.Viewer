@@ -16,13 +16,15 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
                 return GetName(link.Assembly);
 
             if (link.LinkVersion != link.Assembly.LoadedVersion)
-                return $"{GetName(link.Assembly)} | { link.LinkVersion } ➜ { link.Assembly.LoadedVersion}";
+                return $"{GetName(link.Assembly)}   (v{ link.Assembly.LoadedVersion } ➜ v{ link.LinkVersion})";
 
-            return $"{GetName(link.Assembly)} | { link.LinkVersion }";
+            if (link.Assembly.IsNative)
+                return $"{GetName(link.Assembly)}   (loaded v{ link.Assembly.LoadedVersion })";
+
+            return GetName(link.Assembly);
         }
 
         public static string ToDisplayString(this AssemblyLink link) => link.ToDisplayString(x => x.FullName);
-
 
         public static IEnumerable<AssemblyLink> GetAllLinks(this AssemblyInformation assembly)
         {
@@ -34,6 +36,9 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
                     yield return subItem;
             }
         }
+
+        public static int GetAllReferenceCount(this AssemblyInformation assembly) =>
+          assembly.Links.Count + assembly.Links.Sum(x => x.Assembly.Links.Count);
 
         ///////////////////////////////////// Convert to model for view .///////////////////////////////////////////////////
 
@@ -55,9 +60,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
         internal static AssemblyLinkModel ToViewModel(this AssemblyLink baseItem, Predicate<object> predicate, ObjectCacheTransformer transformer) =>
             new AssemblyLinkModel(transformer.Transform(baseItem, x => x.Assembly.ToViewModel(predicate, transformer)), baseItem);
 
-
         ///////////////////////////////////// Get parents path.///////////////////////////////////////////////////
-
 
         public static IEnumerable<AssemblyPath> GetAssemblyParentPath(this AssemblyInformation assembly, AssemblyLink link)
         {

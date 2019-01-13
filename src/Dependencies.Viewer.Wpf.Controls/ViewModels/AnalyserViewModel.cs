@@ -3,10 +3,10 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using CommonServiceLocator;
 using Dependencies.Analyser.Base;
 using Dependencies.Analyser.Base.Models;
+using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dragablz;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -37,20 +37,21 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             OnDragEnterCommand = new RelayCommand<DragEventArgs>((x) => IsDragFile = true, CanDrag);
             OnDragLeaveCommand = new RelayCommand<DragEventArgs>((x) => IsDragFile = false, CanDrag);
 
-            CloseResultCommand = new RelayCommand<AssemblyReferencesViewModel>(CloseResult);
-            
+            CloseResultCommand = new RelayCommand<AnalyseResultViewModel>(CloseResult);
+
+            GlobalCommand.OpenAssemblyAction = AddAssemmblyResult;
+
             InterTabClient = interTabClient;
         }
       
-        public ObservableCollection<AssemblyReferencesViewModel> AnalyseDetailsViewModels { get; } = new ObservableCollection<AssemblyReferencesViewModel>();
+        public ObservableCollection<AnalyseResultViewModel> AnalyseDetailsViewModels { get; } = new ObservableCollection<AnalyseResultViewModel>();
 
-        private AssemblyReferencesViewModel selectedItem;
-        public AssemblyReferencesViewModel SelectedItem
+        private AnalyseResultViewModel selectedItem;
+        public AnalyseResultViewModel SelectedItem
         {
             get => selectedItem;
             set => Set(ref selectedItem, value);
         }
-
 
         public IInterTabClient InterTabClient
         {
@@ -135,24 +136,16 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
         private void AddAssemmblyResult(AssemblyInformation info)
         {
-            var newViewModel = ServiceLocator.Current.GetInstance<AssemblyReferencesViewModel>();
+            var newViewModel = ServiceLocator.Current.GetInstance<AnalyseResultViewModel>();
             newViewModel.AssemblyResult = info;
-            newViewModel.AnalyseResultViewModel.OpenSubResult = AddAssemmblyResult;
 
-            InvokeUiThread(() =>
+            new Action(() =>
             {
                 AnalyseDetailsViewModels.Add(newViewModel);
                 SelectedItem = newViewModel;
-            });
+            }).InvokeUiThread();
         }
 
-        public static void InvokeUiThread(Action action)
-        {
-            if (Dispatcher.CurrentDispatcher != Application.Current.Dispatcher)
-                Application.Current.Dispatcher.Invoke(action, DispatcherPriority.Normal);
-            else
-                action();
-        }
 
         private void OnDragOver(DragEventArgs e)
         {
@@ -163,7 +156,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private bool CanDrag(DragEventArgs e) =>
             !IsBusy && e.Data.GetDataPresent(DataFormats.FileDrop);
 
-        private void CloseResult(AssemblyReferencesViewModel x) =>
+        private void CloseResult(AnalyseResultViewModel x) =>
             TabablzControl.CloseItem(x);
 
     }

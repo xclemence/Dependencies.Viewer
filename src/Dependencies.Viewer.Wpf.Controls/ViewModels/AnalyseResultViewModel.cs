@@ -1,111 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Data;
-using System.Windows.Input;
+﻿using System.Linq;
 using Dependencies.Analyser.Base.Models;
-using Dependencies.Viewer.Wpf.Controls.Extensions;
-using Dependencies.Viewer.Wpf.Controls.Models;
+using Dependencies.Viewer.Wpf.Controls.ViewModels.Errors;
+using Dependencies.Viewer.Wpf.Controls.ViewModels.References;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 {
     public class AnalyseResultViewModel : ViewModelBase
     {
-        private IEnumerable<AssemblyLinkModel> links;
-        private string nameFilter;
-        private bool displayLocalOnly;
-        private AssemblyInformation assemblyInformation;
-        private ICollectionView filteredLinks;
+        private AssemblyInformation assemblyResult;
+        private bool isErrorExpended;
 
-        public AnalyseResultViewModel() =>
-            OpenSubResultCommand = new RelayCommand<AssemblyLinkModel>(x => OpenSubResult?.Invoke(x.Assembly));
-
-        public Action<AssemblyInformation> OpenSubResult { get; set; }
-
-        public ICommand OpenSubResultCommand { get; }
-
-        public AssemblyInformation AssemblyInformation
+        public AnalyseResultViewModel(LoadingErrorViewModel errorLoadingViewModel, 
+                                      MismatchVersionViewModel mismatchVersionViewModel,
+                                      ReferencesViewModel analyseResultViewModel,
+                                      AssemblyStatisticsViewModel assemblyStatisticsViewModel)
         {
-            get => assemblyInformation;
+            ErrorLoadingViewModel = errorLoadingViewModel;
+            MismatchVersionViewModel = mismatchVersionViewModel;
+            ReferencesViewModel = analyseResultViewModel;
+            AssemblyStatisticsViewModel = assemblyStatisticsViewModel;
+        }
+
+        public LoadingErrorViewModel ErrorLoadingViewModel { get; }
+        public MismatchVersionViewModel MismatchVersionViewModel { get; }
+        public ReferencesViewModel ReferencesViewModel { get; }
+        public AssemblyStatisticsViewModel AssemblyStatisticsViewModel { get; }
+
+        public AssemblyInformation AssemblyResult
+        {
+            get => assemblyResult;
             set
             {
-                if (Set(ref assemblyInformation, value))
+                if (Set(ref assemblyResult, value))
                 {
-                    CreateFilteredCollection(value);
+                    ErrorLoadingViewModel.AssemblyInformation = value;
+                    MismatchVersionViewModel.AssemblyInformation = value;
+                    ReferencesViewModel.AssemblyInformation = value;
+                    AssemblyStatisticsViewModel.AssemblyInformation = value;
+                    RaisePropertyChanged(nameof(HasError));
+                    RaisePropertyChanged(nameof(HasMismatch));
+
+                    IsErrorExpended = HasMismatch || HasError;
                 }
             }
         }
 
-        private void CreateFilteredCollection(AssemblyInformation value)
+        public bool IsErrorExpended
         {
-            links = value?.ToViewModel(FilterPredicat).Links;
-
-            FilteredLinks = CollectionViewSource.GetDefaultView(links);
-            FilteredLinks.Filter = FilterPredicat;
-            FilteredLinks.SortDescriptions.Add(new SortDescription(nameof(AssemblyLinkModel.AssemblyFullName), ListSortDirection.Ascending));
+            get => isErrorExpended;
+            set => Set(ref isErrorExpended, value);
         }
 
-        public ICollectionView FilteredLinks
-        {
-            get => filteredLinks;
-            private set => Set(ref filteredLinks, value);
-        }
+        public bool HasError => ErrorLoadingViewModel.DisplayResults.Any();
 
-
-        public bool DisplayLocalOnly
-        {
-            get => displayLocalOnly;
-            set
-            {
-                if (Set(ref displayLocalOnly, value))
-                    RefreshFilteredItems(links);
-            }
-        }
-
-        public string NameFilter
-        {
-            get => nameFilter;
-            set
-            {
-                if (Set(ref nameFilter, value))
-                    RefreshFilteredItems(links);
-            }
-        }
-
-        private void RefreshFilteredItems(IEnumerable<AssemblyLinkModel> links)
-        {
-            FilteredLinks.Refresh();
-
-            foreach (var item in links)
-                RefreshFilteredItems(item);
-        }
-
-        private void RefreshFilteredItems(AssemblyLinkModel link)
-        {
-            link.AssemblyModel.RefreshFilter();
-
-            foreach (var item in link.AssemblyModel.Links)
-                RefreshFilteredItems(item);
-        }
-
-        private bool FilterPredicat(object obj)
-        {
-            if (!(obj is AssemblyLinkModel link))
-                return false;
-
-            if (link.AssemblyModel.Links.Any(x => FilterPredicat(x)))
-                return true;
-
-            if (displayLocalOnly && !link.Assembly.IsLocalAssembly)
-                return false;
-
-            if (string.IsNullOrWhiteSpace(nameFilter))
-                return true;
-
-            return link.Assembly.Name.ToUpper().Contains(nameFilter.ToUpper());
-        }
+        public bool HasMismatch => MismatchVersionViewModel.DisplayResults.Any();
     }
 }

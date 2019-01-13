@@ -81,29 +81,38 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Behaviors\InputBindingBehavior.cs" />
+    <Compile Include="Behaviors\InteractivityBehaviorAttach.cs" />
+    <Compile Include="Behaviors\TreeItemSelectionBehavior.cs" />
+    <Compile Include="Behaviors\InteractivityBehaviorBase.cs" />
+    <Compile Include="Extensions\ActionExtensions.cs" />
     <Compile Include="Extensions\AssemblyInformationExtensions.cs" />
     <Compile Include="Extensions\AssemblyLinkModelExtensions.cs" />
+    <Compile Include="GlobalCommand.cs" />
     <Compile Include="Models\AssemblyInformationModel.cs" />
     <Compile Include="Models\AssemblyLinkModel.cs" />
     <Compile Include="Models\AssemblyPath.cs" />
+    <Compile Include="Models\FilterModel.cs" />
     <Compile Include="Models\ReferenceModel.cs" />
+    <Compile Include="ViewConverters\SizeConverter.cs" />
     <Compile Include="ViewConverters\InverseBooleanConverter.cs" />
     <Compile Include="ViewConverters\VisibilityConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\AnalyseResultViewModel.cs" />
+    <Compile Include="ViewModels\References\ReferencesTreeViewModel.cs" />
+    <Compile Include="ViewModels\References\ReferencesViewModel.cs" />
     <Compile Include="ViewModels\AnalyserViewModel.cs" />
-    <Compile Include="ViewModels\ReferenceDetails\ReferenceListViewModel.cs" />
-    <Compile Include="ViewModels\DisplayResultListViewModel.cs" />
-    <Compile Include="ViewModels\ReferenceDetails\AllReferencesViewModel.cs" />
-    <Compile Include="ViewModels\ReferenceDetails\MismatchVersionViewModel.cs" />
-    <Compile Include="ViewModels\ReferenceDetails\ErrorLoadingViewModel.cs" />
+    <Compile Include="ViewModels\References\IReferencesDetailsViewModel.cs" />
+    <Compile Include="ViewModels\ResultListViewModel.cs" />
+    <Compile Include="ViewModels\References\ReferencesGridViewModel.cs" />
+    <Compile Include="ViewModels\Errors\MismatchVersionViewModel.cs" />
+    <Compile Include="ViewModels\Errors\LoadingErrorViewModel.cs" />
     <Compile Include="ViewModels\AssemblyParentsViewModel.cs" />
-    <Compile Include="ViewModels\AssemblyReferencesViewModel.cs" />
+    <Compile Include="ViewModels\AnalyseResultViewModel.cs" />
+    <Compile Include="ViewModels\Errors\ErrorListViewModel.cs" />
     <Compile Include="Views\AssemblyStatisticsView.xaml.cs">
       <DependentUpon>AssemblyStatisticsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AnalyseResultView.xaml.cs">
-      <DependentUpon>AnalyseResultView.xaml</DependentUpon>
+    <Compile Include="Views\references\ReferencesView.xaml.cs">
+      <DependentUpon>ReferencesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AnalyserView.xaml.cs">
       <DependentUpon>AnalyserView.xaml</DependentUpon>
@@ -112,8 +121,14 @@
     <Compile Include="Views\AssemblyInformationsView.xaml.cs">
       <DependentUpon>AssemblyInformationsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DisplayResultListView.xaml.cs">
-      <DependentUpon>DisplayResultListView.xaml</DependentUpon>
+    <Compile Include="Views\references\ReferencesTreeView.xaml.cs">
+      <DependentUpon>ReferencesTreeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\references\ReferencesGridView.xaml.cs">
+      <DependentUpon>ReferencesGridView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResultListView.xaml.cs">
+      <DependentUpon>ResultListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AssemblyParentsView.xaml.cs">
       <DependentUpon>AssemblyParentsView.xaml</DependentUpon>
@@ -121,8 +136,8 @@
     <Compile Include="Views\DragControl.xaml.cs">
       <DependentUpon>DragControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AssemblyReferencesView.xaml.cs">
-      <DependentUpon>AssemblyReferencesView.xaml</DependentUpon>
+    <Compile Include="Views\AnalyseResultView.xaml.cs">
+      <DependentUpon>AnalyseResultView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -138,7 +153,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AnalyseResultView.xaml">
+    <Page Include="Views\references\ReferencesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -150,7 +165,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DisplayResultListView.xaml">
+    <Page Include="Views\references\ReferencesTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\references\ReferencesGridView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ResultListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -162,7 +185,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AssemblyReferencesView.xaml">
+    <Page Include="Views\AnalyseResultView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

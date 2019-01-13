@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="Dependencies.Viewer.Wpf.Controls.Views.ReferencesTreeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:models="clr-namespace:Dependencies.Viewer.Wpf.Controls.Models"
+             xmlns:behaviors="clr-namespace:Dependencies.Viewer.Wpf.Controls.Behaviors"
+             x:Name="assemblyTreeView"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <InputBindingCollection x:Key="inputCollection" x:Shared="False">
+            <MouseBinding Gesture="MiddleClick" 
+                          Command="{Binding ElementName=assemblyTreeView, Path=DataContext.OpenSubResultCommand}"
+                          CommandParameter="{Binding}">
+            </MouseBinding>
+        </InputBindingCollection>
+    </UserControl.Resources>
+    
+    <Grid>
+        <TreeView ItemsSource="{Binding FilteredLinks}" x:Name="tree">
+            <TreeView.Resources>
+                <Style TargetType="TreeViewItem" BasedOn="{StaticResource TestTreeViewItem}">
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                    <Setter Property="behaviors:TreeItemSelectionBehavior.Attach" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Assembly.IsLocalAssembly}" Value="true">
+                            <Setter Property="Background" Value="LightBlue"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Assembly.IsLocalAssembly}" Value="false">
+                            <Setter Property="Background" Value="LightGray"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Assembly.IsNative}" Value="true">
+                            <Setter Property="Background" Value="LightGreen"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Assembly.IsResolved}" Value="false">
+                            <Setter Property="Background" Value="Red"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding AssemblyModel.IsVisible}" Value="false">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+
+                <ContextMenu x:Key="itemMenu" Tag="{x:Reference Name=tree}" >
+                    <MenuItem Header="Open Assembly"
+                              Command="{Binding Path=Tag.DataContext.OpenSubResultCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
+                              CommandParameter="{Binding}">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="FileOutline" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Referenced by..."
+                              Command="{Binding Path=Tag.DataContext.OpenParentReferenceCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
+                              CommandParameter="{Binding}">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Dad" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </TreeView.Resources>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                    <Setter Property="ContextMenu" Value="{StaticResource itemMenu}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsVisible" Value="True">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.ItemContainerStyle>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="models:AssemblyLinkModel" ItemsSource="{Binding AssemblyModel.FilteredLinks}">
+                    <TextBlock Text="{Binding}"/>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+    </Grid>
+</UserControl>

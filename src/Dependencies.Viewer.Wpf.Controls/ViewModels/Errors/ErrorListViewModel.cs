@@ -5,9 +5,9 @@ using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Models;
 using MaterialDesignThemes.Wpf;
 
-namespace Dependencies.Viewer.Wpf.Controls.ViewModels.ReferenceDetails
+namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
 {
-    public abstract class ReferenceListViewModel : DisplayResultListViewModel<ReferenceModel>
+    public abstract class ErrorListViewModel : ResultListViewModel<ReferenceModel>
     {
         protected override async Task OnOpenResultAsync(ReferenceModel item)
         {

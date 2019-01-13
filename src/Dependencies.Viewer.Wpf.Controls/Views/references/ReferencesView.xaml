@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="Dependencies.Viewer.Wpf.Controls.Views.ReferencesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             x:Name="analyserResultView"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <DockPanel>
+        <GroupBox Header="Filters" DockPanel.Dock="Top">
+            <GroupBox.Resources>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+                <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+                <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+            </GroupBox.Resources>
+            
+            <StackPanel Orientation="Horizontal" Style="{DynamicResource DefaultGroupContentStyle}">
+                <TextBlock Text="Local only" />
+                <ToggleButton IsChecked="{Binding DisplayLocalOnly}" Margin="10 0"/>
+
+                <TextBlock Text="Name :" Margin="30 0 10 0"/>
+                <TextBox Text="{Binding NameFilter, UpdateSourceTrigger=PropertyChanged}" Width="250"/>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox DockPanel.Dock="Top">
+            <GroupBox.Header>
+                <DockPanel >
+                    <TextBlock Text="Assemblies" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" Margin="9" DockPanel.Dock="Left"/>
+                    <StackPanel  DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <RadioButton Style="{DynamicResource FlatRadioButton}" ToolTip="Tree view" IsChecked="{Binding IsTreeMode}">
+                            <materialDesign:PackIcon Kind="FileTree" />
+                        </RadioButton>
+                        <RadioButton Style="{DynamicResource FlatRadioButton}" ToolTip="Grid view">
+                            <materialDesign:PackIcon Kind="TableLarge" />
+                        </RadioButton>
+                    </StackPanel>
+                </DockPanel>
+            </GroupBox.Header>
+            <ContentPresenter Content="{Binding SelectedResultViewModels}"/>
+        </GroupBox>
+    </DockPanel>
+</UserControl>
