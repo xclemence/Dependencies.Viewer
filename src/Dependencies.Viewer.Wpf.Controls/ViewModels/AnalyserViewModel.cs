@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using CommonServiceLocator;
 using Dependencies.Analyser.Base;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
@@ -24,11 +23,22 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private bool isBusy;
         private bool isDragFile;
         private IInterTabClient interTabClient;
-        private IAssemblyAnalyser analyser;
+        private readonly AnalyserProvider analyserProvider;
+        private readonly IServiceFactory<AnalyseResultViewModel> analyserViewModelFactory;
+        private AnalyseResultViewModel selectedItem;
+        private bool isSettingsOpen;
 
-        public AnalyserViewModel(IAssemblyAnalyser analyser, IInterTabClient interTabClient)
+        public AnalyserViewModel(AnalyserProvider analyserProvider,
+                                 IServiceFactory<AnalyseResultViewModel> analyserViewModelFactory,
+                                 IInterTabClient interTabClient,
+                                 SettingsViewModel settingsViewModel)
         {
-            this.analyser = analyser;
+            //this.analyserFactory = analyserFactory;
+            this.analyserProvider = analyserProvider;
+            this.analyserViewModelFactory = analyserViewModelFactory;
+            InterTabClient = interTabClient;
+            SettingsViewModel = settingsViewModel;
+            SettingsCommand = new RelayCommand(() => IsSettingsOpen = true);
             CloseCommand = new RelayCommand(() => Application.Current.Shutdown());
             OpenFileCommand = new RelayCommand(async () => await BusyAction(OpenFileAsync), () => !IsBusy);
             OnDragOverCommand = new RelayCommand<DragEventArgs>(OnDragOver);
@@ -39,18 +49,21 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
             CloseResultCommand = new RelayCommand<AnalyseResultViewModel>(CloseResult);
 
-            GlobalCommand.OpenAssemblyAction = AddAssemmblyResult;
-
-            InterTabClient = interTabClient;
+            GlobalCommand.OpenAssemblyAction = AddAssemblyResult;
         }
       
         public ObservableCollection<AnalyseResultViewModel> AnalyseDetailsViewModels { get; } = new ObservableCollection<AnalyseResultViewModel>();
 
-        private AnalyseResultViewModel selectedItem;
         public AnalyseResultViewModel SelectedItem
         {
             get => selectedItem;
             set => Set(ref selectedItem, value);
+        }
+
+        public bool IsSettingsOpen
+        {
+            get => isSettingsOpen;
+            set => Set(ref isSettingsOpen, value);
         }
 
         public IInterTabClient InterTabClient
@@ -58,6 +71,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             get => interTabClient;
             private set => Set(ref interTabClient, value);
         }
+        public SettingsViewModel SettingsViewModel { get; }
 
         public bool IsBusy
         {
@@ -66,6 +80,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         }
 
         public ICommand OpenFileCommand { get; }
+        public ICommand SettingsCommand { get; }
+        
         public ICommand CloseCommand { get; }
         public ICommand OnDragOverCommand { get; }
         public ICommand OnDropCommand { get; }
@@ -131,12 +147,18 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             await BusyAction(async () => await AnalyseAsync(filePath));
         }
 
-        private async Task AnalyseAsync(string filePath) =>
-            AddAssemmblyResult(await analyser.AnalyseAsync(filePath));
-
-        private void AddAssemmblyResult(AssemblyInformation info)
+        private async Task AnalyseAsync(string filePath)
         {
-            var newViewModel = ServiceLocator.Current.GetInstance<AnalyseResultViewModel>();
+            var analyser = analyserProvider.CurrentAnalyserFactory.GetAnalyser();
+            AddAssemblyResult(await analyser.AnalyseAsync(filePath));
+        }
+
+        private void AddAssemblyResult(AssemblyInformation info)
+        {
+            if (info == null)
+                return;
+
+            var newViewModel = analyserViewModelFactory.Create();
             newViewModel.AssemblyResult = info;
 
             new Action(() =>

@@ -88,6 +88,8 @@
     <Compile Include="Extensions\AssemblyInformationExtensions.cs" />
     <Compile Include="Extensions\AssemblyLinkModelExtensions.cs" />
     <Compile Include="GlobalCommand.cs" />
+    <Compile Include="AnalyserProvider.cs" />
+    <Compile Include="IAnalyserProvider.cs" />
     <Compile Include="Models\AssemblyInformationModel.cs" />
     <Compile Include="Models\AssemblyLinkModel.cs" />
     <Compile Include="Models\AssemblyPath.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="ViewModels\AssemblyParentsViewModel.cs" />
     <Compile Include="ViewModels\AnalyseResultViewModel.cs" />
     <Compile Include="ViewModels\Errors\ErrorListViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\AssemblyStatisticsView.xaml.cs">
       <DependentUpon>AssemblyStatisticsView.xaml</DependentUpon>
     </Compile>
@@ -138,6 +141,9 @@
     </Compile>
     <Compile Include="Views\AnalyseResultView.xaml.cs">
       <DependentUpon>AnalyseResultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +192,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AnalyseResultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

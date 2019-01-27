@@ -93,6 +93,16 @@
                             </Menu>
                         </dragablz:TabablzControl.HeaderPrefixContent>
 
+                        <dragablz:TabablzControl.HeaderSuffixContent>
+                            <Button Command="{Binding SettingsCommand}" ToolTip="Open Settings" Height="NaN" Margin="1 0 1 1" 
+                                    Padding="0"
+                                    Style="{DynamicResource MaterialDesignFlatButton}"
+                                    Width="40" HorizontalAlignment="Right">
+                                <materialDesign:PackIcon Kind="SettingsOutline" 
+                                                         Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"/>
+                            </Button>
+                        </dragablz:TabablzControl.HeaderSuffixContent>
+
                         <dragablz:TabablzControl.InterTabController>
                             <dragablz:InterTabController InterTabClient="{Binding InterTabClient}"/>
                         </dragablz:TabablzControl.InterTabController>

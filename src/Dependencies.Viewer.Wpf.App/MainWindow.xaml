@@ -16,6 +16,18 @@
                    x:Name="view"
                    mc:Ignorable="d"
                    Title="Dependencies Viewer" Height="450" Width="800">
+    <metro:MetroWindow.Flyouts>
+        <metro:FlyoutsControl>
+            <metro:Flyout x:Name="settingsFlyout"
+                          Header="Settings"
+                          IsPinned="False"
+                          Position="Right"
+                          IsOpen="{Binding IsSettingsOpen}">
+                <daw:SettingsView DataContext="{Binding SettingsViewModel}"/>
+            </metro:Flyout>
+        </metro:FlyoutsControl>
+    </metro:MetroWindow.Flyouts>
+        
     <Grid>
         <materialDesign:DialogHost Identifier="RootDialog" CloseOnClickAway="True">
             <daw:AnalyserView/>

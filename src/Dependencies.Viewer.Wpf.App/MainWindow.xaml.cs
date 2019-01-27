@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using CommonServiceLocator;
 using Dependencies.Viewer.Wpf.Controls.ViewModels;
 
 namespace Dependencies.Viewer.Wpf.App
@@ -19,7 +18,7 @@ namespace Dependencies.Viewer.Wpf.App
         {
             InitializeComponent();
 
-             var analyserViewModel = ServiceLocator.Current.GetInstance<AnalyserViewModel>();
+            var analyserViewModel = SimpleInjectorConfig.Container.GetInstance<AnalyserViewModel>();
 
             DataContext = analyserViewModel;
 
