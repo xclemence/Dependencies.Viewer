@@ -12,11 +12,14 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
 
         public static string ToDisplayString(this AssemblyLink link, Func<AssemblyInformation, string> GetName)
         {
-            if(!link.Assembly.IsResolved)
+            if(!link.Assembly.IsResolved && !string.IsNullOrEmpty(link.LinkVersion))
+                return $"{GetName(link.Assembly)} (v{link.LinkVersion})";
+
+            if (!link.Assembly.IsResolved)
                 return GetName(link.Assembly);
 
             if (link.LinkVersion != link.Assembly.LoadedVersion)
-                return $"{GetName(link.Assembly)}   (v{ link.Assembly.LoadedVersion } ➜ v{ link.LinkVersion})";
+                return $"{GetName(link.Assembly)}   (v{ link.LinkVersion } ➜ v{ link.Assembly.LoadedVersion})";
 
             if (link.Assembly.IsNative)
                 return $"{GetName(link.Assembly)}   (loaded v{ link.Assembly.LoadedVersion })";

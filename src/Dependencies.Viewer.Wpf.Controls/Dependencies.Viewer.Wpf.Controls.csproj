@@ -89,7 +89,7 @@
     <Compile Include="Extensions\AssemblyLinkModelExtensions.cs" />
     <Compile Include="GlobalCommand.cs" />
     <Compile Include="AnalyserProvider.cs" />
-    <Compile Include="IAnalyserProvider.cs" />
+    <Compile Include="ISettringProvider.cs" />
     <Compile Include="Models\AssemblyInformationModel.cs" />
     <Compile Include="Models\AssemblyLinkModel.cs" />
     <Compile Include="Models\AssemblyPath.cs" />

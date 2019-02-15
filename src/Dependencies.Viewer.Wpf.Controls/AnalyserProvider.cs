@@ -4,14 +4,19 @@ using Dependencies.Analyser.Base;
 
 namespace Dependencies.Viewer.Wpf.Controls
 {
-    public class AnalyserProvider //: IAnalyserProvider
+    public class AnalyserProvider
     {
-
-        public AnalyserProvider(IEnumerable<IAssemblyAnalyserFactory> analyserFactories)
+        public AnalyserProvider(IEnumerable<IAssemblyAnalyserFactory> analyserFactories, ISettingProvider settingProvider)
         {
             AnalyserFactories = analyserFactories.ToList();
 
-            CurrentAnalyserFactory = AnalyserFactories.FirstOrDefault();
+            var selectedCode = settingProvider.GetSettring<string>(SettingKeys.SelectedAnalyserCode);
+            
+            if (!string.IsNullOrEmpty(selectedCode))
+                CurrentAnalyserFactory = AnalyserFactories.FirstOrDefault(x => x.Code == selectedCode);
+
+            if (CurrentAnalyserFactory == null)
+                CurrentAnalyserFactory = AnalyserFactories.FirstOrDefault();
         }
 
         public IEnumerable<IAssemblyAnalyserFactory> AnalyserFactories { get; }

@@ -33,7 +33,6 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
                                  IInterTabClient interTabClient,
                                  SettingsViewModel settingsViewModel)
         {
-            //this.analyserFactory = analyserFactory;
             this.analyserProvider = analyserProvider;
             this.analyserViewModelFactory = analyserViewModelFactory;
             InterTabClient = interTabClient;

@@ -19,6 +19,7 @@ namespace Dependencies.Viewer.Wpf.App
             Container = new Container();
 
             Container.Register<IInterTabClient, KeepOneInterLayoutClient>();
+            Container.Register<ISettingProvider, SettingProvider>(Lifestyle.Singleton);
             Container.Register(typeof(IServiceFactory<>), typeof(SimpleInjectorServiceFactory<>));
             Container.Register<AnalyserProvider>(Lifestyle.Singleton);
             RegisterAnalyser(Container);
@@ -31,6 +32,7 @@ namespace Dependencies.Viewer.Wpf.App
             string pluginDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins");
 
             var files = new DirectoryInfo(pluginDirectory).GetFiles("Dependencies.Analyser*", SearchOption.AllDirectories);
+
             var pluginAssemblies = files.Where(x => x.Extension == ".dll").Select(x => Assembly.Load(AssemblyName.GetAssemblyName(x.FullName)));
 
             container.Collection.Register<IAssemblyAnalyserFactory>(pluginAssemblies);
