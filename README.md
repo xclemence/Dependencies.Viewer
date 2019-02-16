@@ -1,2 +1,4 @@
 # Dependencies.Viewer
-[![Build Status](https://xce-account.visualstudio.com/DependenciesViewer/_apis/build/status/iceman63.Dependencies.Viewer?branchName=master)](https://xce-account.visualstudio.com/DependenciesViewer/_build/latest?definitionId=1?branchName=master)
+
+[![Build status](https://ci.appveyor.com/api/projects/status/uc5u4b9slj0q2sv4/branch/master?svg=true)](https://ci.appveyor.com/project/iceman63/dependencies-viewer/branch/master)
+
