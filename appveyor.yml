@@ -18,3 +18,8 @@ before_build:
 build:
   project: src/Dependencies.Viewer.sln
   verbosity: minimal
+
+artifacts:
+  - path: Build\Release
+    name: Dependencies Viewer
+    type: zip
