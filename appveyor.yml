@@ -10,7 +10,11 @@ platform:
 
 configuration:
   - Release
-  
+
+before_build:
+  - ps: nuget restore src/Dependencies.Viewer.sln
+
+
 build:
   project: src/Dependencies.Viewer.sln
   verbosity: minimal
