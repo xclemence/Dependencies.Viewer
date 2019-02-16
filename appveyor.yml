@@ -4,5 +4,13 @@ pull_requests:
 image: Visual Studio 2017
 install:
   - git submodule update --init --recursive
+  
+platform:
+  - Any CPU
+
+configuration:
+  - Release
+  
 build:
+  project: src/Dependencies.Viewer.sln
   verbosity: minimal
