@@ -2,6 +2,7 @@
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Analyser.Base.Models;
 using GalaSoft.MvvmLight;
+using Dependencies.Analyser.Base.Extensions;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 {

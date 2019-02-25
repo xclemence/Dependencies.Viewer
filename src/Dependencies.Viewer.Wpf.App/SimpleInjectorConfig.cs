@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Dependencies.Analyser.Base;
+using Dependencies.Analyser.Native;
 using Dependencies.Viewer.Wpf.App.Layouts;
 using Dependencies.Viewer.Wpf.Controls;
 using Dragablz;
@@ -20,6 +21,7 @@ namespace Dependencies.Viewer.Wpf.App
 
             Container.Register<IInterTabClient, KeepOneInterLayoutClient>();
             Container.Register<ISettingProvider, SettingProvider>(Lifestyle.Singleton);
+            Container.Register<INativeAnalyser, NativeAnalyser>(Lifestyle.Transient);
             Container.Register(typeof(IServiceFactory<>), typeof(SimpleInjectorServiceFactory<>));
             Container.Register<AnalyserProvider>(Lifestyle.Singleton);
             RegisterAnalyser(Container);

@@ -158,6 +158,10 @@
       <Project>{466466d9-9f72-45f5-9faf-d039642de571}</Project>
       <Name>Dependencies.Analyser.Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\external\Analyser\src\Dependencies.Analyser.Native\Dependencies.Analyser.Native.csproj">
+      <Project>{02ef658d-fcec-4502-afde-aae8a2e93752}</Project>
+      <Name>Dependencies.Analyser.Native</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dependencies.Viewer.Wpf.Controls\Dependencies.Viewer.Wpf.Controls.csproj">
       <Project>{d5c4298f-0392-470c-b676-d13bced4b016}</Project>
       <Name>Dependencies.Viewer.Wpf.Controls</Name>

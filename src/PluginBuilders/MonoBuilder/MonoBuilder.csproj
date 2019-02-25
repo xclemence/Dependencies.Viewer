@@ -57,13 +57,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\..\external\Analyser\src\Dependencies.Analyser.Mono\Dependencies.Analyser.Mono.csproj">
       <Project>{710ef00e-9d7f-4fdc-9d6f-b24e4734b17f}</Project>
       <Name>Dependencies.Analyser.Mono</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

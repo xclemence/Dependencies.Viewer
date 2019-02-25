@@ -29,17 +29,6 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
 
         public static string ToDisplayString(this AssemblyLink link) => link.ToDisplayString(x => x.FullName);
 
-        public static IEnumerable<AssemblyLink> GetAllLinks(this AssemblyInformation assembly)
-        {
-            foreach (var item in assembly.Links)
-            {
-                yield return item;
-
-                foreach (var subItem in item.Assembly.GetAllLinks())
-                    yield return subItem;
-            }
-        }
-
         public static int GetAllReferenceCount(this AssemblyInformation assembly) =>
           assembly.Links.Count + assembly.Links.Sum(x => x.Assembly.Links.Count);
 
