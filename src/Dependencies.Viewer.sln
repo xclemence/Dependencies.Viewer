@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28621.142
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dependencies.Viewer.Wpf.App", "Dependencies.Viewer.Wpf.App\Dependencies.Viewer.Wpf.App.csproj", "{837063EC-524D-49D7-850C-87135525C559}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Viewer.Wpf.App", "Dependencies.Viewer.Wpf.App\Dependencies.Viewer.Wpf.App.csproj", "{837063EC-524D-49D7-850C-87135525C559}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0BA7E59B-A5D9-49A1-A73E-82B009F40E09} = {0BA7E59B-A5D9-49A1-A73E-82B009F40E09}
 		{9B04C6CF-DC51-4860-BEC8-8B45B55E1788} = {9B04C6CF-DC51-4860-BEC8-8B45B55E1788}
@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dependencies.Viewer.Wpf.App
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "external", "external", "{02FDF81C-2206-4FEB-B51E-F70C810A065B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dependencies.Viewer.Wpf.Controls", "Dependencies.Viewer.Wpf.Controls\Dependencies.Viewer.Wpf.Controls.csproj", "{D5C4298F-0392-470C-B676-D13BCED4B016}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Viewer.Wpf.Controls", "Dependencies.Viewer.Wpf.Controls\Dependencies.Viewer.Wpf.Controls.csproj", "{D5C4298F-0392-470C-B676-D13BCED4B016}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Analyser.Base", "..\external\Analyser\src\Dependencies.Analyser.Base\Dependencies.Analyser.Base.csproj", "{466466D9-9F72-45F5-9FAF-D039642DE571}"
 EndProject

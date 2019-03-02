@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+	  <Version>1.0.0.0</Version>
+    <Authors>Xavier CLEMENCE</Authors>
+    <Product>Dependencies Viewer</Product>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Copyright>Copyright 2018 Xavier CLEMENCE</Copyright>
+  </PropertyGroup>
+</Project>

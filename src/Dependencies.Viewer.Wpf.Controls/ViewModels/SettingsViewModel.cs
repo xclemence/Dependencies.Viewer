@@ -6,16 +6,14 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 {
     public class SettingsViewModel : ViewModelBase
     {
-        private readonly ISettingProvider settingProvider;
-        private const string SelectedAnalyserCode = "SelectedAnalyserCode";
-
         public SettingsViewModel(AnalyserProvider analyserProvider, ISettingProvider settingProvider)
         {
             AnalyserProvider = analyserProvider;
-            this.settingProvider = settingProvider;
+            Settings = settingProvider;
         }
 
         private AnalyserProvider AnalyserProvider { get; }
+        public ISettingProvider Settings { get; }
 
         public IEnumerable<IAssemblyAnalyserFactory> AnalyserFactories => AnalyserProvider.AnalyserFactories;
 
@@ -27,7 +25,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
                 AnalyserProvider.CurrentAnalyserFactory = value;
 
                 if(value != null)
-                    settingProvider.SaveSetting(SettingKeys.SelectedAnalyserCode, value.Code);
+                    Settings.SaveSetting(SettingKeys.SelectedAnalyserCode, value.Code);
             }
         }
     }

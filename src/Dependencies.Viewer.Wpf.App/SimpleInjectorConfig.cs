@@ -7,6 +7,7 @@ using Dependencies.Analyser.Native;
 using Dependencies.Viewer.Wpf.App.Layouts;
 using Dependencies.Viewer.Wpf.Controls;
 using Dragablz;
+using MaterialDesignThemes.Wpf;
 using SimpleInjector;
 
 namespace Dependencies.Viewer.Wpf.App
@@ -22,6 +23,8 @@ namespace Dependencies.Viewer.Wpf.App
             Container.Register<IInterTabClient, KeepOneInterLayoutClient>();
             Container.Register<ISettingProvider, SettingProvider>(Lifestyle.Singleton);
             Container.Register<INativeAnalyser, NativeAnalyser>(Lifestyle.Transient);
+            Container.RegisterInstance<ISnackbarMessageQueue>(new SnackbarMessageQueue());
+            
             Container.Register(typeof(IServiceFactory<>), typeof(SimpleInjectorServiceFactory<>));
             Container.Register<AnalyserProvider>(Lifestyle.Singleton);
             RegisterAnalyser(Container);

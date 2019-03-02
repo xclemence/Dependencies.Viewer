@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -9,6 +11,7 @@ using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dragablz;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels
@@ -31,12 +34,15 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         public AnalyserViewModel(AnalyserProvider analyserProvider,
                                  IServiceFactory<AnalyseResultViewModel> analyserViewModelFactory,
                                  IInterTabClient interTabClient,
-                                 SettingsViewModel settingsViewModel)
+                                 SettingsViewModel settingsViewModel,
+                                 ISnackbarMessageQueue messageQueue)
         {
             this.analyserProvider = analyserProvider;
             this.analyserViewModelFactory = analyserViewModelFactory;
             InterTabClient = interTabClient;
             SettingsViewModel = settingsViewModel;
+            MessageQueue = messageQueue;
+
             SettingsCommand = new RelayCommand(() => IsSettingsOpen = true);
             CloseCommand = new RelayCommand(() => Application.Current.Shutdown());
             OpenFileCommand = new RelayCommand(async () => await BusyAction(OpenFileAsync), () => !IsBusy);
@@ -50,7 +56,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
             GlobalCommand.OpenAssemblyAction = AddAssemblyResult;
         }
-      
+
+        public ISnackbarMessageQueue MessageQueue { get; }
+
         public ObservableCollection<AnalyseResultViewModel> AnalyseDetailsViewModels { get; } = new ObservableCollection<AnalyseResultViewModel>();
 
         public AnalyseResultViewModel SelectedItem
@@ -80,14 +88,14 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
         public ICommand OpenFileCommand { get; }
         public ICommand SettingsCommand { get; }
-        
+
         public ICommand CloseCommand { get; }
         public ICommand OnDragOverCommand { get; }
         public ICommand OnDropCommand { get; }
         public ICommand OnDragEnterCommand { get; }
         public ICommand OnDragLeaveCommand { get; }
         public ICommand CloseResultCommand { get; }
-        
+
         public Func<DragEventArgs, bool> CanDragFunc => (x) => CanDrag(x);
 
         public bool IsDragFile
@@ -104,12 +112,12 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             {
                 await actionAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 while (ex.InnerException != null)
                     ex = ex.InnerException;
 
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageQueue.Enqueue($"Error : {ex.Message}");
             }
             finally
             {
@@ -142,7 +150,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         {
             if (filePath == null)
                 return;
-            
+
             await BusyAction(async () => await AnalyseAsync(filePath));
         }
 
@@ -152,10 +160,28 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             AddAssemblyResult(await analyser.AnalyseAsync(filePath));
         }
 
+        public bool FindInfinyLoop(AssemblyInformation info, IList<AssemblyInformation> path = null)
+        {
+            var currentPath = path?.ToList() ?? new List<AssemblyInformation>();
+
+            if (currentPath.Contains(info))
+            {
+                return false;
+            }
+
+            currentPath.Add(info);
+
+            info.Links = info.Links.Where(x => FindInfinyLoop(x.Assembly, currentPath)).ToList();
+
+            return true;
+        }
+
         private void AddAssemblyResult(AssemblyInformation info)
         {
             if (info == null)
                 return;
+
+            FindInfinyLoop(info);
 
             var newViewModel = analyserViewModelFactory.Create();
             newViewModel.AssemblyResult = info;

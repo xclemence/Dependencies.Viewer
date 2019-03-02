@@ -1,9 +1,15 @@
-﻿using Dependencies.Viewer.Wpf.Controls;
+﻿using Dependencies.Analyser.Base;
 
 namespace Dependencies.Viewer.Wpf.App
 {
     class SettingProvider : ISettingProvider
     {
+        public dynamic this[string code]
+        {
+            get => GetSettring<dynamic>(code);
+            set => SaveSetting<dynamic>(code, value);
+        }
+
         public T GetSettring<T>(string code)
         {
             var item = (T)Properties.Settings.Default[code];
