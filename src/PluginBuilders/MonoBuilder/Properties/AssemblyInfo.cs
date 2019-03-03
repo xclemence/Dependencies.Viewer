@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
@@ -8,10 +7,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("MonoBuilder")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("SopraGroup")]
-[assembly: AssemblyProduct("MonoBuilder")]
-[assembly: AssemblyCopyright("Copyright © SopraGroup 2019")]
-[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
