@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,9 +19,13 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 {
     public class AnalyserViewModel : ViewModelBase
     {
-        internal const string FileFilter =
-           "Software (*.exe)|*.exe|" +
-           "Assembly (*.dll)|*.dll|" +
+        private const string OpenFileFilter =
+            "Software (*.exe)|*.exe|" +
+            "Assembly (*.dll)|*.dll|" +
+            "All Files|*.*";
+
+        private const string ImportFileFilter =
+            "Resutlts (*.xml)|*.xml|" +
             "All Files|*.*";
 
         private bool isBusy;
@@ -51,6 +56,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
             OnDragEnterCommand = new RelayCommand<DragEventArgs>((x) => IsDragFile = true, CanDrag);
             OnDragLeaveCommand = new RelayCommand<DragEventArgs>((x) => IsDragFile = false, CanDrag);
+
+            ImportAnalyseCommand = new RelayCommand(async () => await BusyAction(ImportResultsAsync), () => !IsBusy);
+            ExportSelectedAnalyseCommand = new RelayCommand(async () => await BusyAction(ExportResultsAsync), () => !IsBusy && SelectedItem?.AssemblyResult != null);
 
             CloseResultCommand = new RelayCommand<AnalyseResultViewModel>(CloseResult);
 
@@ -95,6 +103,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         public ICommand OnDragEnterCommand { get; }
         public ICommand OnDragLeaveCommand { get; }
         public ICommand CloseResultCommand { get; }
+        public ICommand ExportSelectedAnalyseCommand { get; }
+        public ICommand ImportAnalyseCommand { get; }
 
         public Func<DragEventArgs, bool> CanDragFunc => (x) => CanDrag(x);
 
@@ -127,10 +137,32 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
         private async Task OpenFileAsync()
         {
-            var openFileDialog = new OpenFileDialog { Title = "Open File", Filter = FileFilter, Multiselect = false };
+            var openFileDialog = new OpenFileDialog { Title = "Open File", Filter = OpenFileFilter, Multiselect = false };
             if (openFileDialog.ShowDialog() != true) return;
 
             await AnalyseAsync(openFileDialog.FileName);
+        }
+
+
+
+        private async Task ImportResultsAsync()
+        {
+            var openFileDialog = new OpenFileDialog { Title = "Import File", Filter = ImportFileFilter, Multiselect = false };
+            if (openFileDialog.ShowDialog() != true) return;
+
+            var file = new FileInfo(openFileDialog.FileName);
+
+            AddAssemblyResult(await file.DeserializeObject<AssemblyInformation>());
+        }
+
+        private async Task ExportResultsAsync() 
+        {
+            if (SelectedItem == null) return;
+
+            var saveFileDialog = new SaveFileDialog { Title = "Save Analyse", Filter = ImportFileFilter, FileName = SelectedItem.AssemblyResult.Name };
+            if (saveFileDialog.ShowDialog() != true) return;
+
+            await SelectedItem.AssemblyResult.SerializeObject(saveFileDialog.FileName);
         }
 
         private async Task OnDrop(DragEventArgs e)
