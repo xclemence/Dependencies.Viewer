@@ -9,6 +9,7 @@ using Dependencies.Viewer.Wpf.Controls;
 using Dragablz;
 using MaterialDesignThemes.Wpf;
 using SimpleInjector;
+using SimpleInjector.Diagnostics;
 
 namespace Dependencies.Viewer.Wpf.App
 {
@@ -29,7 +30,10 @@ namespace Dependencies.Viewer.Wpf.App
             Container.Register<AnalyserProvider>(Lifestyle.Singleton);
             RegisterAnalyser(Container);
 
-            Container.Verify();
+            Container.Options.SuppressLifestyleMismatchVerification = true;
+            Container.Collection.Container.Options.SuppressLifestyleMismatchVerification = true;
+
+            //Container.Verify();
         }
 
         private static void RegisterAnalyser(Container container)

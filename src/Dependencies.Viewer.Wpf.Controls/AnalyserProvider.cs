@@ -11,7 +11,12 @@ namespace Dependencies.Viewer.Wpf.Controls
             AnalyserFactories = analyserFactories.ToList();
 
             var selectedCode = settingProvider.GetSettring<string>(SettingKeys.SelectedAnalyserCode);
-            
+
+            InitializeAnalyser(selectedCode);
+        }
+
+        private void InitializeAnalyser(string selectedCode)
+        {
             if (!string.IsNullOrEmpty(selectedCode))
                 CurrentAnalyserFactory = AnalyserFactories.FirstOrDefault(x => x.Code == selectedCode);
 
