@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using Dependencies.Analyser.Base.Models;
+using Dependencies.Viewer.Wpf.Controls.Fwk;
 using Dependencies.Viewer.Wpf.Controls.ViewModels.Errors;
 using Dependencies.Viewer.Wpf.Controls.ViewModels.References;
-using GalaSoft.MvvmLight;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 {
-    public class AnalyseResultViewModel : ViewModelBase
+    public class AnalyseResultViewModel : ObservableObject
     {
         private AssemblyInformation assemblyResult;
         private bool isErrorExpended;

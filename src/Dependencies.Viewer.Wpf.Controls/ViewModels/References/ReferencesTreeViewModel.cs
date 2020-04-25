@@ -5,13 +5,12 @@ using System.Windows.Data;
 using System.Windows.Input;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
+using Dependencies.Viewer.Wpf.Controls.Fwk;
 using Dependencies.Viewer.Wpf.Controls.Models;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 {
-    public class ReferencesTreeViewModel : ViewModelBase, IReferencesDetailsViewModel
+    public class ReferencesTreeViewModel : ObservableObject, IReferencesDetailsViewModel
     {
         private IEnumerable<AssemblyLinkModel> links;
         private AssemblyInformation assemblyInformation;
@@ -19,8 +18,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 
         public ReferencesTreeViewModel()
         {
-            OpenSubResultCommand = new RelayCommand<AssemblyLinkModel>(x => GlobalCommand.OpenAssembly(x.Assembly));
-            OpenParentReferenceCommand = new RelayCommand<AssemblyLinkModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(assemblyInformation, x.AssemblyLink));
+            OpenSubResultCommand = new Command<AssemblyLinkModel>(x => GlobalCommand.OpenAssembly(x.Assembly));
+            OpenParentReferenceCommand = new Command<AssemblyLinkModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(assemblyInformation, x.AssemblyLink));
         }
 
         public ICommand OpenSubResultCommand { get; }

@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Dependencies.Analyser.Base.Models;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using Dependencies.Viewer.Wpf.Controls.Fwk;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
 {
-    public abstract class ResultListViewModel<T> : ViewModelBase
+    public abstract class ResultListViewModel<T> : ObservableObject
     {
         private AssemblyInformation assemblyInformation;
         private T selectedItem;
@@ -18,8 +17,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
 
         protected ResultListViewModel()
         {
-            OpenResult = new RelayCommand<T>(async (x) => await OnOpenResultAsync(x));
-            CopyToClipboardCommand = new RelayCommand(CopyAllToClipboard, () => displayResults.Any());
+            OpenResult = new Command<T>(async (x) => await OnOpenResultAsync(x));
+            CopyToClipboardCommand = new Command(CopyAllToClipboard, () => displayResults.Any());
         }
 
         public ICommand OpenResult { get; }

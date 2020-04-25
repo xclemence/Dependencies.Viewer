@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
-using GalaSoft.MvvmLight;
+using Dependencies.Viewer.Wpf.Controls.Fwk;
 
 namespace Dependencies.Viewer.Wpf.Controls.Models
 {
