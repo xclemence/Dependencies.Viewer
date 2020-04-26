@@ -25,10 +25,17 @@
     </UserControl.Resources>
 
     <DockPanel HorizontalAlignment="Stretch">
-        <DockPanel DockPanel.Dock="Top">
-            <TextBlock Text="File path :"/>
-            <TextBox Text="{Binding FilePath, Mode=OneWay}" />
-        </DockPanel>
+        <UniformGrid Columns="1" DockPanel.Dock="Top">
+            <DockPanel >
+                <TextBlock Text="File path :"/>
+                <TextBox Text="{Binding FilePath, Mode=OneWay}" />
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Text="Full name :" />
+                <TextBox Text="{Binding FullName, Mode=OneWay, ConverterCulture=fr-FR}"/>
+            </DockPanel>
+        </UniformGrid>
+
         <UniformGrid Columns="2" DockPanel.Dock="Top">
             <StackPanel>
                 <DockPanel >
@@ -39,7 +46,10 @@
                     <TextBlock Text="Version :" />
                     <TextBox Text="{Binding LoadedVersion, Mode=OneWay}"/>
                 </DockPanel>
-
+                <DockPanel>
+                    <TextBlock Text="Target :" />
+                    <TextBox Text="{Binding TargetFramework, Mode=OneWay}"/>
+                </DockPanel>
                 <DockPanel>
                     <TextBlock Text="Creator :" />
                     <TextBox Text="{Binding Creator, Mode=OneWay}"/>

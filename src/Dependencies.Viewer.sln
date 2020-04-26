@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.28621.142
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Viewer.Wpf.App", "Dependencies.Viewer.Wpf.App\Dependencies.Viewer.Wpf.App.csproj", "{837063EC-524D-49D7-850C-87135525C559}"
+	ProjectSection(ProjectDependencies) = postProject
+		{710EF00E-9D7F-4FDC-9D6F-B24E4734B17F} = {710EF00E-9D7F-4FDC-9D6F-B24E4734B17F}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "external", "external", "{02FDF81C-2206-4FEB-B51E-F70C810A065B}"
 EndProject
