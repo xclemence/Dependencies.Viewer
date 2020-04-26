@@ -10,6 +10,7 @@ using Dependencies.Analyser.Base;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Fwk;
+using Dragablz;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 
@@ -28,21 +29,21 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
         private bool isBusy;
         private bool isDragFile;
-        //private IInterTabClient interTabClient;
+        private IInterTabClient interTabClient;
         private readonly AnalyserProvider analyserProvider;
-        private readonly IServiceFactory<AnalyseResultViewModel> analyserViewModelFactory;
+        private readonly IAnalyserServiceFactory<AnalyseResultViewModel> analyserViewModelFactory;
         private AnalyseResultViewModel selectedItem;
         private bool isSettingsOpen;
 
         public AnalyserViewModel(AnalyserProvider analyserProvider,
-                                 IServiceFactory<AnalyseResultViewModel> analyserViewModelFactory,
-                                 //IInterTabClient interTabClient,
+                                 IAnalyserServiceFactory<AnalyseResultViewModel> analyserViewModelFactory,
+                                 IInterTabClient interTabClient,
                                  SettingsViewModel settingsViewModel,
                                  ISnackbarMessageQueue messageQueue)
         {
             this.analyserProvider = analyserProvider;
             this.analyserViewModelFactory = analyserViewModelFactory;
-            //InterTabClient = interTabClient;
+            InterTabClient = interTabClient;
             SettingsViewModel = settingsViewModel;
             MessageQueue = messageQueue;
 
@@ -58,7 +59,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             ImportAnalyseCommand = new Command(async () => await BusyAction(ImportResultsAsync), () => !IsBusy);
             ExportSelectedAnalyseCommand = new Command(async () => await BusyAction(ExportResultsAsync), () => !IsBusy && SelectedItem?.AssemblyResult != null);
 
-            //CloseResultCommand = new Command<AnalyseResultViewModel>(CloseResult);
+            CloseResultCommand = new Command<AnalyseResultViewModel>(CloseResult);
 
             GlobalCommand.OpenAssemblyAction = AddAssemblyResult;
         }
@@ -79,11 +80,11 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             set => Set(ref isSettingsOpen, value);
         }
 
-        //public IInterTabClient InterTabClient
-        //{
-        //    get => interTabClient;
-        //    private set => Set(ref interTabClient, value);
-        //}
+        public IInterTabClient InterTabClient
+        {
+            get => interTabClient;
+            private set => Set(ref interTabClient, value);
+        }
 
         public SettingsViewModel SettingsViewModel { get; }
 
@@ -234,8 +235,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private bool CanDrag(DragEventArgs e) =>
             !IsBusy && e.Data.GetDataPresent(DataFormats.FileDrop);
 
-        //private void CloseResult(AnalyseResultViewModel x) =>
-        //    TabablzControl.CloseItem(x);
+        private void CloseResult(AnalyseResultViewModel x) =>
+            TabablzControl.CloseItem(x);
 
     }
 }

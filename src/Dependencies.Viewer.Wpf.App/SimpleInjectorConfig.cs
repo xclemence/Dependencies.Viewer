@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Loader;
+using System.Windows.Navigation;
 using Dependencies.Analyser.Base;
 using Dependencies.Analyser.Native;
 using Dependencies.Viewer.Wpf.App.Layouts;
@@ -25,14 +29,13 @@ namespace Dependencies.Viewer.Wpf.App
             Container.Register<INativeAnalyser, NativeAnalyser>(Lifestyle.Transient);
             Container.RegisterInstance<ISnackbarMessageQueue>(new SnackbarMessageQueue());
             
-            Container.Register(typeof(IServiceFactory<>), typeof(SimpleInjectorServiceFactory<>));
+            Container.Register(typeof(IAnalyserServiceFactory<>), typeof(SimpleInjectorServiceFactory<>));
             Container.Register<AnalyserProvider>(Lifestyle.Singleton);
             RegisterAnalyser(Container);
 
             Container.Options.SuppressLifestyleMismatchVerification = true;
             Container.Collection.Container.Options.SuppressLifestyleMismatchVerification = true;
 
-            //Container.Verify();
         }
 
         private static void RegisterAnalyser(Container container)
@@ -43,10 +46,38 @@ namespace Dependencies.Viewer.Wpf.App
 
             var files = new DirectoryInfo(pluginDirectory).GetFiles("Dependencies.Analyser*", SearchOption.AllDirectories);
 
-            var pluginAssemblies = files.Where(x => x.Extension == ".dll").Select(x => AssemblyLoadContext.Default.LoadFromAssemblyPath(x.FullName));
+            
+            var pluginAssemblies = files.Where(x => x.Extension == ".dll" && x.Name != "Dependencies.Analyser.Base.dll").Select(x =>
+            {
+                PluginLoadContext loadContext = new PluginLoadContext(x.FullName);
+                var assembly =  loadContext.LoadFromAssemblyPath(x.FullName);
+                return assembly;
+            }).ToList();
 
             container.Collection.Register<IAssemblyAnalyserFactory>(pluginAssemblies);
             container.Collection.Register<IAssemblyAnalyser>(pluginAssemblies);
+        }
+    }
+
+    class PluginLoadContext : AssemblyLoadContext
+    {
+        private AssemblyDependencyResolver resolver;
+
+        public PluginLoadContext(string pluginPath)
+        {
+            resolver = new AssemblyDependencyResolver(pluginPath);
+        }
+
+        protected override Assembly Load(AssemblyName assemblyName)
+        {
+            string assemblyPath = resolver.ResolveAssemblyToPath(assemblyName);
+
+            if (assemblyPath != null)
+            {
+                return LoadFromAssemblyPath(assemblyPath);
+            }
+
+            return null;
         }
     }
 }

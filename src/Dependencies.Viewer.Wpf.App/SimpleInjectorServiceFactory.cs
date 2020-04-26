@@ -4,7 +4,7 @@ using SimpleInjector;
 
 namespace Dependencies.Viewer.Wpf.App
 {
-    public class SimpleInjectorServiceFactory<T> : IServiceFactory<T>
+    public class SimpleInjectorServiceFactory<T> : IAnalyserServiceFactory<T>
         where   T : class
     {
         public readonly Container container;

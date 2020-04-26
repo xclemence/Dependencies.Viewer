@@ -48,4 +48,8 @@
             <LastGenOutput>Settings.Designer.cs</LastGenOutput>
         </None>
     </ItemGroup>
+
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+      <Exec Command="xcopy &quot;$(SolutionDir)..\external\Analyser\src\Dependencies.Analyser.Mono\bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Analyser\Mono\&quot; /Y /s" />
+    </Target>
 </Project>
