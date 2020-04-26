@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
-using System.Windows.Navigation;
 using Dependencies.Analyser.Base;
 using Dependencies.Analyser.Native;
+using Dependencies.Exchange.Base;
 using Dependencies.Viewer.Wpf.App.Layouts;
 using Dependencies.Viewer.Wpf.Controls;
 using Dragablz;
@@ -29,25 +27,30 @@ namespace Dependencies.Viewer.Wpf.App
             Container.Register<INativeAnalyser, NativeAnalyser>(Lifestyle.Transient);
             Container.RegisterInstance<ISnackbarMessageQueue>(new SnackbarMessageQueue());
             
-            Container.Register(typeof(IAnalyserServiceFactory<>), typeof(SimpleInjectorServiceFactory<>));
+         
+            Container.Register(typeof(IAnalyserServiceFactory<>), typeof(SimpleInjectorAnalyseServiceFactory<>));
+            Container.Register(typeof(IExchangeServiceFactory<>), typeof(SimpleInjectorExchangeServiceFactory<>));
             Container.Register<AnalyserProvider>(Lifestyle.Singleton);
-            RegisterAnalyser(Container);
+
+            Container.RegisterAnalyser();
+            Container.RegisterExchange();
+
 
             Container.Options.SuppressLifestyleMismatchVerification = true;
             Container.Collection.Container.Options.SuppressLifestyleMismatchVerification = true;
 
         }
 
-        private static void RegisterAnalyser(Container container)
+        private static void RegisterAnalyser(this Container container)
         {
             string pluginDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins", "Analyser");
 
-            if (!Directory.Exists(pluginDirectory)) return;
+            if (!Directory.Exists(pluginDirectory))
+                Directory.CreateDirectory(pluginDirectory);
 
             var files = new DirectoryInfo(pluginDirectory).GetFiles("Dependencies.Analyser*", SearchOption.AllDirectories);
-
             
-            var pluginAssemblies = files.Where(x => x.Extension == ".dll" && x.Name != "Dependencies.Analyser.Base.dll").Select(x =>
+            var pluginAssemblies = files.Where(x => x.Extension == ".dll").Select(x =>
             {
                 PluginLoadContext loadContext = new PluginLoadContext(x.FullName);
                 var assembly =  loadContext.LoadFromAssemblyPath(x.FullName);
@@ -56,6 +59,27 @@ namespace Dependencies.Viewer.Wpf.App
 
             container.Collection.Register<IAssemblyAnalyserFactory>(pluginAssemblies);
             container.Collection.Register<IAssemblyAnalyser>(pluginAssemblies);
+        }
+
+        private static void RegisterExchange(this Container container)
+        {
+            string pluginDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins", "Exchange");
+
+            if (!Directory.Exists(pluginDirectory))
+                Directory.CreateDirectory(pluginDirectory);
+
+            var files = new DirectoryInfo(pluginDirectory).GetFiles("Dependencies.Exchange*", SearchOption.AllDirectories);
+
+            var pluginAssemblies = files.Where(x => x.Extension == ".dll").Select(x =>
+            {
+                PluginLoadContext loadContext = new PluginLoadContext(x.FullName);
+                var assembly = loadContext.LoadFromAssemblyPath(x.FullName);
+                return assembly;
+            }).ToList();
+
+            container.Collection.Register<IAssemblyExchangeFactory>(pluginAssemblies);
+            container.Collection.Register<IExportAssembly>(pluginAssemblies);
+            container.Collection.Register<IImportAssembly>(pluginAssemblies);
         }
     }
 

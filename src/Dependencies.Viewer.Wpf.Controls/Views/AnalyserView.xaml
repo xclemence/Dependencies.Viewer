@@ -21,6 +21,13 @@
         <DataTemplate DataType="{x:Type vm:AnalyseResultViewModel}">
             <local:AnalyseResultView DataContext="{Binding }"/>
         </DataTemplate>
+
+        <Style x:Key="DynamicMenuItemStyle" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+            <Setter Property="Command" Value="{Binding Command}" />
+            <Setter Property="Header" Value="{Binding Title}" />
+            <Setter Property="MinWidth" Value="120" />
+        </Style>
+        
     </UserControl.Resources>
 
     <msBehaviors:Interaction.Triggers>
@@ -75,17 +82,19 @@
                                         <materialDesign:PackIcon Kind="FileFindOutline" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Header="Import Analyse" Command="{Binding ImportAnalyseCommand}">
-                                    <MenuItem.Icon>
-                                        <materialDesign:PackIcon Kind="Import" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
                                 <Separator/>
-                                <MenuItem Header="Export Analyse" Command="{Binding ExportSelectedAnalyseCommand}">
+                                <MenuItem Header="Export" ItemsSource="{Binding ExportCommands}" ItemContainerStyle="{StaticResource DynamicMenuItemStyle}">
                                     <MenuItem.Icon>
                                         <materialDesign:PackIcon Kind="Export" />
                                     </MenuItem.Icon>
                                 </MenuItem>
+
+                                <MenuItem Header="Import" ItemsSource="{Binding ImportCommands}" ItemContainerStyle="{StaticResource DynamicMenuItemStyle}">
+                                    <MenuItem.Icon>
+                                        <materialDesign:PackIcon Kind="Import" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                
                                 <Separator/>
                                 <MenuItem Header="Exit" Command="{Binding CloseCommand}">
                                     <MenuItem.Icon>

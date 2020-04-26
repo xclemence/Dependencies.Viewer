@@ -4,12 +4,12 @@ using SimpleInjector;
 
 namespace Dependencies.Viewer.Wpf.App
 {
-    public class SimpleInjectorServiceFactory<T> : IAnalyserServiceFactory<T>
+    public class SimpleInjectorAnalyseServiceFactory<T> : IAnalyserServiceFactory<T>
         where   T : class
     {
         public readonly Container container;
 
-        public SimpleInjectorServiceFactory(Container container)
+        public SimpleInjectorAnalyseServiceFactory(Container container)
         {
             this.container = container ?? throw new ArgumentNullException(nameof(container));
         }

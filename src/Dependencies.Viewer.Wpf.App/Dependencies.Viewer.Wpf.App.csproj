@@ -32,6 +32,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\external\Analyser\src\Dependencies.Analyser.Base\Dependencies.Analyser.Base.csproj" />
         <ProjectReference Include="..\..\external\Analyser\src\Dependencies.Analyser.Native\Dependencies.Analyser.Native.csproj" />
+        <ProjectReference Include="..\..\plugins\Exchange\src\Dependencies.Exchange.Base\Dependencies.Exchange.Base.csproj" />
         <ProjectReference Include="..\Dependencies.Viewer.Wpf.Controls\Dependencies.Viewer.Wpf.Controls.csproj" />
     </ItemGroup>
 
@@ -52,5 +53,6 @@
 
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
       <Exec Command="xcopy &quot;$(SolutionDir)..\external\Analyser\src\Dependencies.Analyser.Mono\bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Analyser\Mono\&quot; /Y /s" />
+      <Exec Command="xcopy &quot;$(SolutionDir)..\plugins\Exchange\src\Dependencies.Exchange.File\bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Exchange\File\&quot; /Y /s" />
     </Target>
 </Project>

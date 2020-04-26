@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Dependencies.Analyser.Base.Models;
+using Dependencies.Exchange.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Fwk;
 using Dependencies.Viewer.Wpf.Controls.ViewModels.Errors;
 using Dependencies.Viewer.Wpf.Controls.ViewModels.References;
@@ -55,5 +57,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         public bool HasError => ErrorLoadingViewModel.DisplayResults.Any();
 
         public bool HasMismatch => MismatchVersionViewModel.DisplayResults.Any();
+
+        internal AssemblyExchange ToAssemblyExchange() => throw new NotImplementedException();
     }
 }
