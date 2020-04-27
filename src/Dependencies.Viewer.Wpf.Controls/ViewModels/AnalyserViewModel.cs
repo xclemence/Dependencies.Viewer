@@ -244,6 +244,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         {
             var (assembly, dependencies) = await importAssembly.ImportAsync();
 
+            if (assembly == default)
+                return;
+
             AddAssemblyResult(assembly.ToInformationModel(dependencies));
         }
 

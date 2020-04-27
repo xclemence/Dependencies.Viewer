@@ -15,6 +15,14 @@ namespace Dependencies.Exchange.Graph
 
         public string Creator { get; set; }
 
+        public string TargetFramework { get; set; }
+
+        public string TargetProcessor { get; set; }
+
+        public bool? IsDebug { get; set; }
+
+        public bool IsILOnly { get; set; }
+
         public DateTime CreationDate { get; set; }
 
         public bool IsPartial { get; set; }

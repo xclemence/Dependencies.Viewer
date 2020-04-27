@@ -14,7 +14,29 @@ namespace Dependencies.Exchange.Graph.Extensions
             IsPartial = assembly.IsPartial,
             Name = assembly.Name,
             ShortName = assembly.ShortName,
-            Version = assembly.Version
+            Version = assembly.Version,
+            IsDebug = assembly.IsDebug,
+            IsILOnly = assembly.IsILOnly,
+            TargetFramework = assembly.TargetFramework,
+            TargetProcessor = assembly.TargetProcessor
+        };
+
+        internal static AssemblyExchange ToExchange(this AssemblyDto assembly) => new AssemblyExchange
+        {
+            AssembliesReferenced = assembly.AssembliesReferenced.ToList(),
+            CreationDate = assembly.CreationDate,
+            Creator = assembly.Creator,
+            IsNative = assembly.IsNative,
+            IsPartial = assembly.IsPartial,
+            Name = assembly.Name,
+            ShortName = assembly.ShortName,
+            Version = assembly.Version,
+            IsDebug = assembly.IsDebug,
+            IsILOnly = assembly.IsILOnly,
+            TargetFramework = assembly.TargetFramework,
+            TargetProcessor = assembly.TargetProcessor,
+            IsLocal = true
+
         };
     }
 }
