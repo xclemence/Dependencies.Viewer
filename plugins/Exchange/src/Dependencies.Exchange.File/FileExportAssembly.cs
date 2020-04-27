@@ -5,7 +5,7 @@ using Dependencies.Exchange.Base.Models;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 
-namespace Dependencies.Transfert.File
+namespace Dependencies.Exchange.File
 {
     class ExportModel 
     {

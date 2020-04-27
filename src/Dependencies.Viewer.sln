@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Viewer.Wpf.App", "Dependencies.Viewer.Wpf.App\Dependencies.Viewer.Wpf.App.csproj", "{837063EC-524D-49D7-850C-87135525C559}"
 	ProjectSection(ProjectDependencies) = postProject
 		{710EF00E-9D7F-4FDC-9D6F-B24E4734B17F} = {710EF00E-9D7F-4FDC-9D6F-B24E4734B17F}
+		{1A9406A9-7217-4384-A2B2-A30ADA29E3E8} = {1A9406A9-7217-4384-A2B2-A30ADA29E3E8}
 		{990AC7FB-5519-4683-AE70-1F046393DC75} = {990AC7FB-5519-4683-AE70-1F046393DC75}
 	EndProjectSection
 EndProject
@@ -38,7 +39,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analyser", "Analyser", "{C4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Exchange.File", "..\plugins\Exchange\src\Dependencies.Exchange.File\Dependencies.Exchange.File.csproj", "{990AC7FB-5519-4683-AE70-1F046393DC75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dependencies.Exchange.Base", "..\plugins\Exchange\src\Dependencies.Exchange.Base\Dependencies.Exchange.Base.csproj", "{FA18890A-4281-49C1-AB89-7EEFFB09982B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Exchange.Base", "..\plugins\Exchange\src\Dependencies.Exchange.Base\Dependencies.Exchange.Base.csproj", "{FA18890A-4281-49C1-AB89-7EEFFB09982B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Exchange.Graph", "..\plugins\Exchange\src\Dependencies.Exchange.Graph\Dependencies.Exchange.Graph.csproj", "{1A9406A9-7217-4384-A2B2-A30ADA29E3E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -136,6 +139,14 @@ Global
 		{FA18890A-4281-49C1-AB89-7EEFFB09982B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FA18890A-4281-49C1-AB89-7EEFFB09982B}.Release|x64.ActiveCfg = Release|Any CPU
 		{FA18890A-4281-49C1-AB89-7EEFFB09982B}.Release|x64.Build.0 = Release|Any CPU
+		{1A9406A9-7217-4384-A2B2-A30ADA29E3E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A9406A9-7217-4384-A2B2-A30ADA29E3E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A9406A9-7217-4384-A2B2-A30ADA29E3E8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1A9406A9-7217-4384-A2B2-A30ADA29E3E8}.Debug|x64.Build.0 = Debug|Any CPU
+		{1A9406A9-7217-4384-A2B2-A30ADA29E3E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A9406A9-7217-4384-A2B2-A30ADA29E3E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A9406A9-7217-4384-A2B2-A30ADA29E3E8}.Release|x64.ActiveCfg = Release|Any CPU
+		{1A9406A9-7217-4384-A2B2-A30ADA29E3E8}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -152,6 +163,7 @@ Global
 		{C42D3F8D-48CA-40D3-AB8B-8895F2B20A2C} = {03F2CE8E-365A-4C18-990F-4102CE63C95C}
 		{990AC7FB-5519-4683-AE70-1F046393DC75} = {F9E47466-032E-40BB-A868-477F28D328E7}
 		{FA18890A-4281-49C1-AB89-7EEFFB09982B} = {F9E47466-032E-40BB-A868-477F28D328E7}
+		{1A9406A9-7217-4384-A2B2-A30ADA29E3E8} = {F9E47466-032E-40BB-A868-477F28D328E7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {13543742-1A12-4710-9FBB-200F987521FE}

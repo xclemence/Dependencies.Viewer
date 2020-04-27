@@ -1,7 +1,7 @@
 ﻿using System;
 using Dependencies.Exchange.Base;
 
-namespace Dependencies.Transfert.File
+namespace Dependencies.Exchange.File
 {
     public class FileAssemblyExchangeFactory : IAssemblyExchangeFactory
     {
