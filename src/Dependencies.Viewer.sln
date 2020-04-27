@@ -18,11 +18,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Analyser.Mono"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeNet", "..\plugins\Analyser\external\PeNet\src\PeNet\PeNet.csproj", "{F306C626-2CF2-419C-9479-68FE317F62FF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{6DEB34BC-271E-4C6F-834C-BD0B661F1C39}"
-	ProjectSection(SolutionItems) = preProject
-		Common\CommonAssemblyInfo.cs = Common\CommonAssemblyInfo.cs
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Analyser.Microsoft", "..\plugins\Analyser\src\Dependencies.Analyser.Microsoft\Dependencies.Analyser.Microsoft.csproj", "{FCC6493B-71EE-44CB-A64B-A23A7CD5184D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dependencies.ApiSetMap", "..\plugins\Analyser\src\Dependencies.ApiSetMap\Dependencies.ApiSetMap.vcxproj", "{E775563F-C3B2-47F0-B5A2-97F951D9B6F0}"
