@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
         Title="Open Assembly From Graph" Height="450" Width="800"
+        FocusManager.FocusedElement="{Binding ElementName=searchTextControl}"
         x:Name="openAssemblyWindows">
     <Grid>
 
@@ -24,14 +25,14 @@
             </Grid.RowDefinitions>
 
             <DockPanel Margin="20 0">
-                <Button Content="Search" Command="{Binding SearchCommand}" DockPanel.Dock="Right"/>
-                <TextBox Text="{Binding SearchText}" Margin="0 0 5 0"/>
+                <Button Content="Search" Command="{Binding SearchCommand}" DockPanel.Dock="Right" IsDefault="True" TabIndex="1"/>
+                <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 5 0" TabIndex="0" x:Name="searchTextControl"/>
             </DockPanel>
 
             <ListView ItemsSource="{Binding AvailableAssemblies}" SelectedItem="{Binding SelectedAssembly}" Grid.Row="1"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2" Margin="10 10">
-                <Button Content="Load" IsDefault="True" Command="{Binding LoadCommand}" CommandParameter="{Binding ElementName=openAssemblyWindows}"/>
+                <Button Content="Load" Command="{Binding LoadCommand}" CommandParameter="{Binding ElementName=openAssemblyWindows}"/>
                 <Button Content="Cancel" IsCancel="True" Command="{Binding CancelCommand}" CommandParameter="{Binding ElementName=openAssemblyWindows}" Margin="10 0" />
             </StackPanel>
         </Grid>

@@ -18,7 +18,7 @@ namespace Dependencies.Exchange.Graph
             var result = window.ShowDialog();
 
             if (!(result ?? false))
-                return default;
+                return Task.FromResult<(AssemblyExchange, IList<AssemblyExchange>)>(default);
 
             return Task.FromResult(dataContext.AssemblyLoaded);
         }
