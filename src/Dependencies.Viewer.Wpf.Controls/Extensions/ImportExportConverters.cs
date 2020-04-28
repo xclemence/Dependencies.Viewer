@@ -46,7 +46,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
         {
             AssemblyExchange model;
             if (link.LinkVersion != link.Assembly.LoadedVersion)
-                model = new AssemblyExchange { Name = link.LinkFullName, Version = link.LinkVersion, IsPartial = true, ShortName = link.Assembly.Name };
+                model = new AssemblyExchange { Name = link.LinkFullName, Version = link.LinkVersion, IsPartial = true, ShortName = link.Assembly.Name, IsLocal = link.Assembly.IsLocalAssembly };
             else
                 model = link.Assembly.ToExchange();
             
@@ -74,7 +74,8 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
                                                 IDictionary<string, (AssemblyInformation target, AssemblyExchange baseItem)> assembliesCahes,
                                                 IDictionary<string, (string assembly, string version)> assemblyExchangeCache)
         {
-            assembly.Links = assemblyExchange.AssembliesReferenced.Select(x => new AssemblyLink
+            // TODO Find a way to solve case where used assembly in not referenced.... (not found link ?)
+            assembly.Links = assemblyExchange.AssembliesReferenced.Where(x => assembliesCahes.ContainsKey(assemblyExchangeCache[x].assembly)).Select(x => new AssemblyLink
             {
                 Assembly = assembliesCahes[assemblyExchangeCache[x].assembly].target,
                 LinkVersion = assemblyExchangeCache[x].version,
