@@ -6,6 +6,6 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
     <NeutralLanguage>en</NeutralLanguage>
-    <Copyright>Copyright 2018 Xavier CLEMENCE</Copyright>
+    <Copyright>Copyright © 2018 - $([System.DateTime]::Today.ToString(yyyy)) Xavier CLEMENCE</Copyright>
   </PropertyGroup>
 </Project>

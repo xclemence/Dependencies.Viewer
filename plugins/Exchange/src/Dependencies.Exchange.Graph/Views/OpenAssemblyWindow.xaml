@@ -1,4 +1,4 @@
-﻿<Window x:Class="Dependencies.Exchange.Graph.Views.OpenAssemblyWindow"
+﻿<mahapps:MetroWindow x:Class="Dependencies.Exchange.Graph.Views.OpenAssemblyWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
@@ -53,4 +53,4 @@
         </Grid>
     </Grid>
     
-</Window>
+</mahapps:MetroWindow>

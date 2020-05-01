@@ -38,6 +38,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Exchange.Base"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Exchange.Graph", "..\plugins\Exchange\src\Dependencies.Exchange.Graph\Dependencies.Exchange.Graph.csproj", "{1A9406A9-7217-4384-A2B2-A30ADA29E3E8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{B2096895-C09B-4D34-9F62-937FE3BE41B7}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,7 +8,6 @@ using System.Windows.Input;
 using Dependencies.Analyser.Base;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Exchange.Base;
-using Dependencies.Exchange.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Fwk;
 using Dragablz;
