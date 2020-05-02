@@ -10,7 +10,7 @@ namespace Dependencies.Viewer.Wpf.Controls
         {
             AnalyserFactories = analyserFactories.ToList();
 
-            var selectedCode = settingProvider.GetSettring<string>(SettingKeys.SelectedAnalyserCode);
+            var selectedCode = settingProvider.GetSetting<string>(SettingKeys.SelectedAnalyserCode);
 
             InitializeAnalyser(selectedCode);
         }
