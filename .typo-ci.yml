@@ -18,6 +18,7 @@ excluded_words:
   - RequerySuggested
   - Dragablz
   - xcopy
+  - dotnetcore
 
 # Would you like filenames to also be spellchecked?
 spellcheck_filenames: true
