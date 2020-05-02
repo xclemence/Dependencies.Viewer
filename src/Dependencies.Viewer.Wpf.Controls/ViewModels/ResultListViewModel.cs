@@ -13,12 +13,12 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
     {
         private AssemblyInformation assemblyInformation;
         private T selectedItem;
-        private IEnumerable<T> displayResults;
+        private IReadOnlyList<T> displayResults;
 
         protected ResultListViewModel()
         {
             OpenResult = new Command<T>(async (x) => await OnOpenResultAsync(x));
-            CopyToClipboardCommand = new Command(CopyAllToClipboard, () => displayResults.Any());
+            CopyToClipboardCommand = new Command(CopyAllToClipboard, () => displayResults?.Any() ?? false);
         }
 
         public ICommand OpenResult { get; }
@@ -31,11 +31,11 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
             set
             {
                 if (Set(ref assemblyInformation, value))
-                    DisplayResults = GetResults(value);
+                    DisplayResults = GetResults(value).ToList();
             }
         }
 
-        public virtual IEnumerable<T> DisplayResults
+        public virtual IReadOnlyList<T> DisplayResults
         {
             get => displayResults;
             protected set => Set(ref displayResults, value);

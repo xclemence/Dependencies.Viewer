@@ -138,6 +138,21 @@
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
+                <TextBlock>
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                            <Setter Property="Text" Value="Library"/>
+                            <Setter Property="Background" Value="LightGreen"/>
+                            <Setter Property="TextAlignment" Value="Center"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasEntryPoint}" Value="true">
+                                    <Setter Property="Text" Value="Main"/>
+                                    <Setter Property="Background" Value="LightBlue"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
             </StackPanel>
         </UniformGrid>
     </DockPanel>

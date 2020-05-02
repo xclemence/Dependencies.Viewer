@@ -6,11 +6,11 @@ namespace Dependencies.Viewer.Wpf.App
     {
         public dynamic this[string code]
         {
-            get => GetSettring<dynamic>(code);
+            get => GetSetting<dynamic>(code);
             set => SaveSetting<dynamic>(code, value);
         }
 
-        public T GetSettring<T>(string code)
+        public T GetSetting<T>(string code)
         {
             var item = (T)Properties.Settings.Default[code];
             return item;
