@@ -83,11 +83,9 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             }).ToList();
         }
 
-        private static AssemblyInformation ToInformation(this AssemblyExchange assembly) => new AssemblyInformation
+        private static AssemblyInformation ToInformation(this AssemblyExchange assembly) => new AssemblyInformation(assembly.ShortName, assembly.Version, null)
         {
             AssemblyName = assembly.Name,
-            Name = assembly.ShortName,
-            LoadedVersion = assembly.Version,
             TargetFramework = assembly.TargetFramework,
             TargetProcessor = assembly.TargetProcessor == null ? (TargetProcessor?) null : Enum.Parse<TargetProcessor>(assembly.TargetProcessor),
             IsDebug = assembly.IsDebug,
@@ -96,7 +94,6 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             IsNative = assembly.IsNative,
             Creator = assembly.Creator,
             CreationDate = assembly.CreationDate,
-            Links = new List<AssemblyLink>(),
         };
 
     }
