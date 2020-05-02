@@ -44,13 +44,16 @@
     </ItemGroup>
 
     <ItemGroup>
+        <None Update="ForceCopyResources.txt">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
         <None Update="Properties\Settings.settings">
             <Generator>SettingsSingleFileGenerator</Generator>
             <LastGenOutput>Settings.Designer.cs</LastGenOutput>
         </None>
     </ItemGroup>
 
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-      <Exec Command="xcopy &quot;$(SolutionDir)..\external\Analyser\src\Dependencies.Analyser.Mono\bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Analyser\Mono\&quot; /Y /s" />
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="xcopy &quot;$(SolutionDir)..\external\Analyser\src\Dependencies.Analyser.Mono\bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Analyser\Mono\&quot; /Y /s&#xD;&#xA;&#xD;&#xA;xcopy &quot;$(SolutionDir)..\external\Analyser\src\Dependencies.Analyser.Microsoft\bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Analyser\Microsoft\&quot; /Y /s" />
     </Target>
 </Project>

@@ -52,8 +52,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             set => Set(ref isErrorExpended, value);
         }
 
-        public bool HasError => ErrorLoadingViewModel.DisplayResults.Any();
+        public bool HasError => ErrorLoadingViewModel.DisplayResults?.Any() ?? false;
 
-        public bool HasMismatch => MismatchVersionViewModel.DisplayResults.Any();
+        public bool HasMismatch => MismatchVersionViewModel.DisplayResults?.Any() ?? false;
     }
 }
