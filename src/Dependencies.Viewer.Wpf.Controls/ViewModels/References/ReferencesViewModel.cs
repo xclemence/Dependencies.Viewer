@@ -1,10 +1,10 @@
 ﻿using Dependencies.Analyser.Base.Models;
+using Dependencies.Viewer.Wpf.Controls.Fwk;
 using Dependencies.Viewer.Wpf.Controls.Models;
-using GalaSoft.MvvmLight;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 {
-    public class ReferencesViewModel : ViewModelBase
+    public class ReferencesViewModel : ObservableObject
     {
         private AssemblyInformation assemblyInformation;
         private FilterModel filter;

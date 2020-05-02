@@ -25,10 +25,17 @@
     </UserControl.Resources>
 
     <DockPanel HorizontalAlignment="Stretch">
-        <DockPanel DockPanel.Dock="Top">
-            <TextBlock Text="File path :"/>
-            <TextBox Text="{Binding FilePath, Mode=OneWay}" />
-        </DockPanel>
+        <UniformGrid Columns="1" DockPanel.Dock="Top">
+            <DockPanel >
+                <TextBlock Text="File path :"/>
+                <TextBox Text="{Binding FilePath, Mode=OneWay}" />
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Text="Full name :" />
+                <TextBox Text="{Binding FullName, Mode=OneWay, ConverterCulture=fr-FR}"/>
+            </DockPanel>
+        </UniformGrid>
+
         <UniformGrid Columns="2" DockPanel.Dock="Top">
             <StackPanel>
                 <DockPanel >
@@ -39,7 +46,10 @@
                     <TextBlock Text="Version :" />
                     <TextBox Text="{Binding LoadedVersion, Mode=OneWay}"/>
                 </DockPanel>
-
+                <DockPanel>
+                    <TextBlock Text="Target :" />
+                    <TextBox Text="{Binding TargetFramework, Mode=OneWay}"/>
+                </DockPanel>
                 <DockPanel>
                     <TextBlock Text="Creator :" />
                     <TextBox Text="{Binding Creator, Mode=OneWay}"/>
@@ -123,6 +133,21 @@
                                 <DataTrigger Binding="{Binding IsNative}" Value="true">
                                     <Setter Property="Text" Value="Native"/>
                                     <Setter Property="Background" Value="LightGreen"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock>
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                            <Setter Property="Text" Value="Library"/>
+                            <Setter Property="Background" Value="LightGreen"/>
+                            <Setter Property="TextAlignment" Value="Center"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasEntryPoint}" Value="true">
+                                    <Setter Property="Text" Value="Main"/>
+                                    <Setter Property="Background" Value="LightBlue"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

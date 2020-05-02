@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Dependencies.Analyser.Base;
-using GalaSoft.MvvmLight;
+using Dependencies.Viewer.Wpf.Controls.Fwk;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 {
-    public class SettingsViewModel : ViewModelBase
+    public class SettingsViewModel : ObservableObject
     {
         public SettingsViewModel(AnalyserProvider analyserProvider, ISettingProvider settingProvider)
         {

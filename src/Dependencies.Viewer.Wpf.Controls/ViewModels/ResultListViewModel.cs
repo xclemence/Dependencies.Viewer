@@ -5,21 +5,20 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Dependencies.Analyser.Base.Models;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using Dependencies.Viewer.Wpf.Controls.Fwk;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
 {
-    public abstract class ResultListViewModel<T> : ViewModelBase
+    public abstract class ResultListViewModel<T> : ObservableObject
     {
         private AssemblyInformation assemblyInformation;
         private T selectedItem;
-        private IEnumerable<T> displayResults;
+        private IReadOnlyList<T> displayResults;
 
         protected ResultListViewModel()
         {
-            OpenResult = new RelayCommand<T>(async (x) => await OnOpenResultAsync(x));
-            CopyToClipboardCommand = new RelayCommand(CopyAllToClipboard, () => displayResults.Any());
+            OpenResult = new Command<T>(async (x) => await OnOpenResultAsync(x));
+            CopyToClipboardCommand = new Command(CopyAllToClipboard, () => displayResults?.Any() ?? false);
         }
 
         public ICommand OpenResult { get; }
@@ -32,11 +31,11 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
             set
             {
                 if (Set(ref assemblyInformation, value))
-                    DisplayResults = GetResults(value);
+                    DisplayResults = GetResults(value).ToList();
             }
         }
 
-        public virtual IEnumerable<T> DisplayResults
+        public virtual IReadOnlyList<T> DisplayResults
         {
             get => displayResults;
             protected set => Set(ref displayResults, value);

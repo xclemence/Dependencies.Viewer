@@ -3,16 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:msBehaviors="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:localBehaviors="clr-namespace:Dependencies.Viewer.Wpf.Controls.Behaviors"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:command="http://www.galasoft.ch/mvvmlight"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:dockablz="http://dragablz.net/winfx/xaml/dockablz"
              xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+             xmlns:dockablz="http://dragablz.net/winfx/xaml/dockablz"
              xmlns:local="clr-namespace:Dependencies.Viewer.Wpf.Controls.Views"
              xmlns:vm="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewModels"
              xmlns:converters="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewConverters"
-             xmlns:behaviors="clr-namespace:Dependencies.Viewer.Wpf.Controls.Behaviors"
              x:Name="analyserView"
              AllowDrop="True"
              mc:Ignorable="d" 
@@ -24,109 +23,100 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="DragOver">
-            <command:EventToCommand Command="{Binding OnDragOverCommand}"
-                                    PassEventArgsToCommand="True" />
-        </i:EventTrigger>
-        <i:EventTrigger EventName="Drop">
-            <command:EventToCommand Command="{Binding OnDropCommand}"
-                                    PassEventArgsToCommand="True" />
-        </i:EventTrigger>
-        <i:EventTrigger EventName="DragEnter">
-            <command:EventToCommand Command="{Binding OnDragEnterCommand}"
-                                    PassEventArgsToCommand="True" />
-        </i:EventTrigger>
-
-        <i:EventTrigger EventName="DragLeave">
-            <command:EventToCommand Command="{Binding OnDragLeaveCommand}"
-                                    PassEventArgsToCommand="True" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+    <msBehaviors:Interaction.Triggers>
+        <msBehaviors:EventTrigger EventName="DragOver">
+            <msBehaviors:InvokeCommandAction Command="{Binding OnDragOverCommand}" PassEventArgsToCommand="True" />
+        </msBehaviors:EventTrigger>
+        <msBehaviors:EventTrigger EventName="Drop">
+            <msBehaviors:InvokeCommandAction Command="{Binding OnDropCommand}" PassEventArgsToCommand="True" />
+        </msBehaviors:EventTrigger>
+        <msBehaviors:EventTrigger EventName="DragEnter">
+            <msBehaviors:InvokeCommandAction Command="{Binding OnDragEnterCommand}" PassEventArgsToCommand="True" />
+        </msBehaviors:EventTrigger>
+        <msBehaviors:EventTrigger EventName="DragLeave">
+            <msBehaviors:InvokeCommandAction Command="{Binding OnDragLeaveCommand}" PassEventArgsToCommand="True" />
+        </msBehaviors:EventTrigger>
+    </msBehaviors:Interaction.Triggers>
     <Grid x:Name="mainGrid">
-        <Grid>
-            <Grid IsEnabled="{Binding IsBusy, Converter={x:Static converters:InverseBooleanConverter.Converter} }">
-                <dockablz:Layout>
-                    <dragablz:TabablzControl ItemsSource="{Binding AnalyseDetailsViewModels}" 
+        <Grid IsEnabled="{Binding IsBusy, Converter={x:Static converters:InverseBooleanConverter.Converter} }">
+            <dockablz:Layout>
+                <dragablz:TabablzControl ItemsSource="{Binding AnalyseDetailsViewModels}" 
                                              HeaderMemberPath="AssemblyResult.Name" 
                                              ShowDefaultCloseButton="True"
                                              SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
-                        <dragablz:TabablzControl.ItemContainerStyle>
-                            <Style TargetType="dragablz:DragablzItem" BasedOn="{StaticResource {x:Type dragablz:DragablzItem}}">
-                                <Setter Property="behaviors:InputBindingBehavior.InputBindings">
-                                    <Setter.Value>
-                                        <InputBindingCollection >
-                                            <MouseBinding Gesture="MiddleClick" 
-                                                           Command="{x:Static dragablz:TabablzControl.CloseItemCommand}"/>
-                                        </InputBindingCollection>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </dragablz:TabablzControl.ItemContainerStyle>
+                    <dragablz:TabablzControl.ItemContainerStyle>
+                        <Style TargetType="dragablz:DragablzItem" BasedOn="{StaticResource {x:Type dragablz:DragablzItem}}">
+                            <Setter Property="localBehaviors:InputBindingBehavior.InputBindings">
+                                <Setter.Value>
+                                    <InputBindingCollection>
+                                        <MouseBinding Gesture="MiddleClick" Command="{x:Static dragablz:TabablzControl.CloseItemCommand}"/>
+                                    </InputBindingCollection>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </dragablz:TabablzControl.ItemContainerStyle>
 
 
-                        <dragablz:TabablzControl.HeaderPrefixContent >
-                            <Menu Focusable="False" DockPanel.Dock="Left" SnapsToDevicePixels="True" 
+                    <dragablz:TabablzControl.HeaderPrefixContent >
+                        <Menu Focusable="False" DockPanel.Dock="Left" SnapsToDevicePixels="True" 
                                   Background="{StaticResource AccentBaseColorBrush}"
                                   Foreground="White">
-                                <MenuItem Focusable="False" Height="40">
-                                    <MenuItem.Header>
-                                        <Grid >
-                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
-                                                <TextBlock Text="File" Margin="0,0,5,0" />
-                                                <materialDesign:PackIcon Kind="MenuDown" />
-                                            </StackPanel>
-                                        </Grid>
-                                    </MenuItem.Header>
-                                    <MenuItem Header="Open File" Command="{Binding OpenFileCommand}">
-                                        <MenuItem.Icon>
-                                            <materialDesign:PackIcon Kind="FileFindOutline" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                    <MenuItem Header="Import Analyse" Command="{Binding ImportAnalyseCommand}">
-                                        <MenuItem.Icon>
-                                            <materialDesign:PackIcon Kind="Import" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                    <Separator/>
-                                    <MenuItem Header="Export Analyse" Command="{Binding ExportSelectedAnalyseCommand}">
-                                        <MenuItem.Icon>
-                                            <materialDesign:PackIcon Kind="Export" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                    <Separator/>
-                                    <MenuItem Header="Exit" Command="{Binding CloseCommand}">
-                                        <MenuItem.Icon>
-                                            <materialDesign:PackIcon Kind="ExitToApp" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
+                            <MenuItem Focusable="False" Height="40">
+                                <MenuItem.Header>
+                                    <Grid >
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                                            <TextBlock Text="File" Margin="0,0,5,0" />
+                                            <materialDesign:PackIcon Kind="MenuDown" />
+                                        </StackPanel>
+                                    </Grid>
+                                </MenuItem.Header>
+                                <MenuItem Header="Open File" Command="{Binding OpenFileCommand}">
+                                    <MenuItem.Icon>
+                                        <materialDesign:PackIcon Kind="FileFindOutline" />
+                                    </MenuItem.Icon>
                                 </MenuItem>
-                            </Menu>
-                        </dragablz:TabablzControl.HeaderPrefixContent>
+                                <MenuItem Header="Import Analyse" Command="{Binding ImportAnalyseCommand}">
+                                    <MenuItem.Icon>
+                                        <materialDesign:PackIcon Kind="Import" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator/>
+                                <MenuItem Header="Export Analyse" Command="{Binding ExportSelectedAnalyseCommand}">
+                                    <MenuItem.Icon>
+                                        <materialDesign:PackIcon Kind="Export" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator/>
+                                <MenuItem Header="Exit" Command="{Binding CloseCommand}">
+                                    <MenuItem.Icon>
+                                        <materialDesign:PackIcon Kind="ExitToApp" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </MenuItem>
+                        </Menu>
+                    </dragablz:TabablzControl.HeaderPrefixContent>
 
-                        <dragablz:TabablzControl.HeaderSuffixContent>
-                            <Button Command="{Binding SettingsCommand}" ToolTip="Open Settings" Height="NaN" Margin="1 0 1 1" 
+                    <dragablz:TabablzControl.HeaderSuffixContent>
+                        <Button Command="{Binding SettingsCommand}" ToolTip="Open Settings" Height="NaN" Margin="1 0 1 1" 
                                     Padding="0"
                                     Style="{DynamicResource MaterialDesignFlatButton}"
                                     Width="40" HorizontalAlignment="Right">
-                                <materialDesign:PackIcon Kind="SettingsOutline" 
-                                                         Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"/>
-                            </Button>
-                        </dragablz:TabablzControl.HeaderSuffixContent>
+                            <materialDesign:PackIcon Kind="SettingsOutline"  Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"/>
+                        </Button>
+                    </dragablz:TabablzControl.HeaderSuffixContent>
 
-                        <dragablz:TabablzControl.InterTabController>
-                            <dragablz:InterTabController InterTabClient="{Binding InterTabClient}"/>
-                        </dragablz:TabablzControl.InterTabController>
-                    </dragablz:TabablzControl>
-                </dockablz:Layout>
-                <local:DragControl Visibility="{Binding IsDragFile, Converter={x:Static converters:VisibilityConverter.Converter}}"/>
-            </Grid>
-            
+                    <dragablz:TabablzControl.InterTabController>
+                        <dragablz:InterTabController InterTabClient="{Binding InterTabClient}"/>
+                    </dragablz:TabablzControl.InterTabController>
+                </dragablz:TabablzControl>
+            </dockablz:Layout>
+            <local:DragControl Visibility="{Binding IsDragFile, Converter={x:Static converters:VisibilityConverter.Converter}}"/>
+        </Grid>
 
-            <Grid Visibility="{Binding IsBusy, Converter={x:Static converters:VisibilityConverter.Converter}}">
-                <Rectangle Fill="Black" Opacity="0.2"/>
-                <mahapps:ProgressRing IsActive="{Binding IsBusy}"/>
-            </Grid>
+
+        <Grid Visibility="{Binding IsBusy, Converter={x:Static converters:VisibilityConverter.Converter}}">
+            <Rectangle Fill="Black" Opacity="0.2"/>
+            <mahapps:ProgressRing IsActive="{Binding IsBusy}"/>
         </Grid>
     </Grid>
 </UserControl>

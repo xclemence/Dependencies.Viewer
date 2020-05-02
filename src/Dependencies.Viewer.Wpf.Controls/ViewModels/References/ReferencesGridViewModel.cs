@@ -7,13 +7,12 @@ using System.Windows.Input;
 using Dependencies.Analyser.Base.Extensions;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
+using Dependencies.Viewer.Wpf.Controls.Fwk;
 using Dependencies.Viewer.Wpf.Controls.Models;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 {
-    public class ReferencesGridViewModel : ViewModelBase, IReferencesDetailsViewModel
+    public class ReferencesGridViewModel : ObservableObject, IReferencesDetailsViewModel
     {
         private ICollectionView filteredLinks;
         private AssemblyInformation assemblyInformation;
@@ -21,8 +20,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 
         public ReferencesGridViewModel()
         {
-            OpenSubResultCommand = new RelayCommand<ReferenceModel>(x => GlobalCommand.OpenAssembly(x.Link.Assembly));
-            OpenParentReferenceCommand = new RelayCommand<ReferenceModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(AssemblyInformation, x.Link));
+            OpenSubResultCommand = new Command<ReferenceModel>(x => GlobalCommand.OpenAssembly(x.Link.Assembly));
+            OpenParentReferenceCommand = new Command<ReferenceModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(AssemblyInformation, x.Link));
         }
 
         public FilterModel Filter { get; set; }

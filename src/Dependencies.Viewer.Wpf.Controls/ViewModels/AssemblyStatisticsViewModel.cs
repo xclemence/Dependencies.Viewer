@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Analyser.Base.Models;
-using GalaSoft.MvvmLight;
 using Dependencies.Analyser.Base.Extensions;
+using Dependencies.Viewer.Wpf.Controls.Fwk;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 {
-    public class AssemblyStatisticsViewModel : ViewModelBase
+    public class AssemblyStatisticsViewModel : ObservableObject
     {
         private AssemblyInformation assemblyInformation;
 

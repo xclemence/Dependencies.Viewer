@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop" ToolsVersion="15.0">
     <PropertyGroup>
-        <TargetFramework>net472</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <OutputType>WinExe</OutputType>
         <UseWpf>true</UseWpf>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -9,6 +9,7 @@
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+        <RunPostBuildEvent>Always</RunPostBuildEvent>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -22,23 +23,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Dragablz" Version="0.0.3.203" />
-        <PackageReference Include="MahApps.Metro" Version="1.6.5" />
-        <PackageReference Include="MaterialDesignColors" Version="1.2.0" />
-        <PackageReference Include="MaterialDesignThemes.MahApps" Version="0.1.0" />
-        <PackageReference Include="MaterialDesignThemes" Version="2.6.0" />
-        <PackageReference Include="MvvmLight" Version="5.4.1.1" />
-        <PackageReference Include="SimpleInjector" Version="4.6.2" />
+        <PackageReference Include="Dragablz.NetCore" Version="0.3.3" />
+        <PackageReference Include="MaterialDesignThemes" Version="3.1.1-ci1333" />
+        <PackageReference Include="MaterialDesignThemes.MahApps" Version="0.1.2-ci1333" />
+        <PackageReference Include="SimpleInjector" Version="4.10.2" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\external\Analyser\src\Dependencies.Analyser.Base\Dependencies.Analyser.Base.csproj" />
         <ProjectReference Include="..\..\external\Analyser\src\Dependencies.Analyser.Native\Dependencies.Analyser.Native.csproj" />
         <ProjectReference Include="..\Dependencies.Viewer.Wpf.Controls\Dependencies.Viewer.Wpf.Controls.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="mscorlib" />
     </ItemGroup>
 
     <ItemGroup>
@@ -50,9 +44,16 @@
     </ItemGroup>
 
     <ItemGroup>
+        <None Update="ForceCopyResources.txt">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
         <None Update="Properties\Settings.settings">
             <Generator>SettingsSingleFileGenerator</Generator>
             <LastGenOutput>Settings.Designer.cs</LastGenOutput>
         </None>
     </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="xcopy &quot;$(SolutionDir)..\external\Analyser\src\Dependencies.Analyser.Mono\bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Analyser\Mono\&quot; /Y /s&#xD;&#xA;&#xD;&#xA;xcopy &quot;$(SolutionDir)..\external\Analyser\src\Dependencies.Analyser.Microsoft\bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Analyser\Microsoft\&quot; /Y /s" />
+    </Target>
 </Project>
