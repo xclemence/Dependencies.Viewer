@@ -23,7 +23,7 @@ jobs:
       working-directory: src
     
     - name: Build sources
-      run: msbuild
+      run: msbuild /p:Configuration=Release
       working-directory: src
     
     - uses: actions/upload-artifact@v2
