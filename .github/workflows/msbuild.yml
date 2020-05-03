@@ -23,7 +23,7 @@ jobs:
       working-directory: src
     
     - name: Build sources
-      run: msbuild UndoRedo.sln
+      run: msbuild
       working-directory: src
     
     - uses: actions/upload-artifact@v2
