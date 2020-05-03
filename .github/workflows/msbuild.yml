@@ -27,6 +27,6 @@ jobs:
       working-directory: src
     
     - uses: actions/upload-artifact@v2
-    with:
-      name: DependenciesViewer
-      path: Build/Release
+      with:
+        name: DependenciesViewer
+        path: Build/Release
