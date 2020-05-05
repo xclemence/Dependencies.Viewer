@@ -25,8 +25,8 @@ namespace Dependencies.Viewer.Wpf.App
             Container.RegisterInstance<ISnackbarMessageQueue>(new SnackbarMessageQueue());
             
          
-            Container.Register(typeof(IAnalyserServiceFactory<>), typeof(SimpleInjectorAnalyseServiceFactory<>));
-            Container.Register(typeof(IExchangeServiceFactory<>), typeof(SimpleInjectorExchangeServiceFactory<>));
+            Container.Register(typeof(IAnalyserServiceFactory<>), typeof(SimpleInjectorAnalyseServiceFactory<>), Lifestyle.Singleton);
+            Container.Register(typeof(IExchangeServiceFactory<>), typeof(SimpleInjectorExchangeServiceFactory<>), Lifestyle.Singleton);
             Container.Register<AnalyserProvider>(Lifestyle.Singleton);
 
             Container.RegisterAnalyser();
@@ -34,14 +34,15 @@ namespace Dependencies.Viewer.Wpf.App
 
             Container.Options.SuppressLifestyleMismatchVerification = true;
             Container.Collection.Container.Options.SuppressLifestyleMismatchVerification = true;
+
+            //Container.Verify();
         }
 
         private static void RegisterAnalyser(this Container container)
         {
             var pluginAssemblies = AppDomain.CurrentDomain.FindPluginAssemblies("Analyser", "Dependencies.Analyser*");
 
-            container.Collection.Register<IAssemblyAnalyserFactory>(pluginAssemblies);
-            container.Collection.Register<IAssemblyAnalyser>(pluginAssemblies);
+            container.Collection.Register<IAssemblyAnalyserFactory>(pluginAssemblies, Lifestyle.Singleton);
         }
 
         private static void RegisterExchange(this Container container)
@@ -51,6 +52,7 @@ namespace Dependencies.Viewer.Wpf.App
             container.Collection.Register<IExportAssembly>(pluginAssemblies);
             container.Collection.Register<IImportAssembly>(pluginAssemblies);
             container.Collection.Register<IExchangeSettings>(pluginAssemblies);
+
         }
     }
 }

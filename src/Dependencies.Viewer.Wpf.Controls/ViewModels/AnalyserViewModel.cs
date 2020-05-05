@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Dependencies.Analyser.Base;
 using Dependencies.Analyser.Base.Models;
@@ -31,10 +32,6 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             "Assembly (*.dll)|*.dll|" +
             "All Files|*.*";
 
-        private const string ImportFileFilter =
-            "Resutlts (*.xml)|*.xml|" +
-            "All Files|*.*";
-
         private bool isBusy;
         private bool isDragFile;
         private IInterTabClient interTabClient;
@@ -42,6 +39,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private readonly IAnalyserServiceFactory<AnalyseResultViewModel> analyserViewModelFactory;
         private readonly IList<IImportAssembly> importServices;
         private readonly IList<IExportAssembly> exportServices;
+        
         private AnalyseResultViewModel selectedItem;
         private bool isSettingsOpen;
 
@@ -185,28 +183,10 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             AddAssemblyResult(await analyser.AnalyseAsync(filePath));
         }
 
-        public bool FindInfinyLoop(AssemblyInformation info, IList<AssemblyInformation> path = null)
-        {
-            var currentPath = path?.ToList() ?? new List<AssemblyInformation>();
-
-            if (currentPath.Contains(info))
-            {
-                return false;
-            }
-
-            currentPath.Add(info);
-
-            info.Links = info.Links.Where(x => FindInfinyLoop(x.Assembly, currentPath)).ToList();
-
-            return true;
-        }
-
         private void AddAssemblyResult(AssemblyInformation info)
         {
             if (info == null)
                 return;
-
-            FindInfinyLoop(info);
 
             var newViewModel = analyserViewModelFactory.Create();
             newViewModel.AssemblyResult = info;
@@ -227,14 +207,6 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             }).ToList(); ;
         }
 
-        private async Task ExportAsync(IExportAssembly exportAssembly)
-        {
-            var (assembly, dependencies) = selectedItem.AssemblyResult.ToExchangeModel();
-
-            await exportAssembly.ExportAsync(assembly, dependencies, x => true);
-        }
-
-
         private void BuildImportCommand()
         {
             ImportCommands = importServices.Select(x => new ExchangeCommand
@@ -244,29 +216,36 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             }).ToList(); ;
         }
 
+        private async Task ExportAsync(IExportAssembly exportAssembly)
+        {
+            var (assembly, dependencies) = selectedItem.AssemblyResult.ToExchangeModel();
+            
+            await exportAssembly.ExportAsync(assembly, dependencies, null);
+        }
+
         private async Task ImportAsync(IImportAssembly importAssembly)
         {
-
-            var result = await importAssembly.ImportAsync(async (view, viewModel) =>
-            {
-                var exchangeView = new ExchangeView();
-                var exchanegViewModel = new ExchangeViewModel<AssemblyExchangeContent>((x) => DialogHost.CloseDialogCommand.Execute(x, null), viewModel);
-
-                exchangeView.DataContext = exchanegViewModel;
-                exchangeView.Control.Content = view;
-                view.DataContext = viewModel;
-
-                var result = await DialogHost.Show(exchangeView);
-                
-                return result as AssemblyExchangeContent;
-            });
-
+            var result = await importAssembly.ImportAsync(CreateExchangeView);
+            
             if (result == default)
                 return;
 
             AddAssemblyResult(result.Assembly.ToInformationModel(result.Dependencies));
         }
 
+        private static async Task<T> CreateExchangeView<T>(UserControl view, IExchangeViewModel<T> viewModel)
+        {
+            var exchangeView = new ExchangeView();
+            var exchanegViewModel = new ExchangeViewModel<T>((x) => DialogHost.CloseDialogCommand.Execute(x, null), viewModel);
+
+            exchangeView.DataContext = exchanegViewModel;
+            exchangeView.Control.Content = view;
+            view.DataContext = viewModel;
+
+            var result = await DialogHost.Show(exchangeView);
+
+            return (T)result;
+        }
 
         private void OnDragOver(DragEventArgs e)
         {
@@ -274,11 +253,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             e.Handled = true;
         }
 
-        private bool CanDrag(DragEventArgs e) =>
-            !IsBusy && e.Data.GetDataPresent(DataFormats.FileDrop);
+        private bool CanDrag(DragEventArgs e) => !IsBusy && e.Data.GetDataPresent(DataFormats.FileDrop);
 
-        private void CloseResult(AnalyseResultViewModel x) =>
-            TabablzControl.CloseItem(x);
-
+        private void CloseResult(AnalyseResultViewModel x) => TabablzControl.CloseItem(x);
     }
 }

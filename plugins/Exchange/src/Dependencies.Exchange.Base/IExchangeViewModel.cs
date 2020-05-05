@@ -8,6 +8,7 @@ namespace Dependencies.Exchange.Base
         bool CanLoad { get; }
 
         Func<Func<Task>, Task> RunAsync { get; set; }
+        string Title { get; }
 
         Task<T> LoadAsync();
     }

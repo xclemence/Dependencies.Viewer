@@ -1,5 +1,6 @@
 ﻿using Dependencies.Exchange.Base;
 using Dependencies.Viewer.Wpf.Controls.Fwk;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -16,15 +17,21 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             this.closeAction = closeAction;
             ContentViewModel = contentViewModel;
             CancelCommand = new Command(() => this.closeAction(default));
-            LoadCommand = new Command(async () => await LoadAsync(), () => ContentViewModel.CanLoad);
+            ValidateCommand = new Command(async () => await ValidateAsync(), () => ContentViewModel.CanLoad);
 
             ContentViewModel.RunAsync = ExecuteAsync;
+
+            ErrorMessageQueue = new SnackbarMessageQueue();
         }
 
         public IExchangeViewModel<T> ContentViewModel { get; }
 
-        public ICommand LoadCommand { get; }
+        public ICommand ValidateCommand { get; }
         public ICommand CancelCommand { get; }
+
+        public ISnackbarMessageQueue ErrorMessageQueue { get; }
+
+        public string Title => ContentViewModel.Title;
 
         public bool IsBusy
         {
@@ -32,7 +39,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             set => Set(ref isBusy, value);
         }
 
-        private async Task LoadAsync()
+        private async Task ValidateAsync()
         {
             await ExecuteAsync(async () =>
             {
@@ -48,14 +55,13 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
                 IsBusy = true;
                 await actionAsync();
             }
-            catch
+            catch(Exception ex)
             {
-                // Display Error in sub window.
+                ErrorMessageQueue.Enqueue(ex.Message);
             }
             finally
             {
                 IsBusy = false;
-
             }
         }
     }

@@ -46,6 +46,8 @@ namespace Dependencies.Exchange.Graph.ViewModels
 
         public Func<Func<Task>, Task> RunAsync { get; set; }
 
+        public string Title => "Open assembly from Graph Services";
+
         private async Task SearchAsync()
         {
             await RunAsync?.Invoke(async () =>

@@ -18,7 +18,9 @@ namespace Dependencies.Exchange.Graph
 
         public GraphExportAssembly(GraphSettings settings) => this.settings = settings;
 
-        public async Task ExportAsync(AssemblyExchange assembly, IList<AssemblyExchange> dependencies, Func<UserControl, bool> dialogCaller)
+        public async Task ExportAsync(AssemblyExchange assembly,
+                                      IList<AssemblyExchange> dependencies,
+                                      Func<UserControl, IExchangeViewModel<AssemblyExchangeContent>, Task<AssemblyExchangeContent>> _)
         {
             var service = new AssemblyGraphService(settings);
 

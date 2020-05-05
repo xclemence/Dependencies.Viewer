@@ -21,6 +21,8 @@ namespace Dependencies.Exchange.Graph
 
         public async Task<AssemblyExchangeContent> ImportAsync(Func<UserControl, IExchangeViewModel<AssemblyExchangeContent>, Task<AssemblyExchangeContent>> showDialog)
         {
+            settings.Test = 1;
+
             var dataContext = new OpenAssemblyViewModel(settings);
             var window = new OpenAssemblyView();
             

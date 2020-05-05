@@ -9,7 +9,6 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
 {
     public static class AssemblyInformationExtensions
     {
-
         public static string ToDisplayString(this AssemblyLink link, Func<AssemblyInformation, string> GetName)
         {
             if(!link.Assembly.IsResolved && !string.IsNullOrEmpty(link.LinkVersion))

@@ -21,7 +21,9 @@ namespace Dependencies.Exchange.File
         public string Name => "File";
         public bool IsReady => true;
 
-        public Task ExportAsync(AssemblyExchange assembly, IList<AssemblyExchange> dependencies, Func<UserControl, bool> _)
+        public Task ExportAsync(AssemblyExchange assembly,
+                                IList<AssemblyExchange> dependencies, 
+                                Func<UserControl, IExchangeViewModel<AssemblyExchangeContent>, Task<AssemblyExchangeContent>> _)
         {
             var saveFileDialog = new SaveFileDialog()
             {
