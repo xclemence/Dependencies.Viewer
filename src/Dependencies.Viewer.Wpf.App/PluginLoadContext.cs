@@ -14,10 +14,17 @@ namespace Dependencies.Viewer.Wpf.App
 
         protected override Assembly Load(AssemblyName assemblyName)
         {
-            var assemblyFromDefaultContext = Default.LoadFromAssemblyName(assemblyName);
+            try
+            {
+                var assemblyFromDefaultContext = Default.LoadFromAssemblyName(assemblyName);
 
-            if (assemblyFromDefaultContext != null)
-                return assemblyFromDefaultContext;
+                if (assemblyFromDefaultContext != null)
+                    return assemblyFromDefaultContext;
+            }
+            catch
+            {
+                // Try load with path
+            }
 
             string assemblyPath = resolver.ResolveAssemblyToPath(assemblyName);
 

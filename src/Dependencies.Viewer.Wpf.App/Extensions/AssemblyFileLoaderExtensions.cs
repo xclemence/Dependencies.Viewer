@@ -15,7 +15,7 @@ namespace Dependencies.Viewer.Wpf.App.Extensions
             return assembly;
         }
 
-        internal static IList<Assembly> FindPluginAssembly(this AppDomain appDomain, string pluginName, string pluginAssemblyPattern)
+        internal static IList<Assembly> FindPluginAssemblies(this AppDomain appDomain, string pluginName, string pluginAssemblyPattern)
         {
             string pluginDirectory = Path.Combine(appDomain.BaseDirectory, "Plugins", pluginName);
 

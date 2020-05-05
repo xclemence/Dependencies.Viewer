@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Dependencies.Exchange.Base;
 using Dependencies.Exchange.Base.Models;
 using Microsoft.Win32;
@@ -16,7 +18,10 @@ namespace Dependencies.Exchange.File
 
     public class FileExportAssembly : IExportAssembly
     {
-        public Task ExportAsync(AssemblyExchange assembly, IList<AssemblyExchange> dependencies)
+        public string Name => "File";
+        public bool IsReady => true;
+
+        public Task ExportAsync(AssemblyExchange assembly, IList<AssemblyExchange> dependencies, Func<UserControl, bool> _)
         {
             var saveFileDialog = new SaveFileDialog()
             {

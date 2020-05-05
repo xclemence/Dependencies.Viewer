@@ -38,7 +38,7 @@ namespace Dependencies.Viewer.Wpf.App
 
         private static void RegisterAnalyser(this Container container)
         {
-            var pluginAssemblies = AppDomain.CurrentDomain.FindPluginAssembly("Analyser", "Dependencies.Analyser*");
+            var pluginAssemblies = AppDomain.CurrentDomain.FindPluginAssemblies("Analyser", "Dependencies.Analyser*");
 
             container.Collection.Register<IAssemblyAnalyserFactory>(pluginAssemblies);
             container.Collection.Register<IAssemblyAnalyser>(pluginAssemblies);
@@ -46,11 +46,11 @@ namespace Dependencies.Viewer.Wpf.App
 
         private static void RegisterExchange(this Container container)
         {
-            var pluginAssemblies = AppDomain.CurrentDomain.FindPluginAssembly("Exchange", "Dependencies.Exchange*");
+            var pluginAssemblies = AppDomain.CurrentDomain.FindPluginAssemblies("Exchange", "Dependencies.Exchange*");
 
-            container.Collection.Register<IAssemblyExchangeFactory>(pluginAssemblies);
             container.Collection.Register<IExportAssembly>(pluginAssemblies);
             container.Collection.Register<IImportAssembly>(pluginAssemblies);
+            container.Collection.Register<IExchangeSettings>(pluginAssemblies);
         }
     }
 }

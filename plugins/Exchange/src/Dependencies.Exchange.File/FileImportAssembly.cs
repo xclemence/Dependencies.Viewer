@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Dependencies.Exchange.Base;
 using Dependencies.Exchange.Base.Models;
 using Microsoft.Win32;
@@ -9,7 +11,10 @@ namespace Dependencies.Exchange.File
 {
     public class FileImportAssembly : IImportAssembly
     {
-        public Task<(AssemblyExchange assembly, IList<AssemblyExchange> dependencies)> ImportAsync()
+        public string Name => "File";
+        public bool IsReady => true;
+
+        public Task<AssemblyExchangeContent> ImportAsync(Func<UserControl, IExchangeViewModel<AssemblyExchangeContent>, Task<AssemblyExchangeContent>> _)
         {
             var openFileDialog = new OpenFileDialog()
             {
@@ -20,13 +25,12 @@ namespace Dependencies.Exchange.File
             var result = openFileDialog.ShowDialog();
 
             if (!(result ?? false))
-                return Task.FromResult<(AssemblyExchange assembly, IList<AssemblyExchange> dependencies)>(default);
+                return Task.FromResult<AssemblyExchangeContent>(default);
 
             var serializeObject = System.IO.File.ReadAllText(openFileDialog.FileName);
             var model = JsonConvert.DeserializeObject<ExportModel>(serializeObject);
 
-            return Task.FromResult((model.Assembly, model.Dependencies));
+            return Task.FromResult(new AssemblyExchangeContent { Assembly = model.Assembly, Dependencies = model.Dependencies });
         }
-
     }
 }

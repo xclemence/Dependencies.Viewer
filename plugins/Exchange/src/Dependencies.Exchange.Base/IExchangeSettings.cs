@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Dependencies.Exchange.Base
+﻿namespace Dependencies.Exchange.Base
 {
-    class IExchangeSettings
+    public interface IExchangeSettings
     {
     }
 }

@@ -8,8 +8,10 @@ using System.Windows.Input;
 using Dependencies.Analyser.Base;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Exchange.Base;
+using Dependencies.Exchange.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Fwk;
+using Dependencies.Viewer.Wpf.Controls.Views;
 using Dragablz;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
@@ -38,7 +40,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private IInterTabClient interTabClient;
         private readonly AnalyserProvider analyserProvider;
         private readonly IAnalyserServiceFactory<AnalyseResultViewModel> analyserViewModelFactory;
-        private readonly IList<IAssemblyExchangeFactory> exchangeFactories;
+        private readonly IList<IImportAssembly> importServices;
+        private readonly IList<IExportAssembly> exportServices;
         private AnalyseResultViewModel selectedItem;
         private bool isSettingsOpen;
 
@@ -47,14 +50,17 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
                                  IInterTabClient interTabClient,
                                  SettingsViewModel settingsViewModel,
                                  ISnackbarMessageQueue messageQueue,
-                                 IEnumerable<IAssemblyExchangeFactory> exchangeFactories)
+                                 IEnumerable<IImportAssembly> importServices,
+                                 IEnumerable<IExportAssembly> exportServices)
         {
             this.analyserProvider = analyserProvider;
             this.analyserViewModelFactory = analyserViewModelFactory;
             InterTabClient = interTabClient;
             SettingsViewModel = settingsViewModel;
             MessageQueue = messageQueue;
-            this.exchangeFactories = exchangeFactories.ToList();
+            this.exportServices = exportServices.ToList();
+            this.importServices = importServices.ToList();
+
             SettingsCommand = new Command(() => IsSettingsOpen = true);
             CloseCommand = new Command(() => Application.Current.Shutdown());
             OpenFileCommand = new Command(async () => await BusyAction(OpenFileAsync), () => !IsBusy);
@@ -214,10 +220,10 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         
         private void BuildExportCommand()
         {
-            ExportCommands = exchangeFactories.Select(x => new ExchangeCommand
+            ExportCommands = exportServices.Select(x => new ExchangeCommand
             {
                 Title = x.Name,
-                Command = new Command(async () => await BusyAction(async () => await ExportAsync(x.GetExportService())), () => !IsBusy && SelectedItem?.AssemblyResult != null)
+                Command = new Command(async () => await BusyAction(async () => await ExportAsync(x)), () => x.IsReady && !IsBusy && SelectedItem?.AssemblyResult != null)
             }).ToList(); ;
         }
 
@@ -225,27 +231,40 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         {
             var (assembly, dependencies) = selectedItem.AssemblyResult.ToExchangeModel();
 
-            await exportAssembly.ExportAsync(assembly, dependencies);
+            await exportAssembly.ExportAsync(assembly, dependencies, x => true);
         }
 
 
         private void BuildImportCommand()
         {
-            ImportCommands = exchangeFactories.Select(x => new ExchangeCommand
+            ImportCommands = importServices.Select(x => new ExchangeCommand
             {
                 Title = x.Name,
-                Command = new Command(async () => await BusyAction(async () => await ImportAsync(x.GetImportService())), () => !IsBusy)
+                Command = new Command(async () => await BusyAction(async () => await ImportAsync(x)), () => x.IsReady && !IsBusy)
             }).ToList(); ;
         }
 
         private async Task ImportAsync(IImportAssembly importAssembly)
         {
-            var (assembly, dependencies) = await importAssembly.ImportAsync();
 
-            if (assembly == default)
+            var result = await importAssembly.ImportAsync(async (view, viewModel) =>
+            {
+                var exchangeView = new ExchangeView();
+                var exchanegViewModel = new ExchangeViewModel<AssemblyExchangeContent>((x) => DialogHost.CloseDialogCommand.Execute(x, null), viewModel);
+
+                exchangeView.DataContext = exchanegViewModel;
+                exchangeView.Control.Content = view;
+                view.DataContext = viewModel;
+
+                var result = await DialogHost.Show(exchangeView);
+                
+                return result as AssemblyExchangeContent;
+            });
+
+            if (result == default)
                 return;
 
-            AddAssemblyResult(assembly.ToInformationModel(dependencies));
+            AddAssemblyResult(result.Assembly.ToInformationModel(result.Dependencies));
         }
 
 

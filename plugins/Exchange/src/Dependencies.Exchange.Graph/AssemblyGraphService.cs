@@ -13,8 +13,9 @@ namespace Dependencies.Exchange.Graph
     public class AssemblyGraphService
     {
         private static readonly HttpClient client = new HttpClient();
+        private readonly GraphSettings settings;
 
-        private const string ClientUrl = "http://localhost:5001";
+        internal AssemblyGraphService(GraphSettings settings) => this.settings = settings;
 
         public async Task AddAsync(AssemblyExchange assembly, IList<AssemblyExchange> dependencies)
         {
@@ -25,14 +26,14 @@ namespace Dependencies.Exchange.Graph
             var json = JsonConvert.SerializeObject(assemblyDtos);
             using var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = await client.PostAsync(@$"{ClientUrl}/api/assembly/add", data);
+            HttpResponseMessage response = await client.PostAsync(@$"{settings.ServiceUri}/api/assembly/add", data);
 
             response.EnsureSuccessStatusCode();
         }
 
         public async Task<IList<string>> SearchAsync(string name)
         {
-            HttpResponseMessage response = await client.GetAsync(@$"{ClientUrl}/api/assembly/search/{name}");
+            HttpResponseMessage response = await client.GetAsync(@$"{settings.ServiceUri}/api/assembly/search/{name}");
             response.EnsureSuccessStatusCode();
 
             var restult = response.Content;
@@ -44,7 +45,7 @@ namespace Dependencies.Exchange.Graph
 
         public async Task<(AssemblyExchange assembly, IList<AssemblyExchange> dependencies)> GetAsync(string name)
         {
-            HttpResponseMessage response = await client.GetAsync(@$"{ClientUrl}/api/assembly/{name}");
+            HttpResponseMessage response = await client.GetAsync(@$"{settings.ServiceUri}/api/assembly/{name}");
             response.EnsureSuccessStatusCode();
 
             var restult = response.Content;

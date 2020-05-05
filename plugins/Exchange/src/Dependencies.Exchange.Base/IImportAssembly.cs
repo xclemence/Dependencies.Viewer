@@ -1,12 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Dependencies.Exchange.Base.Models;
 
 namespace Dependencies.Exchange.Base
 {
-    public interface IImportAssembly
+    public interface IImportAssembly : IExchangeSevice
     {
-        Task<(AssemblyExchange assembly, IList<AssemblyExchange> dependencies)> ImportAsync();
+        Task<AssemblyExchangeContent> ImportAsync(Func<UserControl, IExchangeViewModel<AssemblyExchangeContent>, Task<AssemblyExchangeContent>> showDialog);
     }
 }
