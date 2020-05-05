@@ -1,4 +1,5 @@
 ﻿using System;
+using Dependencies.Exchange.Graph.Settings;
 
 namespace Dependencies.Exchange.Graph.Extensions
 {

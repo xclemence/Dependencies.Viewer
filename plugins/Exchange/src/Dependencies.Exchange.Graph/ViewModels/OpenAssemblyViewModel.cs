@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Dependencies.Exchange.Base;
 using Dependencies.Exchange.Base.Models;
 using Dependencies.Exchange.Graph.Fwk;
+using Dependencies.Exchange.Graph.Settings;
 
 namespace Dependencies.Exchange.Graph.ViewModels
 {
@@ -13,9 +14,9 @@ namespace Dependencies.Exchange.Graph.ViewModels
         private string searchText;
         private IList<string> availableAssemblies;
         private string selectedAssembly;
-        private readonly GraphSettings settings;
+        private readonly ISettingServices<GraphSettings> settings;
 
-        public OpenAssemblyViewModel(GraphSettings settings)
+        public OpenAssemblyViewModel(ISettingServices<GraphSettings> settings)
         {
             this.settings = settings;
 
@@ -52,14 +53,14 @@ namespace Dependencies.Exchange.Graph.ViewModels
         {
             await RunAsync?.Invoke(async () =>
             {
-              var services = new AssemblyGraphService(settings);
+              var services = new AssemblyGraphService(settings.GetSettings());
               AvailableAssemblies = await services.SearchAsync(SearchText);
             });
         }
 
         public async Task<AssemblyExchangeContent> LoadAsync()
         {
-            var service = new AssemblyGraphService(settings);
+            var service = new AssemblyGraphService(settings.GetSettings());
             var (assembly, dependencies) = await service.GetAsync(SelectedAssembly);
 
             return new AssemblyExchangeContent { Assembly = assembly, Dependencies = dependencies };

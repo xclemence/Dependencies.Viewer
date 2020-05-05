@@ -19,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="graph-setting.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Views\OpenAssemblyWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>

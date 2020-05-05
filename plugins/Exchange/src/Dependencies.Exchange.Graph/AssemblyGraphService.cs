@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dependencies.Exchange.Base.Models;
 using Dependencies.Exchange.Graph.Extensions;
+using Dependencies.Exchange.Graph.Settings;
 using Newtonsoft.Json;
 
 namespace Dependencies.Exchange.Graph

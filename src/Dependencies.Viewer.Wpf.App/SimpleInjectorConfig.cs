@@ -51,8 +51,8 @@ namespace Dependencies.Viewer.Wpf.App
 
             container.Collection.Register<IExportAssembly>(pluginAssemblies);
             container.Collection.Register<IImportAssembly>(pluginAssemblies);
-            container.Collection.Register<IExchangeSettings>(pluginAssemblies);
-
+            container.Collection.Register<ISettingUpdaterProvider>(pluginAssemblies);
+            container.Register(typeof(ISettingServices<>), pluginAssemblies);
         }
     }
 }
