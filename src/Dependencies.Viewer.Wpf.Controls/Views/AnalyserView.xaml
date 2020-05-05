@@ -94,8 +94,8 @@
                                 </MenuItem>
 
                                 <Separator/>
-                                
-                                <MenuItem Header="Export" ItemsSource="{Binding ExportCommands}"
+
+                                <MenuItem x:Name="exportMenuItem" Header="Export" ItemsSource="{Binding ExportCommands}"
                                           ItemContainerStyle="{StaticResource DynamicSubMenuItemStyle}">
                                     <MenuItem.Style>
                                         <Style TargetType="MenuItem" BasedOn="{StaticResource DynamicMenuItemStyle}">
@@ -112,14 +112,28 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
 
-                                <MenuItem Header="Import" ItemsSource="{Binding ImportCommands}"
-                                          Style="{StaticResource DynamicMenuItemStyle}" ItemContainerStyle="{StaticResource DynamicSubMenuItemStyle}">
+                                <MenuItem x:Name="importMenuItem" Header="Import" ItemsSource="{Binding ImportCommands}" Style="{StaticResource DynamicMenuItemStyle}"
+                                          ItemContainerStyle="{StaticResource DynamicSubMenuItemStyle}">
                                     <MenuItem.Icon>
                                         <materialDesign:PackIcon Kind="Import"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
 
-                                <Separator/>
+                                <Separator>
+                                    <Separator.Style>
+                                        <Style TargetType="Separator" BasedOn="{StaticResource {x:Type Separator}}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=importMenuItem, Path=HasItems}" Value="true">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=exportMenuItem, Path=HasItems}" Value="true">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Separator.Style>
+                                </Separator>
 
                                 <MenuItem Header="Exit" Command="{Binding CloseCommand}">
                                     <MenuItem.Icon>

@@ -9,7 +9,6 @@ using System.Windows.Input;
 using Dependencies.Analyser.Base;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Exchange.Base;
-using Dependencies.Exchange.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Fwk;
 using Dependencies.Viewer.Wpf.Controls.Views;
@@ -241,7 +240,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             exchangeView.DataContext = exchanegViewModel;
             exchangeView.Control.Content = view;
             view.DataContext = viewModel;
-
+            
             var result = await DialogHost.Show(exchangeView);
 
             return (T)result;

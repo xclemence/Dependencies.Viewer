@@ -14,5 +14,26 @@
         </DockPanel>
 
         <ListView ItemsSource="{Binding AvailableAssemblies}" SelectedItem="{Binding SelectedAssembly}" Grid.Row="1"/>
+        <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Setter Property="Opacity" Value="0.7"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding AvailableAssemblies.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding AvailableAssemblies}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+            <TextBlock.Text>
+                No Assembly found.
+            </TextBlock.Text>
+        </TextBlock>
     </Grid>
 </UserControl>

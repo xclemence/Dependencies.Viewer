@@ -23,8 +23,7 @@ namespace Dependencies.Exchange.Graph.Fwk
             this.canExecute = canExecute;
         }
 
-        //public bool CanExecute(object parameter) => canExecute?.Invoke((T)parameter) ?? true;
-        public bool CanExecute(object parameter) => true;
+        public bool CanExecute(object parameter) => canExecute?.Invoke((T)parameter) ?? true;
 
         public event EventHandler CanExecuteChanged
         {

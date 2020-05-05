@@ -6,13 +6,24 @@ namespace Dependencies.Viewer.Wpf.App
     internal class PluginLoadContext : AssemblyLoadContext
     {
         private readonly AssemblyDependencyResolver resolver;
+        private readonly bool tryDefaultContextLoading;
 
-        public PluginLoadContext(string pluginPath)
+        public PluginLoadContext(string pluginPath, bool tryDefaultContextLoading = false)
         {
             resolver = new AssemblyDependencyResolver(pluginPath);
+            this.tryDefaultContextLoading = tryDefaultContextLoading;
         }
 
         protected override Assembly Load(AssemblyName assemblyName)
+        {
+            Assembly assembly = null;
+            if (tryDefaultContextLoading)
+                assembly = LoadOnDefaultContext(assemblyName);
+
+            return assembly ?? LoadOnPluginContext(assemblyName);
+        }
+
+        private Assembly LoadOnDefaultContext(AssemblyName assemblyName)
         {
             try
             {
@@ -25,7 +36,11 @@ namespace Dependencies.Viewer.Wpf.App
             {
                 // Try load with path
             }
+            return null;
+        }
 
+        private Assembly LoadOnPluginContext(AssemblyName assemblyName)
+        {
             string assemblyPath = resolver.ResolveAssemblyToPath(assemblyName);
 
             if (assemblyPath != null)
@@ -33,5 +48,6 @@ namespace Dependencies.Viewer.Wpf.App
 
             return null;
         }
+
     }
 }
