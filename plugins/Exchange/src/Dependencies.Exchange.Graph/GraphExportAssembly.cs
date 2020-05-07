@@ -25,7 +25,7 @@ namespace Dependencies.Exchange.Graph
         {
             var service = new AssemblyGraphService(settings.GetSettings());
 
-            await service.AddAsync(assembly, dependencies.Where(x => x.IsLocal).ToList());
+            await service.AddAsync(assembly, dependencies.ToList());
         }
     }
 }

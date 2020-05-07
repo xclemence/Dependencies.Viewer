@@ -18,7 +18,8 @@ namespace Dependencies.Exchange.Graph.Extensions
             IsDebug = assembly.IsDebug,
             IsILOnly = assembly.IsILOnly,
             TargetFramework = assembly.TargetFramework,
-            TargetProcessor = assembly.TargetProcessor
+            TargetProcessor = assembly.TargetProcessor,
+            HasEntryPoint = assembly.HasEntryPoint
         };
 
         internal static AssemblyExchange ToExchange(this AssemblyDto assembly) => new AssemblyExchange
@@ -35,8 +36,8 @@ namespace Dependencies.Exchange.Graph.Extensions
             IsILOnly = assembly.IsILOnly,
             TargetFramework = assembly.TargetFramework,
             TargetProcessor = assembly.TargetProcessor,
-            IsLocal = true
-
+            HasEntryPoint = assembly.HasEntryPoint,
+            IsLocal = true,
         };
     }
 }

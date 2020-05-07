@@ -37,7 +37,7 @@ namespace Dependencies.Exchange.File
             if (!(result ?? false))
                 return Task.CompletedTask;
 
-            var serializeObject = JsonConvert.SerializeObject(new ExportModel { Assembly = assembly, Dependencies = dependencies } );
+            var serializeObject = JsonConvert.SerializeObject(new ExportModel { Assembly = assembly, Dependencies = dependencies }, Formatting.Indented );
 
             System.IO.File.WriteAllText(saveFileDialog.FileName, serializeObject);
 

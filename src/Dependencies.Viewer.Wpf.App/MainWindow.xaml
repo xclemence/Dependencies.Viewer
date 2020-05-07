@@ -5,6 +5,7 @@
                    xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+                   Icon="Application.ico"
                    Background="{DynamicResource MaterialDesignPaper}"
                    TextElement.FontWeight="Medium"
                    TextElement.FontSize="14"

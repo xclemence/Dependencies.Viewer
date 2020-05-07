@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Navigation;
 using Dependencies.Analyser.Base.Extensions;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Exchange.Base.Models;
@@ -36,7 +37,8 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             IsNative = assembly.IsNative,
             Creator = assembly.Creator,
             CreationDate = assembly.CreationDate,
-            IsPartial = false,
+            HasEntryPoint = assembly.HasEntryPoint,
+            IsPartial = !assembly.IsResolved,
             AssembliesReferenced = assembly.Links.Select(x => x.LinkFullName).ToList()
         };
 
@@ -53,9 +55,12 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
 
         public static AssemblyInformation ToInformationModel(this AssemblyExchange assemblyExchange, IList<AssemblyExchange> dependencies)
         {
-            var dependenciesCache = dependencies.Where(x => !x.IsPartial).Select(x => (target: x.ToInformation(), baseItem: x)).ToDictionary(x => x.baseItem.ShortName);
-            var assemblyCache = dependencies.GroupBy(x => x.Name).ToDictionary(x => x.Key, x => (assembly: x.First().ShortName, version: x.First().Version));
-            
+            var dependenciesCache = dependencies.GroupBy(x => x.ShortName)
+                                                .Select(x => GetLoadedItem(x))
+                                                .Select(x => (target: x.ToInformation(), baseItem: x)).ToDictionary(x => x.baseItem.ShortName);
+
+            var assemblyCache = dependencies.ToDictionary(x => x.Name, x => x);
+
             var assembly = assemblyExchange.ToInformation();
 
             dependenciesCache.Add(assemblyExchange.ShortName, (assembly, assemblyExchange));
@@ -66,19 +71,45 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             return assembly;
         }
 
+        private static AssemblyExchange GetLoadedItem(IGrouping<string, AssemblyExchange> collection)
+        {
+            var item = collection.ToList();
+
+            if (item.Count == 1) return item.First();
+
+            return collection.OrderByDescending(x => new Version(x.Version)).First();
+        }
 
         private static void AddLinkDependencies(this AssemblyInformation assembly,
                                                 AssemblyExchange assemblyExchange,
                                                 IDictionary<string, (AssemblyInformation target, AssemblyExchange baseItem)> assembliesCahes,
-                                                IDictionary<string, (string assembly, string version)> assemblyExchangeCache)
+                                                IDictionary<string, AssemblyExchange> assemblyExchangeCache)
         {
-            // TODO Find a way to solve case where used assembly in not referenced.... (not found link ?)
-            assembly.Links = assemblyExchange.AssembliesReferenced.Where(x => assembliesCahes.ContainsKey(assemblyExchangeCache[x].assembly)).Select(x => new AssemblyLink
+            assembly.Links = assemblyExchange.AssembliesReferenced.Select(x => GetAsseblyLinkFromCache(assembliesCahes, assemblyExchangeCache, x)).ToList();
+        }
+
+        private static AssemblyLink GetAsseblyLinkFromCache(IDictionary<string, (AssemblyInformation target, AssemblyExchange baseItem)> assembliesCahes, 
+                                                            IDictionary<string, AssemblyExchange> assemblyExchangeCache,
+                                                            string x)
+        { 
+            var assembly = assemblyExchangeCache[x];
+
+            if (assembliesCahes.ContainsKey(assembly.ShortName))
             {
-                Assembly = assembliesCahes[assemblyExchangeCache[x].assembly].target,
-                LinkVersion = assemblyExchangeCache[x].version,
+                return new AssemblyLink
+                {
+                    Assembly = assembliesCahes[assembly.ShortName].target,
+                    LinkVersion = assemblyExchangeCache[x].Version,
+                    LinkFullName = x
+                };
+            }
+
+            return new AssemblyLink
+            {
+                Assembly = assembly.ToInformation(),
+                LinkVersion = assembly.Version,
                 LinkFullName = x
-            }).ToList();
+            };
         }
 
         private static AssemblyInformation ToInformation(this AssemblyExchange assembly) => new AssemblyInformation(assembly.ShortName, assembly.Version, null)
@@ -92,6 +123,8 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             IsNative = assembly.IsNative,
             Creator = assembly.Creator,
             CreationDate = assembly.CreationDate,
+            HasEntryPoint = assembly.HasEntryPoint,
+            IsResolved = !assembly.IsPartial
         };
 
     }

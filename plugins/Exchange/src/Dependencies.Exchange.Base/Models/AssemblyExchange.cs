@@ -31,6 +31,7 @@ namespace Dependencies.Exchange.Base.Models
         public bool IsPartial { get; set; }
 
         public bool IsLocal { get; set; }
+        public bool HasEntryPoint { get; set; }
 
         public List<string> AssembliesReferenced { get; set; } = new List<string>();
     }

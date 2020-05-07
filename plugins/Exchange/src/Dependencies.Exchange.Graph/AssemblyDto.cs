@@ -22,6 +22,8 @@ namespace Dependencies.Exchange.Graph
         public bool? IsDebug { get; set; }
 
         public bool IsILOnly { get; set; }
+        
+        public bool HasEntryPoint { get; set; }
 
         public DateTime CreationDate { get; set; }
 
