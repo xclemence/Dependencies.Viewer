@@ -1,3 +1,6 @@
 [submodule "plugins/Analyser"]
 	path = plugins/Analyser
 	url = https://github.com/xclemence/Dependencies.Analyser.git
+[submodule "plugins/Exchange"]
+	path = plugins/Exchange
+	url = https://github.com/xclemence/Dependencies.Exchange.git
