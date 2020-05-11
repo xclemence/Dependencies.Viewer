@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Navigation;
+using System.Reflection;
 using Dependencies.Analyser.Base.Extensions;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Exchange.Base.Models;
@@ -57,11 +57,11 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
         {
             var dependenciesCache = dependencies.GroupBy(x => x.ShortName)
                                                 .Select(x => GetLoadedItem(x))
-                                                .Select(x => (target: x.ToInformation(), baseItem: x)).ToDictionary(x => x.baseItem.ShortName);
+                                                .Select(x => (target: x.ToInformationMOdel(), baseItem: x)).ToDictionary(x => x.baseItem.ShortName);
 
             var assemblyCache = dependencies.ToDictionary(x => x.Name, x => x);
 
-            var assembly = assemblyExchange.ToInformation();
+            var assembly = assemblyExchange.ToInformationMOdel();
 
             dependenciesCache.Add(assemblyExchange.ShortName, (assembly, assemblyExchange));
 
@@ -85,34 +85,33 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
                                                 IDictionary<string, (AssemblyInformation target, AssemblyExchange baseItem)> assembliesCahes,
                                                 IDictionary<string, AssemblyExchange> assemblyExchangeCache)
         {
-            assembly.Links = assemblyExchange.AssembliesReferenced.Select(x => GetAsseblyLinkFromCache(assembliesCahes, assemblyExchangeCache, x)).ToList();
+            assembly.Links = assemblyExchange.AssembliesReferenced.Select(x => GetAsseblyLinkFromCache(x, assembliesCahes, assemblyExchangeCache)).ToList();
         }
 
-        private static AssemblyLink GetAsseblyLinkFromCache(IDictionary<string, (AssemblyInformation target, AssemblyExchange baseItem)> assembliesCahes, 
-                                                            IDictionary<string, AssemblyExchange> assemblyExchangeCache,
-                                                            string x)
+        private static AssemblyLink GetAsseblyLinkFromCache(string assemblyFullName,
+                                                            IDictionary<string, (AssemblyInformation target, AssemblyExchange baseItem)> assembliesCahes, 
+                                                            IDictionary<string, AssemblyExchange> assemblyExchangeCache)
         { 
-            var assembly = assemblyExchangeCache[x];
-
-            if (assembliesCahes.ContainsKey(assembly.ShortName))
+            if (!assemblyExchangeCache.TryGetValue(assemblyFullName, out var assembly))
             {
-                return new AssemblyLink
-                {
-                    Assembly = assembliesCahes[assembly.ShortName].target,
-                    LinkVersion = assemblyExchangeCache[x].Version,
-                    LinkFullName = x
-                };
+                var assemblyName = new AssemblyName(assemblyFullName);
+                return CreateAssemblyLing(assemblyName.ToInformationModel(), assemblyName.Version.ToString(), assemblyName.FullName);
             }
 
-            return new AssemblyLink
-            {
-                Assembly = assembly.ToInformation(),
-                LinkVersion = assembly.Version,
-                LinkFullName = x
-            };
+            if (assembliesCahes.TryGetValue(assembly.ShortName, out var item))
+                return CreateAssemblyLing(item.target, assemblyExchangeCache[assemblyFullName].Version, assemblyFullName);
+
+            return CreateAssemblyLing(assembly.ToInformationMOdel(), assembly.Version, assemblyFullName);
         }
 
-        private static AssemblyInformation ToInformation(this AssemblyExchange assembly) => new AssemblyInformation(assembly.ShortName, assembly.Version, null)
+        private static AssemblyLink CreateAssemblyLing(AssemblyInformation assembly, string linkVersion, string linkFullName) => new AssemblyLink
+        {
+            Assembly = assembly,
+            LinkVersion = linkVersion,
+            LinkFullName = linkFullName
+        };
+
+        private static AssemblyInformation ToInformationMOdel(this AssemblyExchange assembly) => new AssemblyInformation(assembly.ShortName, assembly.Version, null)
         {
             AssemblyName = assembly.Name,
             TargetFramework = assembly.TargetFramework,
@@ -127,5 +126,10 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             IsResolved = !assembly.IsPartial
         };
 
+        public static AssemblyInformation ToInformationModel(this AssemblyName assembly) => new AssemblyInformation(assembly.Name, assembly.Version.ToString(), null)
+        {
+            AssemblyName = assembly.FullName,
+            IsResolved = false
+        };
     }
 }

@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Dependencies.Viewer.UnitTests.DataProviders
 {
     [ExcludeFromCodeCoverage]
-    public class AssemblyExchangeDataProvider
+    public static class AssemblyExchangeDataProvider
     {
         public static AssemblyExchange AssemblyTestV4 => new AssemblyExchange
         {
