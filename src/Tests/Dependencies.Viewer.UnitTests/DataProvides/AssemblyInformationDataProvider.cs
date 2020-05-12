@@ -3,7 +3,7 @@ using System;
 
 namespace Dependencies.Viewer.UnitTests.DataProviders
 {
-    public class AssemblyInformationDataProvider
+    public static class AssemblyInformationDataProvider
     {
         public static AssemblyInformation AssemblyTestV4 => new AssemblyInformation("AssemblyTest", "4.0.0.0", null)
         {

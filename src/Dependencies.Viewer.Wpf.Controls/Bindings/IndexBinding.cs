@@ -8,7 +8,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Bindings
     public class BindingIndex : Binding
     {
         private string path;
-        private readonly dynamic keyIndex;
+        private dynamic keyIndex;
 
         public dynamic KeyIndex
         {
