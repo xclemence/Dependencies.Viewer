@@ -17,7 +17,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
 
         protected ResultListViewModel()
         {
-            OpenResult = new Command<T>(async (x) => await OnOpenResultAsync(x));
+            OpenResult = new Command<T>(async (x) => await OnOpenResultAsync(x).ConfigureAwait(false));
             CopyToClipboardCommand = new Command(CopyAllToClipboard, () => displayResults?.Any() ?? false);
         }
 

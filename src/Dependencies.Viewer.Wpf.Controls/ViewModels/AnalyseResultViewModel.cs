@@ -13,7 +13,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private AssemblyInformation assemblyResult;
         private bool isErrorExpended;
 
-        public AnalyseResultViewModel(LoadingErrorViewModel errorLoadingViewModel, 
+        public AnalyseResultViewModel(LoadingErrorViewModel errorLoadingViewModel,
                                       MismatchVersionViewModel mismatchVersionViewModel,
                                       ReferencesViewModel analyseResultViewModel,
                                       AssemblyStatisticsViewModel assemblyStatisticsViewModel)

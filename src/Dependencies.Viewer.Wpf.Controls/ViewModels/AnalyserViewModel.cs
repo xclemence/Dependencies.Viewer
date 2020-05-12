@@ -38,7 +38,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private readonly IAnalyserServiceFactory<AnalyseResultViewModel> analyserViewModelFactory;
         private readonly IList<IImportAssembly> importServices;
         private readonly IList<IExportAssembly> exportServices;
-        
+
         private AnalyseResultViewModel selectedItem;
         private bool isSettingsOpen;
 
@@ -60,9 +60,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
             SettingsCommand = new Command(() => IsSettingsOpen = true);
             CloseCommand = new Command(() => Application.Current.Shutdown());
-            OpenFileCommand = new Command(async () => await BusyAction(OpenFileAsync), () => !IsBusy);
+            OpenFileCommand = new Command(async () => await BusyAction(OpenFileAsync).ConfigureAwait(false), () => !IsBusy);
             OnDragOverCommand = new Command<DragEventArgs>(OnDragOver);
-            OnDropCommand = new Command<DragEventArgs>(async (x) => await BusyAction(async () => await OnDrop(x)), _ => !IsBusy);
+            OnDropCommand = new Command<DragEventArgs>(async (x) => await BusyAction(async () => await OnDrop(x).ConfigureAwait(false)).ConfigureAwait(false), _ => !IsBusy);
 
             OnDragEnterCommand = new Command<DragEventArgs>((x) => IsDragFile = true, CanDrag);
             OnDragLeaveCommand = new Command<DragEventArgs>((x) => IsDragFile = false, CanDrag);
@@ -132,7 +132,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
             try
             {
-                await actionAsync();
+                await actionAsync().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -152,7 +152,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             var openFileDialog = new OpenFileDialog { Title = "Open File", Filter = OpenFileFilter, Multiselect = false };
             if (openFileDialog.ShowDialog() != true) return;
 
-            await AnalyseAsync(openFileDialog.FileName);
+            await AnalyseAsync(openFileDialog.FileName).ConfigureAwait(false);
         }
 
         private async Task OnDrop(DragEventArgs e)
@@ -165,7 +165,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
             if (filenames.Length == 0) return;
 
-            await AnalyseAsync(filenames[0]);
+            await AnalyseAsync(filenames[0]).ConfigureAwait(false);
         }
 
         public async Task InitialiseAsync(string filePath = null)
@@ -173,13 +173,13 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             if (filePath == null)
                 return;
 
-            await BusyAction(async () => await AnalyseAsync(filePath));
+            await BusyAction(async () => await AnalyseAsync(filePath).ConfigureAwait(false)).ConfigureAwait(false);
         }
 
         private async Task AnalyseAsync(string filePath)
         {
             var analyser = analyserProvider.CurrentAnalyserFactory.GetAnalyser();
-            AddAssemblyResult(await analyser.AnalyseAsync(filePath));
+            AddAssemblyResult(await analyser.AnalyseAsync(filePath).ConfigureAwait(false));
         }
 
         private void AddAssemblyResult(AssemblyInformation info)
@@ -196,13 +196,13 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
                 SelectedItem = newViewModel;
             }).InvokeUiThread();
         }
-        
+
         private void BuildExportCommand()
         {
             ExportCommands = exportServices.Select(x => new ExchangeCommand
             {
                 Title = x.Name,
-                Command = new Command(async () => await BusyAction(async () => await ExportAsync(x)), () => x.IsReady && !IsBusy && SelectedItem?.AssemblyResult != null)
+                Command = new Command(async () => await BusyAction(async () => await ExportAsync(x).ConfigureAwait(false)).ConfigureAwait(false), () => x.IsReady && !IsBusy && SelectedItem?.AssemblyResult != null)
             }).ToList(); ;
         }
 
@@ -211,21 +211,21 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             ImportCommands = importServices.Select(x => new ExchangeCommand
             {
                 Title = x.Name,
-                Command = new Command(async () => await BusyAction(async () => await ImportAsync(x)), () => x.IsReady && !IsBusy)
+                Command = new Command(async () => await BusyAction(async () => await ImportAsync(x).ConfigureAwait(false)).ConfigureAwait(false), () => x.IsReady && !IsBusy)
             }).ToList(); ;
         }
 
         private async Task ExportAsync(IExportAssembly exportAssembly)
         {
             var (assembly, dependencies) = selectedItem.AssemblyResult.ToExchangeModel();
-            
-            await exportAssembly.ExportAsync(assembly, dependencies, null);
+
+            await exportAssembly.ExportAsync(assembly, dependencies, null).ConfigureAwait(false);
         }
 
         private async Task ImportAsync(IImportAssembly importAssembly)
         {
-            var result = await importAssembly.ImportAsync(CreateExchangeView);
-            
+            var result = await importAssembly.ImportAsync(CreateExchangeView).ConfigureAwait(false);
+
             if (result == default)
                 return;
 
@@ -240,8 +240,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             exchangeView.DataContext = exchanegViewModel;
             exchangeView.Control.Content = view;
             view.DataContext = viewModel;
-            
-            var result = await DialogHost.Show(exchangeView);
+
+            var result = await DialogHost.Show(exchangeView).ConfigureAwait(false);
 
             return (T)result;
         }

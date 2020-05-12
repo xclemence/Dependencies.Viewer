@@ -14,7 +14,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewConverters
             var size = (double)values[0];
 
             foreach (var item in values.Skip(1))
-                size -= double.Parse(item.ToString());
+                size -= System.Convert.ToDouble(item, CultureInfo.InvariantCulture);
 
             if (size <= 0)
                 return 0.1;
@@ -22,9 +22,6 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewConverters
             return size;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotSupportedException();
     }
 }

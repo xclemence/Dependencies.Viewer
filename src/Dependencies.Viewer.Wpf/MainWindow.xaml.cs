@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Dependencies.Viewer.Wpf.Controls.ViewModels;
 
-namespace Dependencies.Viewer.Wpf.App
+namespace Dependencies.Viewer.Wpf
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -23,7 +23,7 @@ namespace Dependencies.Viewer.Wpf.App
             DataContext = analyserViewModel;
 
             if (initialFile != null)
-                Task.Run(async () => await analyserViewModel.InitialiseAsync(initialFile));
+                Task.Run(async () => await analyserViewModel.InitialiseAsync(initialFile).ConfigureAwait(false));
         }
     }
 }

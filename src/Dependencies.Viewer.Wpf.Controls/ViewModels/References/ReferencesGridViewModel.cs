@@ -21,7 +21,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
         public ReferencesGridViewModel()
         {
             OpenSubResultCommand = new Command<ReferenceModel>(x => GlobalCommand.OpenAssembly(x.Link.Assembly));
-            OpenParentReferenceCommand = new Command<ReferenceModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(AssemblyInformation, x.Link));
+            OpenParentReferenceCommand = new Command<ReferenceModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(AssemblyInformation, x.Link).ConfigureAwait(false));
         }
 
         public FilterModel Filter { get; set; }
@@ -48,10 +48,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             private set => Set(ref filteredLinks, value);
         }
 
-        public void RefreshFilteredItems()
-        {
-            new Action(() => filteredLinks.Refresh()).InvokeUiThread();
-        }
+        public void RefreshFilteredItems() => new Action(() => filteredLinks.Refresh()).InvokeUiThread();
 
         private void CreateFilteredCollection()
         {
@@ -76,10 +73,10 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             if (string.IsNullOrWhiteSpace(Filter.Name))
                 return true;
 
-            return reference.Link.Assembly.Name.ToUpper().Contains(Filter.Name.ToUpper());
+            return reference.Link.Assembly.Name.Contains(Filter.Name, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private IEnumerable<ReferenceModel> GetResults(AssemblyInformation information)
+        private static IEnumerable<ReferenceModel> GetResults(AssemblyInformation information)
         {
             return information?.GetAllLinks()
                                .Distinct()

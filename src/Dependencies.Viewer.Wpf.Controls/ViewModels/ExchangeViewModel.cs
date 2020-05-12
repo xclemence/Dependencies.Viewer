@@ -1,9 +1,9 @@
-﻿using Dependencies.Exchange.Base;
-using Dependencies.Viewer.Wpf.Controls.Fwk;
-using MaterialDesignThemes.Wpf;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Dependencies.Exchange.Base;
+using Dependencies.Viewer.Wpf.Controls.Fwk;
+using MaterialDesignThemes.Wpf;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 {
@@ -17,7 +17,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             this.closeAction = closeAction;
             ContentViewModel = contentViewModel;
             CancelCommand = new Command(() => this.closeAction(default));
-            ValidateCommand = new Command(async () => await ValidateAsync(), () => ContentViewModel.CanLoad);
+            ValidateCommand = new Command(async () => await ValidateAsync().ConfigureAwait(false), () => ContentViewModel.CanLoad);
 
             ContentViewModel.RunAsync = ExecuteAsync;
 
@@ -43,9 +43,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         {
             await ExecuteAsync(async () =>
             {
-                var result = await ContentViewModel.LoadAsync();
+                var result = await ContentViewModel.LoadAsync().ConfigureAwait(false);
                 closeAction(result);
-            });
+            }).ConfigureAwait(false);
         }
 
         public async Task ExecuteAsync(Func<Task> actionAsync)
@@ -53,9 +53,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             try
             {
                 IsBusy = true;
-                await actionAsync();
+                await actionAsync().ConfigureAwait(false);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ErrorMessageQueue.Enqueue(ex.Message);
             }

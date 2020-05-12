@@ -12,17 +12,14 @@ namespace Dependencies.Viewer.Wpf.Controls
     {
         internal static Action<AssemblyInformation> OpenAssemblyAction { get; set; }
 
-        public static void OpenAssembly(AssemblyInformation assembly)
-        {
-            OpenAssemblyAction?.Invoke(assembly);
-        }
+        public static void OpenAssembly(AssemblyInformation assembly) => OpenAssemblyAction?.Invoke(assembly);
 
         public static async Task ViewParentReferenceAsync(AssemblyInformation baseAssembly, AssemblyLink searchLink)
         {
             var paths = baseAssembly.GetAssemblyParentPath(searchLink).ToList();
             var vm = new AssemblyParentsViewModel { BaseAssembly = searchLink.Assembly.FullName, Paths = paths };
 
-            var result = await DialogHost.Show(vm);
+            var result = await DialogHost.Show(vm).ConfigureAwait(false);
         }
     }
 }

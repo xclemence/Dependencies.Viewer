@@ -7,9 +7,6 @@ namespace Dependencies.Viewer.Wpf.Controls.Views
     /// </summary>
     public partial class AnalyseResultView : UserControl
     {
-        public AnalyseResultView()
-        {
-            InitializeComponent();
-        }
+        public AnalyseResultView() => InitializeComponent();
     }
 }

@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using Dependencies.Viewer.Wpf.Controls.Extensions;
-using Dependencies.Analyser.Base.Models;
+﻿using System.Globalization;
+using System.Linq;
 using Dependencies.Analyser.Base.Extensions;
+using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Fwk;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels
@@ -29,18 +29,18 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
                                                                   .Where(x => !x.IsNative)
                                                                   .Distinct()
                                                                   .Count()
-                                                                  .ToString();
+                                                                  .ToString(CultureInfo.InvariantCulture);
 
         public string NativeAssemblyCount => AssemblyInformation?.GetAllLinks()
                                                                  .Select(x => x.Assembly)
                                                                  .Where(x => x.IsNative)
                                                                  .Distinct()
                                                                  .Count()
-                                                                 .ToString();
+                                                                 .ToString(CultureInfo.InvariantCulture);
 
         public string AllLinksCount => AssemblyInformation?.GetAllLinks()
                                                            .Distinct()
                                                            .Count()
-                                                           .ToString();
+                                                           .ToString(CultureInfo.InvariantCulture);
     }
 }

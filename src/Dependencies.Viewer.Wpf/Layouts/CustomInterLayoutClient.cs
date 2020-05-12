@@ -2,7 +2,7 @@
 using System.Windows;
 using Dragablz;
 
-namespace Dependencies.Viewer.Wpf.App.Layouts
+namespace Dependencies.Viewer.Wpf.Layouts
 {
     public class KeepOneInterLayoutClient : DefaultInterTabClient
     {

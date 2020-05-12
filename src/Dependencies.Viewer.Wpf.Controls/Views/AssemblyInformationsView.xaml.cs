@@ -7,9 +7,6 @@ namespace Dependencies.Viewer.Wpf.Controls.Views
     /// </summary>
     public partial class AssemblyInformationsView : UserControl
     {
-        public AssemblyInformationsView()
-        {
-            InitializeComponent();
-        }
+        public AssemblyInformationsView() => InitializeComponent();
     }
 }

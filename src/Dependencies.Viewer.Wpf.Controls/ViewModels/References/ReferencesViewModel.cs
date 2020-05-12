@@ -7,9 +7,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
     public class ReferencesViewModel : ObservableObject
     {
         private AssemblyInformation assemblyInformation;
-        private FilterModel filter;
+        private readonly FilterModel filter;
 
-        private IReferencesDetailsViewModel[] resultViewModels;
+        private readonly IReferencesDetailsViewModel[] resultViewModels;
         private IReferencesDetailsViewModel selectedResultViewModels;
 
         public ReferencesViewModel()

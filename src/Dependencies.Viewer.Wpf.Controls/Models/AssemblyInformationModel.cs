@@ -9,7 +9,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
 {
     public class AssemblyInformationModel : ObservableObject
     {
-        public bool isVisible;
+        private bool isVisible;
         private IList<AssemblyLinkModel> links;
         private readonly Predicate<object> predicate;
 

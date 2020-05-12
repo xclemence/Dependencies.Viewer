@@ -1,27 +1,30 @@
-﻿using System.Windows;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using Microsoft.Xaml.Behaviors;
 
 namespace Dependencies.Viewer.Wpf.Controls.Behaviors
 {
-    public class InteractivityBehaviorAttach<Behavior, TargetElement>
-        where Behavior : InteractivityBehaviorBase<TargetElement>, new()
-        where TargetElement : FrameworkElement
+    [SuppressMessage("Design", "CA1052:Static holder types should be Static or NotInheritable", Justification = "Need to factorize static member")]
+    [SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "mandatory for WPF")]
+    public class InteractivityBehaviorAttach<TBehavior, TTargetElement>
+        where TBehavior : InteractivityBehaviorBase<TTargetElement>, new()
+        where TTargetElement : FrameworkElement
     {
         public static readonly DependencyProperty ActionProperty =
             DependencyProperty.RegisterAttached(
                 "Attach",
                 typeof(bool),
-                typeof(InteractivityBehaviorAttach<Behavior, TargetElement>),
+                typeof(InteractivityBehaviorAttach<TBehavior, TTargetElement>),
                 new PropertyMetadata(false, OnAttachChanged));
 
         private static void OnAttachChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var behavior = new Behavior();
+            var behavior = new TBehavior();
             Interaction.GetBehaviors(d).Add(behavior);
         }
 
-        public static void SetAttach(TargetElement target, bool value) => target.SetValue(ActionProperty, value);
+        public static void SetAttach(TTargetElement target, bool value) => target.SetValue(ActionProperty, value);
 
-        public static bool GetAttach(TargetElement target) => (bool)target.GetValue(ActionProperty);
+        public static bool GetAttach(TTargetElement target) => (bool)target.GetValue(ActionProperty);
     }
 }

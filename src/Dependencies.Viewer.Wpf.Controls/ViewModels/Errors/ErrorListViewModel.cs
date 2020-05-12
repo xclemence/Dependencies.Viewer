@@ -14,7 +14,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
             var paths = AssemblyInformation.GetAssemblyParentPath(item.Link).ToList();
             var vm = new AssemblyParentsViewModel { BaseAssembly = item.Link.Assembly.FullName, Paths = paths };
 
-            var result = await DialogHost.Show(vm);
+            _ = await DialogHost.Show(vm).ConfigureAwait(false);
         }
     }
 }

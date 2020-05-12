@@ -6,7 +6,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Fwk
     public abstract class ObservableObject : INotifyPropertyChanged
     {
         protected ObservableObject() { }
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

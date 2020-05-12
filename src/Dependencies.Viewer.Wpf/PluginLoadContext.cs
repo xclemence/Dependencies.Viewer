@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.Loader;
 
-namespace Dependencies.Viewer.Wpf.App
+namespace Dependencies.Viewer.Wpf
 {
     internal class PluginLoadContext : AssemblyLoadContext
     {
@@ -41,7 +41,7 @@ namespace Dependencies.Viewer.Wpf.App
 
         private Assembly LoadOnPluginContext(AssemblyName assemblyName)
         {
-            string assemblyPath = resolver.ResolveAssemblyToPath(assemblyName);
+            var assemblyPath = resolver.ResolveAssemblyToPath(assemblyName);
 
             if (assemblyPath != null)
                 return LoadFromAssemblyPath(assemblyPath);

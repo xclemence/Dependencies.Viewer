@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28621.142
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Viewer.Wpf.App", "Dependencies.Viewer.Wpf.App\Dependencies.Viewer.Wpf.App.csproj", "{837063EC-524D-49D7-850C-87135525C559}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Viewer.Wpf", "Dependencies.Viewer.Wpf\Dependencies.Viewer.Wpf.csproj", "{837063EC-524D-49D7-850C-87135525C559}"
 	ProjectSection(ProjectDependencies) = postProject
 		{710EF00E-9D7F-4FDC-9D6F-B24E4734B17F} = {710EF00E-9D7F-4FDC-9D6F-B24E4734B17F}
 		{FCC6493B-71EE-44CB-A64B-A23A7CD5184D} = {FCC6493B-71EE-44CB-A64B-A23A7CD5184D}
@@ -16,8 +16,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Analyser.Base", "..\plugins\Analyser\src\Dependencies.Analyser.Base\Dependencies.Analyser.Base.csproj", "{466466D9-9F72-45F5-9FAF-D039642DE571}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Analyser.Mono", "..\plugins\Analyser\src\Dependencies.Analyser.Mono\Dependencies.Analyser.Mono.csproj", "{710EF00E-9D7F-4FDC-9D6F-B24E4734B17F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeNet", "..\plugins\Analyser\external\PeNet\src\PeNet\PeNet.csproj", "{F306C626-2CF2-419C-9479-68FE317F62FF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Analyser.Microsoft", "..\plugins\Analyser\src\Dependencies.Analyser.Microsoft\Dependencies.Analyser.Microsoft.csproj", "{FCC6493B-71EE-44CB-A64B-A23A7CD5184D}"
 EndProject
@@ -41,6 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Exchange.Graph
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{B2096895-C09B-4D34-9F62-937FE3BE41B7}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
@@ -86,14 +85,6 @@ Global
 		{710EF00E-9D7F-4FDC-9D6F-B24E4734B17F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{710EF00E-9D7F-4FDC-9D6F-B24E4734B17F}.Release|x64.ActiveCfg = Release|Any CPU
 		{710EF00E-9D7F-4FDC-9D6F-B24E4734B17F}.Release|x64.Build.0 = Release|Any CPU
-		{F306C626-2CF2-419C-9479-68FE317F62FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F306C626-2CF2-419C-9479-68FE317F62FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F306C626-2CF2-419C-9479-68FE317F62FF}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{F306C626-2CF2-419C-9479-68FE317F62FF}.Debug|x64.Build.0 = Debug|Any CPU
-		{F306C626-2CF2-419C-9479-68FE317F62FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F306C626-2CF2-419C-9479-68FE317F62FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F306C626-2CF2-419C-9479-68FE317F62FF}.Release|x64.ActiveCfg = Release|Any CPU
-		{F306C626-2CF2-419C-9479-68FE317F62FF}.Release|x64.Build.0 = Release|Any CPU
 		{FCC6493B-71EE-44CB-A64B-A23A7CD5184D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FCC6493B-71EE-44CB-A64B-A23A7CD5184D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCC6493B-71EE-44CB-A64B-A23A7CD5184D}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -159,7 +150,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{466466D9-9F72-45F5-9FAF-D039642DE571} = {C42D3F8D-48CA-40D3-AB8B-8895F2B20A2C}
 		{710EF00E-9D7F-4FDC-9D6F-B24E4734B17F} = {C42D3F8D-48CA-40D3-AB8B-8895F2B20A2C}
-		{F306C626-2CF2-419C-9479-68FE317F62FF} = {C42D3F8D-48CA-40D3-AB8B-8895F2B20A2C}
 		{FCC6493B-71EE-44CB-A64B-A23A7CD5184D} = {C42D3F8D-48CA-40D3-AB8B-8895F2B20A2C}
 		{E775563F-C3B2-47F0-B5A2-97F951D9B6F0} = {C42D3F8D-48CA-40D3-AB8B-8895F2B20A2C}
 		{CBF7143B-6F8B-4F4D-8900-5E8968CCE1D9} = {C42D3F8D-48CA-40D3-AB8B-8895F2B20A2C}

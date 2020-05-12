@@ -35,7 +35,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             {
                 AnalyserProvider.CurrentAnalyserFactory = value;
 
-                if(value != null)
+                if (value != null)
                     Settings.SaveSetting(SettingKeys.SelectedAnalyserCode, value.Code);
             }
         }

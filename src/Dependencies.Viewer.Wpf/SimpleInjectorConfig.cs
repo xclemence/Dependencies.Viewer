@@ -1,20 +1,22 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Dependencies.Analyser.Base;
 using Dependencies.Analyser.Native;
 using Dependencies.Exchange.Base;
-using Dependencies.Viewer.Wpf.App.Extensions;
-using Dependencies.Viewer.Wpf.App.Layouts;
 using Dependencies.Viewer.Wpf.Controls;
+using Dependencies.Viewer.Wpf.Extensions;
+using Dependencies.Viewer.Wpf.Layouts;
 using Dragablz;
 using MaterialDesignThemes.Wpf;
 using SimpleInjector;
 
-namespace Dependencies.Viewer.Wpf.App
+namespace Dependencies.Viewer.Wpf
 {
     internal static class SimpleInjectorConfig
     {
         public static Container Container { get; private set; }
 
+        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Dispose method are call by IoC")]
         public static void Config()
         {
             Container = new Container();
@@ -23,8 +25,8 @@ namespace Dependencies.Viewer.Wpf.App
             Container.Register<ISettingProvider, SettingProvider>(Lifestyle.Singleton);
             Container.Register<INativeAnalyser, NativeAnalyser>(Lifestyle.Transient);
             Container.RegisterInstance<ISnackbarMessageQueue>(new SnackbarMessageQueue());
-            
-         
+
+
             Container.Register(typeof(IAnalyserServiceFactory<>), typeof(SimpleInjectorAnalyseServiceFactory<>), Lifestyle.Singleton);
             Container.Register(typeof(IExchangeServiceFactory<>), typeof(SimpleInjectorExchangeServiceFactory<>), Lifestyle.Singleton);
             Container.Register<AnalyserProvider>(Lifestyle.Singleton);

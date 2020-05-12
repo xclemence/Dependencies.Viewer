@@ -42,14 +42,14 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             AssembliesReferenced = assembly.Links.Select(x => x.LinkFullName).ToList()
         };
 
-        private static AssemblyExchange ToExchange(this AssemblyLink link) 
+        private static AssemblyExchange ToExchange(this AssemblyLink link)
         {
             AssemblyExchange model;
             if (link.LinkVersion != link.Assembly.LoadedVersion)
                 model = new AssemblyExchange { Name = link.LinkFullName, Version = link.LinkVersion, IsPartial = true, ShortName = link.Assembly.Name, IsLocal = link.Assembly.IsLocalAssembly };
             else
                 model = link.Assembly.ToExchange();
-            
+
             return model;
         }
 
@@ -83,15 +83,12 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
         private static void AddLinkDependencies(this AssemblyInformation assembly,
                                                 AssemblyExchange assemblyExchange,
                                                 IDictionary<string, (AssemblyInformation target, AssemblyExchange baseItem)> assembliesCahes,
-                                                IDictionary<string, AssemblyExchange> assemblyExchangeCache)
-        {
-            assembly.Links = assemblyExchange.AssembliesReferenced.Select(x => GetAsseblyLinkFromCache(x, assembliesCahes, assemblyExchangeCache)).ToList();
-        }
+                                                IDictionary<string, AssemblyExchange> assemblyExchangeCache) => assembly.Links.AddRange(assemblyExchange.AssembliesReferenced.Select(x => GetAsseblyLinkFromCache(x, assembliesCahes, assemblyExchangeCache)));
 
         private static AssemblyLink GetAsseblyLinkFromCache(string assemblyFullName,
-                                                            IDictionary<string, (AssemblyInformation target, AssemblyExchange baseItem)> assembliesCahes, 
+                                                            IDictionary<string, (AssemblyInformation target, AssemblyExchange baseItem)> assembliesCahes,
                                                             IDictionary<string, AssemblyExchange> assemblyExchangeCache)
-        { 
+        {
             if (!assemblyExchangeCache.TryGetValue(assemblyFullName, out var assembly))
             {
                 var assemblyName = new AssemblyName(assemblyFullName);
@@ -104,18 +101,13 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             return CreateAssemblyLing(assembly.ToInformationMOdel(), assembly.Version, assemblyFullName);
         }
 
-        private static AssemblyLink CreateAssemblyLing(AssemblyInformation assembly, string linkVersion, string linkFullName) => new AssemblyLink
-        {
-            Assembly = assembly,
-            LinkVersion = linkVersion,
-            LinkFullName = linkFullName
-        };
+        private static AssemblyLink CreateAssemblyLing(AssemblyInformation assembly, string linkVersion, string linkFullName) => new AssemblyLink(assembly, linkVersion, linkFullName);
 
         private static AssemblyInformation ToInformationMOdel(this AssemblyExchange assembly) => new AssemblyInformation(assembly.ShortName, assembly.Version, null)
         {
             AssemblyName = assembly.Name,
             TargetFramework = assembly.TargetFramework,
-            TargetProcessor = assembly.TargetProcessor == null ? (TargetProcessor?) null : Enum.Parse<TargetProcessor>(assembly.TargetProcessor),
+            TargetProcessor = assembly.TargetProcessor == null ? (TargetProcessor?)null : Enum.Parse<TargetProcessor>(assembly.TargetProcessor),
             IsDebug = assembly.IsDebug,
             IsILOnly = assembly.IsILOnly,
             IsLocalAssembly = assembly.IsLocal,

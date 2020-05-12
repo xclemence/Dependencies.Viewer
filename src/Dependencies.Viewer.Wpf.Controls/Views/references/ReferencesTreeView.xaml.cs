@@ -7,9 +7,6 @@ namespace Dependencies.Viewer.Wpf.Controls.Views
     /// </summary>
     public partial class ReferencesTreeView : UserControl
     {
-        public ReferencesTreeView()
-        {
-            InitializeComponent();
-        }
+        public ReferencesTreeView() => InitializeComponent();
     }
 }
