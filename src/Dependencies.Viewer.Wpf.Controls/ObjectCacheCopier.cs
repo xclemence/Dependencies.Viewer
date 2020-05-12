@@ -14,16 +14,16 @@ namespace Dependencies.Viewer.Wpf.Controls
         {
             var type = typeof(TFrom);
 
-            if (!caches.TryGetValue(type, out var typeCahe))
+            if (!caches.TryGetValue(type, out var typeCache))
             {
-                typeCahe = new Dictionary<dynamic, dynamic>();
-                caches.Add(type, typeCahe);
+                typeCache = new Dictionary<dynamic, dynamic>();
+                caches.Add(type, typeCache);
             }
 
-            if (!typeCahe.TryGetValue(item, out var value))
+            if (!typeCache.TryGetValue(item, out var value))
             {
                 value = transform(item);
-                typeCahe.Add(item, value);
+                typeCache.Add(item, value);
             }
 
             return value;
@@ -33,12 +33,10 @@ namespace Dependencies.Viewer.Wpf.Controls
         {
             var type = typeof(TFrom);
 
-            if (!caches.TryGetValue(type, out var typeCahe))
-            {
+            if (!caches.TryGetValue(type, out var typeCache))
                 return Enumerable.Empty<TTo>();
-            }
 
-            return typeCahe.Values.OfType<TTo>();
+            return typeCache.Values.OfType<TTo>();
         }
     }
 }
