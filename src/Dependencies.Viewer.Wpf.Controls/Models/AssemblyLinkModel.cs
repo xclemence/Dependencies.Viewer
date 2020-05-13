@@ -1,7 +1,7 @@
 ﻿using System;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
-using Dependencies.Viewer.Wpf.Controls.Fwk;
+using Dependencies.Viewer.Wpf.Controls.Base;
 
 namespace Dependencies.Viewer.Wpf.Controls.Models
 {

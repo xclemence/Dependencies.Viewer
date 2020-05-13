@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Dependencies.Viewer.Wpf.Controls.Fwk
+namespace Dependencies.Viewer.Wpf.Controls.Base
 {
     public abstract class ObservableObject : INotifyPropertyChanged
     {

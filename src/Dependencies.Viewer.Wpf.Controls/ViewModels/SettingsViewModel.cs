@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows.Controls;
 using Dependencies.Analyser.Base;
 using Dependencies.Exchange.Base;
-using Dependencies.Viewer.Wpf.Controls.Fwk;
+using Dependencies.Viewer.Wpf.Controls.Base;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 {
@@ -20,6 +20,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             Settings = settingProvider;
             SettingUpdaterProviders = settingUpdaterProviders.ToList();
             SelectedSettingUpdaterProvider = SettingUpdaterProviders.FirstOrDefault();
+
         }
 
         private AnalyserProvider AnalyserProvider { get; }

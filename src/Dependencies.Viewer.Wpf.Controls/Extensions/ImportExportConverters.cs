@@ -57,11 +57,11 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
         {
             var dependenciesCache = dependencies.GroupBy(x => x.ShortName)
                                                 .Select(x => GetLoadedItem(x))
-                                                .Select(x => (target: x.ToInformationMOdel(), baseItem: x)).ToDictionary(x => x.baseItem.ShortName);
+                                                .Select(x => (target: x.ToInformationModel(), baseItem: x)).ToDictionary(x => x.baseItem.ShortName);
 
             var assemblyCache = dependencies.ToDictionary(x => x.Name, x => x);
 
-            var assembly = assemblyExchange.ToInformationMOdel();
+            var assembly = assemblyExchange.ToInformationModel();
 
             dependenciesCache.Add(assemblyExchange.ShortName, (assembly, assemblyExchange));
 
@@ -98,12 +98,12 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             if (assembliesCahes.TryGetValue(assembly.ShortName, out var item))
                 return CreateAssemblyLing(item.target, assemblyExchangeCache[assemblyFullName].Version, assemblyFullName);
 
-            return CreateAssemblyLing(assembly.ToInformationMOdel(), assembly.Version, assemblyFullName);
+            return CreateAssemblyLing(assembly.ToInformationModel(), assembly.Version, assemblyFullName);
         }
 
         private static AssemblyLink CreateAssemblyLing(AssemblyInformation assembly, string linkVersion, string linkFullName) => new AssemblyLink(assembly, linkVersion, linkFullName);
 
-        private static AssemblyInformation ToInformationMOdel(this AssemblyExchange assembly) => new AssemblyInformation(assembly.ShortName, assembly.Version, null)
+        private static AssemblyInformation ToInformationModel(this AssemblyExchange assembly) => new AssemblyInformation(assembly.ShortName, assembly.Version, null)
         {
             AssemblyName = assembly.Name,
             TargetFramework = assembly.TargetFramework,

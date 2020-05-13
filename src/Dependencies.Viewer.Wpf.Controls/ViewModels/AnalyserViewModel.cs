@@ -10,7 +10,7 @@ using Dependencies.Analyser.Base;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Exchange.Base;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
-using Dependencies.Viewer.Wpf.Controls.Fwk;
+using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Views;
 using Dragablz;
 using MaterialDesignThemes.Wpf;
@@ -219,7 +219,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         {
             var (assembly, dependencies) = selectedItem.AssemblyResult.ToExchangeModel();
 
-            await exportAssembly.ExportAsync(assembly, dependencies, null).ConfigureAwait(false);
+            await exportAssembly.ExportAsync(assembly, dependencies, CreateExchangeView).ConfigureAwait(false);
         }
 
         private async Task ImportAsync(IImportAssembly importAssembly)
@@ -235,7 +235,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private static async Task<T> CreateExchangeView<T>(UserControl view, IExchangeViewModel<T> viewModel)
         {
             var exchangeView = new ExchangeView();
-            var exchanegViewModel = new ExchangeViewModel<T>((x) => DialogHost.CloseDialogCommand.Execute(x, null), viewModel);
+            var exchanegViewModel = new ExchangeViewModel<T>((x) => CloseExchangeDialog(x), viewModel);
 
             exchangeView.DataContext = exchanegViewModel;
             exchangeView.Control.Content = view;
@@ -245,6 +245,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
             return (T)result;
         }
+
+        private static void CloseExchangeDialog<T>(T x) => new Action((() => DialogHost.CloseDialogCommand.Execute(x, null))).InvokeUiThread();
 
         private void OnDragOver(DragEventArgs e)
         {

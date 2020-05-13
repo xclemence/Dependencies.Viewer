@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:bindings="clr-namespace:Dependencies.Viewer.Wpf.Controls.Bindings"
              xmlns:base="clr-namespace:Dependencies.Analyser.Base;assembly=Dependencies.Analyser.Base"
+             xmlns:viewConverters="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewConverters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -73,8 +74,15 @@
                     </Style>
                 </Expander.Style>
                 <StackPanel  Margin="10 0 10 10">
-                    <ComboBox ItemsSource="{Binding SettingUpdaterProviders}" SelectedItem="{Binding SelectedSettingUpdaterProvider, Mode=TwoWay}" DisplayMemberPath="Name"/>
-                    <ContentControl Content="{Binding SelectedExchangeSettingsControl}" />
+                    <ItemsControl ItemsSource="{Binding SettingUpdaterProviders}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <GroupBox Header="{Binding Name}">
+                                    <ContentControl Content="{Binding ., Converter={x:Static viewConverters:SettingUpdaterViewConverter.Converter}, Mode=OneWay}" />
+                                </GroupBox>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </StackPanel>
             </Expander>
             <Border >

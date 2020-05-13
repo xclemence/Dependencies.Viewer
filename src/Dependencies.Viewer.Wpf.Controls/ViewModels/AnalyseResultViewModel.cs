@@ -2,7 +2,7 @@
 using System.Linq;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Exchange.Base.Models;
-using Dependencies.Viewer.Wpf.Controls.Fwk;
+using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.ViewModels.Errors;
 using Dependencies.Viewer.Wpf.Controls.ViewModels.References;
 
