@@ -4,5 +4,5 @@
 [![Ms Build][github-actions-badge]][github-actions]
 
 [github-actions]:                  https://github.com/xclemence/Dependencies.Viewer/actions
-[github-actions-badge]:            https://github.com/xclemence/Dependencies.Viewer/workflows/Ms%20Build/badge.svg?branch=master
+[github-actions-badge]:            https://github.com/xclemence/Dependencies.Viewer/workflows/build/badge.svg?branch=master
 
