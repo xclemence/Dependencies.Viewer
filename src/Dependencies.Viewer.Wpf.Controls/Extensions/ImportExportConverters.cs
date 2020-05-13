@@ -82,11 +82,11 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
 
         private static void AddLinkDependencies(this AssemblyInformation assembly,
                                                 AssemblyExchange assemblyExchange,
-                                                IDictionary<string, (AssemblyInformation target, AssemblyExchange baseItem)> assembliesCahes,
-                                                IDictionary<string, AssemblyExchange> assemblyExchangeCache) => assembly.Links.AddRange(assemblyExchange.AssembliesReferenced.Select(x => GetAsseblyLinkFromCache(x, assembliesCahes, assemblyExchangeCache)));
+                                                IDictionary<string, (AssemblyInformation target, AssemblyExchange baseItem)> assembliesCache,
+                                                IDictionary<string, AssemblyExchange> assemblyExchangeCache) => assembly.Links.AddRange(assemblyExchange.AssembliesReferenced.Select(x => GetAssemblyLinkFromCache(x, assembliesCache, assemblyExchangeCache)));
 
-        private static AssemblyLink GetAsseblyLinkFromCache(string assemblyFullName,
-                                                            IDictionary<string, (AssemblyInformation target, AssemblyExchange baseItem)> assembliesCahes,
+        private static AssemblyLink GetAssemblyLinkFromCache(string assemblyFullName,
+                                                            IDictionary<string, (AssemblyInformation target, AssemblyExchange baseItem)> assembliesCache,
                                                             IDictionary<string, AssemblyExchange> assemblyExchangeCache)
         {
             if (!assemblyExchangeCache.TryGetValue(assemblyFullName, out var assembly))
@@ -95,7 +95,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
                 return CreateAssemblyLing(assemblyName.ToInformationModel(), assemblyName.Version.ToString(), assemblyName.FullName);
             }
 
-            if (assembliesCahes.TryGetValue(assembly.ShortName, out var item))
+            if (assembliesCache.TryGetValue(assembly.ShortName, out var item))
                 return CreateAssemblyLing(item.target, assemblyExchangeCache[assemblyFullName].Version, assemblyFullName);
 
             return CreateAssemblyLing(assembly.ToInformationModel(), assembly.Version, assemblyFullName);

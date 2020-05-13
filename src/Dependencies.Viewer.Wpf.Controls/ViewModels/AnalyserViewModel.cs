@@ -235,9 +235,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private static async Task<T> CreateExchangeView<T>(UserControl view, IExchangeViewModel<T> viewModel)
         {
             var exchangeView = new ExchangeView();
-            var exchanegViewModel = new ExchangeViewModel<T>((x) => CloseExchangeDialog(x), viewModel);
+            var exchangeViewModel = new ExchangeViewModel<T>((x) => CloseExchangeDialog(x), viewModel);
 
-            exchangeView.DataContext = exchanegViewModel;
+            exchangeView.DataContext = exchangeViewModel;
             exchangeView.Control.Content = view;
             view.DataContext = viewModel;
 

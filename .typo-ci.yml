@@ -7,6 +7,8 @@ excluded_files:
   - "**/bin/**/*"
   - "**/obj/**/*"
   - ".typo-ci.yml"
+  - "**/*.svg"
+  - "**/.editorconfig"
 
 # Any typos we should ignore?
 excluded_words:
@@ -18,6 +20,10 @@ excluded_words:
   - RequerySuggested
   - Dragablz
   - xcopy
+  - KellermanSoftware
+  - TabablzControl
+  - winfx
+  - xce
 
 # Would you like filenames to also be spellchecked?
 spellcheck_filenames: true
