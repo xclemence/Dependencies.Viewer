@@ -1,4 +1,4 @@
-name: Ms Build
+name: Build
 
 on:
   push:
@@ -15,6 +15,11 @@ jobs:
       with:
         submodules: recursive
     
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.201
+  
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
 
@@ -26,6 +31,10 @@ jobs:
       run: msbuild /p:Configuration=Release
       working-directory: src
     
+    - name: Test
+      run: dotnet test --no-build --no-restore --configuration Release
+      working-directory: src
+  
     - uses: actions/upload-artifact@v2
       with:
         name: DependenciesViewer

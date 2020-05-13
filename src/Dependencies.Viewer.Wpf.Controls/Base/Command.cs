@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Dependencies.Viewer.Wpf.Controls.Fwk
+namespace Dependencies.Viewer.Wpf.Controls.Base
 {
     public class Command : Command<object>
     {

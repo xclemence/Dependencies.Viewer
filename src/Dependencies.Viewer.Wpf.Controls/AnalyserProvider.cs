@@ -29,7 +29,7 @@ namespace Dependencies.Viewer.Wpf.Controls
         public IAssemblyAnalyserFactory CurrentAnalyserFactory { get; set; }
 
         public IAssemblyAnalyser GetAnalyser() => CurrentAnalyserFactory?.GetAnalyser();
-        
+
         public void SetCurrentAnalyser(string code)
         {
             var factory = AnalyserFactories.FirstOrDefault(x => x.Code == code);

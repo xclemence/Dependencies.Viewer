@@ -5,7 +5,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
-using Dependencies.Viewer.Wpf.Controls.Fwk;
+using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
@@ -19,7 +19,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
         public ReferencesTreeViewModel()
         {
             OpenSubResultCommand = new Command<AssemblyLinkModel>(x => GlobalCommand.OpenAssembly(x.Assembly));
-            OpenParentReferenceCommand = new Command<AssemblyLinkModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(assemblyInformation, x.AssemblyLink));
+            OpenParentReferenceCommand = new Command<AssemblyLinkModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(assemblyInformation, x.AssemblyLink).ConfigureAwait(false));
         }
 
         public ICommand OpenSubResultCommand { get; }
@@ -36,7 +36,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
         }
 
         public FilterModel Filter { get; set; }
-        
+
         public ICollectionView FilteredLinks
         {
             get => filteredLinks;
@@ -82,7 +82,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             if (string.IsNullOrWhiteSpace(Filter.Name))
                 return true;
 
-            return link.Assembly.Name.ToUpper().Contains(Filter.Name.ToUpper());
+            return link.Assembly.Name.Contains(Filter.Name, System.StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

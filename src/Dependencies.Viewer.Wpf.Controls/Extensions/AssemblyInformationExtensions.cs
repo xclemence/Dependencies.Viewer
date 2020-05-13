@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dependencies.Analyser.Base;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
@@ -9,10 +8,9 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
 {
     public static class AssemblyInformationExtensions
     {
-
         public static string ToDisplayString(this AssemblyLink link, Func<AssemblyInformation, string> GetName)
         {
-            if(!link.Assembly.IsResolved && !string.IsNullOrEmpty(link.LinkVersion))
+            if (!link.Assembly.IsResolved && !string.IsNullOrEmpty(link.LinkVersion))
                 return $"{GetName(link.Assembly)} (v{link.LinkVersion})";
 
             if (!link.Assembly.IsResolved)

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Dependencies.Analyser.Base.Models;
-using Dependencies.Viewer.Wpf.Controls.Fwk;
+using Dependencies.Viewer.Wpf.Controls.Base;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
 {
@@ -17,7 +17,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
 
         protected ResultListViewModel()
         {
-            OpenResult = new Command<T>(async (x) => await OnOpenResultAsync(x));
+            OpenResult = new Command<T>(async (x) => await OnOpenResultAsync(x).ConfigureAwait(false));
             CopyToClipboardCommand = new Command(CopyAllToClipboard, () => displayResults?.Any() ?? false);
         }
 

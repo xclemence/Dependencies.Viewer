@@ -21,6 +21,22 @@
         <DataTemplate DataType="{x:Type vm:AnalyseResultViewModel}">
             <local:AnalyseResultView DataContext="{Binding }"/>
         </DataTemplate>
+
+        <Style x:Key="DynamicSubMenuItemStyle" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+            <Setter Property="Command" Value="{Binding Command}" />
+            <Setter Property="Header" Value="{Binding Title}" />
+            <Setter Property="MinWidth" Value="120" />
+        </Style>
+
+        <Style x:Key="DynamicMenuItemStyle" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+            <Setter Property="Visibility" Value="Visible"/>
+            <Style.Triggers>
+                <Trigger Property="HasItems" Value="false">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </UserControl.Resources>
 
     <msBehaviors:Interaction.Triggers>
@@ -70,28 +86,61 @@
                                         </StackPanel>
                                     </Grid>
                                 </MenuItem.Header>
+
                                 <MenuItem Header="Open File" Command="{Binding OpenFileCommand}">
                                     <MenuItem.Icon>
-                                        <materialDesign:PackIcon Kind="FileFindOutline" />
+                                        <materialDesign:PackIcon Kind="FileFindOutline"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Header="Import Analyse" Command="{Binding ImportAnalyseCommand}">
-                                    <MenuItem.Icon>
-                                        <materialDesign:PackIcon Kind="Import" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
+
                                 <Separator/>
-                                <MenuItem Header="Export Analyse" Command="{Binding ExportSelectedAnalyseCommand}">
+
+                                <MenuItem x:Name="exportMenuItem" Header="Export" ItemsSource="{Binding ExportCommands}"
+                                          ItemContainerStyle="{StaticResource DynamicSubMenuItemStyle}">
+                                    <MenuItem.Style>
+                                        <Style TargetType="MenuItem" BasedOn="{StaticResource DynamicMenuItemStyle}">
+                                            <Setter Property="IsEnabled" Value="true"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedItem}" Value="{x:Null}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </MenuItem.Style>
                                     <MenuItem.Icon>
-                                        <materialDesign:PackIcon Kind="Export" />
+                                        <materialDesign:PackIcon Kind="Export"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <Separator/>
+
+                                <MenuItem x:Name="importMenuItem" Header="Import" ItemsSource="{Binding ImportCommands}" Style="{StaticResource DynamicMenuItemStyle}"
+                                          ItemContainerStyle="{StaticResource DynamicSubMenuItemStyle}">
+                                    <MenuItem.Icon>
+                                        <materialDesign:PackIcon Kind="Import"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+                                <Separator>
+                                    <Separator.Style>
+                                        <Style TargetType="Separator" BasedOn="{StaticResource {x:Type Separator}}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=importMenuItem, Path=HasItems}" Value="true">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=exportMenuItem, Path=HasItems}" Value="true">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Separator.Style>
+                                </Separator>
+
                                 <MenuItem Header="Exit" Command="{Binding CloseCommand}">
                                     <MenuItem.Icon>
-                                        <materialDesign:PackIcon Kind="ExitToApp" />
+                                        <materialDesign:PackIcon Kind="ExitToApp"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
+
                             </MenuItem>
                         </Menu>
                     </dragablz:TabablzControl.HeaderPrefixContent>

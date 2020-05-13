@@ -1,5 +1,5 @@
 ﻿using Dependencies.Analyser.Base.Models;
-using Dependencies.Viewer.Wpf.Controls.Fwk;
+using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
@@ -7,9 +7,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
     public class ReferencesViewModel : ObservableObject
     {
         private AssemblyInformation assemblyInformation;
-        private FilterModel filter;
+        private readonly FilterModel filter;
 
-        private IReferencesDetailsViewModel[] resultViewModels;
+        private readonly IReferencesDetailsViewModel[] resultViewModels;
         private IReferencesDetailsViewModel selectedResultViewModels;
 
         public ReferencesViewModel()

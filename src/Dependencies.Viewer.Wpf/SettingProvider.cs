@@ -1,8 +1,8 @@
 ﻿using Dependencies.Analyser.Base;
 
-namespace Dependencies.Viewer.Wpf.App
+namespace Dependencies.Viewer.Wpf
 {
-    class SettingProvider : ISettingProvider
+    public class SettingProvider : ISettingProvider
     {
         public dynamic this[string code]
         {

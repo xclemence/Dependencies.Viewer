@@ -7,9 +7,6 @@ namespace Dependencies.Viewer.Wpf.Controls.Views
     /// </summary>
     public partial class ResultListView : UserControl
     {
-        public ResultListView()
-        {
-            InitializeComponent();
-        }
+        public ResultListView() => InitializeComponent();
     }
 }

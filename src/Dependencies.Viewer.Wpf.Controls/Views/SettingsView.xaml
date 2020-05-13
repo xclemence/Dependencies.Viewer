@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:bindings="clr-namespace:Dependencies.Viewer.Wpf.Controls.Bindings"
              xmlns:base="clr-namespace:Dependencies.Analyser.Base;assembly=Dependencies.Analyser.Base"
+             xmlns:viewConverters="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewConverters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -23,31 +24,79 @@
             <Setter Property="VerticalAlignment" Value="Top"/>
         </Style>
 
-        <Style TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
-            <Setter Property="DockPanel.Dock" Value="Top"/>
+        <Style TargetType="Expander" BasedOn="{StaticResource {x:Type Expander}}">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+
+        <Style x:Key="SettingSeparatorStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource MaterialDesignDivider}"/>
+            <Setter Property="Height" Value="1"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
         </Style>
 
     </UserControl.Resources>
-    <DockPanel Width="300">
-        <GroupBox Header="Analyser">
-            <StackPanel>
-                <ComboBox
-                      ItemsSource="{Binding AnalyserFactories}" 
-                      SelectedItem="{Binding SelectedAnalyserFactory, Mode=TwoWay}" 
-                      DisplayMemberPath="Name"/>
-            </StackPanel>
-        </GroupBox>
-        <GroupBox Header="Managed">
-            <StackPanel>
-                <CheckBox Margin="0 10" Content="Scan Global Managed Assemblies" IsChecked="{bindings:BindingIndex Path=Settings[], KeyIndex={x:Static base:SettingKeys.ScanGlobalManaged}}"/>
-                <CheckBox Margin="0 10" Content="Scan Cli/C++ References" IsChecked="{bindings:BindingIndex Path=Settings[], KeyIndex={x:Static base:SettingKeys.ScanCliReferences}}"/>
-                <CheckBox Margin="0 10" Content="Scan Dll Imports" IsChecked="{bindings:BindingIndex Path=Settings[], KeyIndex={x:Static base:SettingKeys.ScanDllImport}}"/>
-            </StackPanel>
-        </GroupBox>
-        <GroupBox Header="Native">
-            <StackPanel>
-                <CheckBox Margin="0 10" Content="Scan Global Native Assemblies" IsChecked="{bindings:BindingIndex Path=Settings[], KeyIndex={x:Static base:SettingKeys.ScanGlobalNative}}"/>
-            </StackPanel>
-        </GroupBox>
-    </DockPanel>
+    <ScrollViewer Width="400" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="0 0 0 10">
+            <Expander Header="Analyser" IsExpanded="True">
+                <StackPanel Margin="10 0 10 10">
+                    <GroupBox Header="Selected Analyser">
+                        <StackPanel>
+                            <ComboBox ItemsSource="{Binding AnalyserFactories}" SelectedItem="{Binding SelectedAnalyserFactory, Mode=TwoWay}" DisplayMemberPath="Name"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="Managed Assemblies">
+                        <StackPanel>
+                            <CheckBox Content="Scan Global Managed Assemblies" IsChecked="{bindings:BindingIndex Path=Settings[], KeyIndex={x:Static base:SettingKeys.ScanGlobalManaged}}"/>
+                            <CheckBox Content="Scan Cli/C++ References" IsChecked="{bindings:BindingIndex Path=Settings[], KeyIndex={x:Static base:SettingKeys.ScanCliReferences}}"/>
+                            <CheckBox Content="Scan Dll Imports" IsChecked="{bindings:BindingIndex Path=Settings[], KeyIndex={x:Static base:SettingKeys.ScanDllImport}}"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Native Assemblies">
+                        <StackPanel>
+                            <CheckBox Content="Scan Global Native Assemblies" IsChecked="{bindings:BindingIndex Path=Settings[], KeyIndex={x:Static base:SettingKeys.ScanGlobalNative}}"/>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </Expander>
+            <Border Style="{StaticResource SettingSeparatorStyle}" />
+            <Expander Header="Import / Export" >
+                <Expander.Style>
+                    <Style TargetType="Expander" BasedOn="{StaticResource {x:Type Expander}}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SettingUpdaterProviders.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Expander.Style>
+                <StackPanel  Margin="10 0 10 10">
+                    <ItemsControl ItemsSource="{Binding SettingUpdaterProviders}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <GroupBox Header="{Binding Name}">
+                                    <ContentControl Content="{Binding ., Converter={x:Static viewConverters:SettingUpdaterViewConverter.Converter}, Mode=OneWay}" />
+                                </GroupBox>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Expander>
+            <Border >
+                <Border.Style>
+                    <Style TargetType="Border" BasedOn="{StaticResource SettingSeparatorStyle}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SettingUpdaterProviders.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

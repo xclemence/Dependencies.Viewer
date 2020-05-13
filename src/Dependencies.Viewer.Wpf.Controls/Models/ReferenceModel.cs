@@ -16,10 +16,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
     {
         private int? allReferencesCount;
 
-        public ReferenceModel(AssemblyLink link)
-        {
-            Link = link ?? throw new ArgumentNullException(nameof(link));
-        }
+        public ReferenceModel(AssemblyLink link) => Link = link ?? throw new ArgumentNullException(nameof(link));
 
         public int? AllReferencesCount
         {

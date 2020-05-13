@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Data;
 
@@ -28,7 +29,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Bindings
 
             field = value;
 
-            base.Path = path == null ? null : new PropertyPath(path.Replace("[]", $"[{keyIndex}]"), null);
+            base.Path = path == null ? null : new PropertyPath(path.Replace("[]", $"[{keyIndex}]", StringComparison.InvariantCulture), null);
             return true;
         }
     }

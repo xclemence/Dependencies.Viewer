@@ -17,7 +17,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Behaviors
 
         private void AssociatedObjectPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            TreeViewItem treeViewItem = VisualUpwardSearch(e.OriginalSource as DependencyObject);
+            var treeViewItem = VisualUpwardSearch(e.OriginalSource as DependencyObject);
 
             if (treeViewItem != null)
             {

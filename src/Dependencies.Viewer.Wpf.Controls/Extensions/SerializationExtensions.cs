@@ -11,12 +11,10 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
         {
             return Task.Run(() =>
             {
-                using (var xmlReader = XmlReader.Create(xmlFile.FullName))
-                {
-                    var serializer = new XmlSerializer(typeof(T));
-                    var resultObject = (T)serializer.Deserialize(xmlReader);
-                    return resultObject;
-                }
+                using var xmlReader = XmlReader.Create(xmlFile.FullName);
+                var serializer = new XmlSerializer(typeof(T));
+                var resultObject = (T)serializer.Deserialize(xmlReader);
+                return resultObject;
             });
         }
 
@@ -24,11 +22,9 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
         {
             return Task.Run(() =>
             {
-                using (var writer = XmlWriter.Create(outFile))
-                {
-                    var serializer = new XmlSerializer(typeof(T));
-                    serializer.Serialize(writer, obj);
-                }
+                using var writer = XmlWriter.Create(outFile);
+                var serializer = new XmlSerializer(typeof(T));
+                serializer.Serialize(writer, obj);
             });
         }
     }

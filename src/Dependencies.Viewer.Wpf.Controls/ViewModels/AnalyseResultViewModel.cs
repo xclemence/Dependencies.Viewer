@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Dependencies.Analyser.Base.Models;
-using Dependencies.Viewer.Wpf.Controls.Fwk;
+using Dependencies.Exchange.Base.Models;
+using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.ViewModels.Errors;
 using Dependencies.Viewer.Wpf.Controls.ViewModels.References;
 
@@ -11,7 +13,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private AssemblyInformation assemblyResult;
         private bool isErrorExpended;
 
-        public AnalyseResultViewModel(LoadingErrorViewModel errorLoadingViewModel, 
+        public AnalyseResultViewModel(LoadingErrorViewModel errorLoadingViewModel,
                                       MismatchVersionViewModel mismatchVersionViewModel,
                                       ReferencesViewModel analyseResultViewModel,
                                       AssemblyStatisticsViewModel assemblyStatisticsViewModel)
@@ -55,5 +57,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         public bool HasError => ErrorLoadingViewModel.DisplayResults?.Any() ?? false;
 
         public bool HasMismatch => MismatchVersionViewModel.DisplayResults?.Any() ?? false;
+
+        internal AssemblyExchange ToAssemblyExchange() => throw new NotImplementedException();
     }
 }

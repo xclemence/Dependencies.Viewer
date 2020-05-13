@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
-using Dependencies.Viewer.Wpf.Controls.Fwk;
+using Dependencies.Viewer.Wpf.Controls.Base;
 
 namespace Dependencies.Viewer.Wpf.Controls.Models
 {
     public class AssemblyInformationModel : ObservableObject
     {
-        public bool isVisible;
+        private bool isVisible;
         private IList<AssemblyLinkModel> links;
         private readonly Predicate<object> predicate;
 
