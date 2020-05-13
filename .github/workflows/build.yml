@@ -32,7 +32,7 @@ jobs:
       working-directory: src
     
     - name: Test
-      run: dotnet test --no-build --no-restore
+      run: dotnet test --no-build --no-restore --configuration Release
       working-directory: src
   
     - uses: actions/upload-artifact@v2
