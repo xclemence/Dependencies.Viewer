@@ -24,6 +24,8 @@ excluded_words:
   - TabablzControl
   - winfx
   - xce
+  - dotnetcore
+
 
 # Would you like filenames to also be spellchecked?
 spellcheck_filenames: true
