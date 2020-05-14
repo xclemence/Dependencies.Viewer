@@ -15,6 +15,7 @@ using Dependencies.Viewer.Wpf.Controls.Views;
 using Dragablz;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
+using Dependencies.Viewer.Wpf.Controls.ViewModels.Settings;
 
 public class ExchangeCommand
 {

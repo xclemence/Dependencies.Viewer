@@ -1,8 +1,9 @@
 ﻿using Dependencies.Analyser.Base;
+using Dependencies.Viewer.Wpf.Controls;
 
 namespace Dependencies.Viewer.Wpf
 {
-    public class SettingProvider : ISettingProvider
+    public class SettingProvider
     {
         public dynamic this[string code]
         {
@@ -22,4 +23,18 @@ namespace Dependencies.Viewer.Wpf
             Properties.Settings.Default.Save();
         }
     }
+
+    public class AnalyserSettingProvider : SettingProvider, IAnalyserSettingProvider { }
+
+    public class ApplicationSettingProvider : SettingProvider, IApplicationSettingProvider
+    {
+        private const string SelectedThemeKey = "SelectedTheme";
+
+        public string SelectedTheme
+        {
+            get => this[SelectedThemeKey];
+            set => this[SelectedThemeKey] = value;
+        }
+    }
+
 }

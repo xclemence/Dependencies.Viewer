@@ -75,7 +75,7 @@
 
                     <dragablz:TabablzControl.HeaderPrefixContent >
                         <Menu Focusable="False" DockPanel.Dock="Left" SnapsToDevicePixels="True" 
-                                  Background="{StaticResource AccentBaseColorBrush}"
+                                  Background="{DynamicResource AccentBaseColorBrush}"
                                   Foreground="White">
                             <MenuItem Focusable="False" Height="40">
                                 <MenuItem.Header>

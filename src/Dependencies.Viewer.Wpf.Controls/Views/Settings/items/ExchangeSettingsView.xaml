@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Dependencies.Viewer.Wpf.Controls.Views.Settings.ExchangeSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewConverters="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewConverters">
+    <StackPanel>
+        <StackPanel.Style>
+            <Style TargetType="StackPanel" >
+                <Setter Property="Visibility" Value="Visible"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding SettingUpdaterProviders.Count}" Value="0">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </StackPanel.Style>
+        <Expander Header="Import / Export" >
+            <StackPanel  Margin="10 0 10 10">
+                <ItemsControl ItemsSource="{Binding SettingUpdaterProviders}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <GroupBox Header="{Binding Name}">
+                                <ContentControl Content="{Binding ., Converter={x:Static viewConverters:SettingUpdaterViewConverter.Converter}, Mode=OneWay}" />
+                            </GroupBox>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Expander>
+        <Border Style="{DynamicResource SettingSeparatorStyle}" />
+    </StackPanel>
+</UserControl>

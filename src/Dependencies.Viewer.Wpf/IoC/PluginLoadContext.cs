@@ -23,7 +23,7 @@ namespace Dependencies.Viewer.Wpf
             return assembly ?? LoadOnPluginContext(assemblyName);
         }
 
-        private Assembly LoadOnDefaultContext(AssemblyName assemblyName)
+        private static Assembly LoadOnDefaultContext(AssemblyName assemblyName)
         {
             try
             {

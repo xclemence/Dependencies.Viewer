@@ -61,6 +61,12 @@
     <Resource Include="Application.ico" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Themes\DarkTheme.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="xcopy &quot;$(SolutionDir)..\plugins\Analyser\src\Dependencies.Analyser.Mono\bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Analyser\Mono\&quot; /Y /s" />
     <Exec Command="xcopy &quot;$(SolutionDir)..\plugins\Analyser\src\Dependencies.Analyser.Microsoft\bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Analyser\Microsoft\&quot; /Y /s" />
