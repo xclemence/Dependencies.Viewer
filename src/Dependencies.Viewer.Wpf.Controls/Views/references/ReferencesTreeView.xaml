@@ -26,16 +26,16 @@
                     <Setter Property="behaviors:TreeItemSelectionBehavior.Attach" Value="True"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Assembly.IsLocalAssembly}" Value="true">
-                            <Setter Property="Background" Value="LightBlue"/>
+                            <Setter Property="Background" Value="{DynamicResource DV.PrimaryColorBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Assembly.IsLocalAssembly}" Value="false">
-                            <Setter Property="Background" Value="LightGray"/>
+                            <Setter Property="Background" Value="{DynamicResource DV.GlobalColorBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Assembly.IsNative}" Value="true">
-                            <Setter Property="Background" Value="LightGreen"/>
+                            <Setter Property="Background" Value="{DynamicResource DV.SecondaryColorBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Assembly.IsResolved}" Value="false">
-                            <Setter Property="Background" Value="Red"/>
+                            <Setter Property="Background" Value="{DynamicResource DV.ErrorColorBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding AssemblyModel.IsVisible}" Value="false">
                             <Setter Property="Visibility" Value="Collapsed"/>

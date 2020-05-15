@@ -9,13 +9,13 @@ using System.Windows.Input;
 using Dependencies.Analyser.Base;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Exchange.Base;
-using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Base;
+using Dependencies.Viewer.Wpf.Controls.Extensions;
+using Dependencies.Viewer.Wpf.Controls.ViewModels.Settings;
 using Dependencies.Viewer.Wpf.Controls.Views;
 using Dragablz;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
-using Dependencies.Viewer.Wpf.Controls.ViewModels.Settings;
 
 public class ExchangeCommand
 {
@@ -242,12 +242,12 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             exchangeView.Control.Content = view;
             view.DataContext = viewModel;
 
-            var result = await DialogHost.Show(exchangeView).ConfigureAwait(false);
+            var result = await DialogHost.Show(exchangeView).ConfigureAwait(false) ?? default(T);
 
             return (T)result;
         }
 
-        private static void CloseExchangeDialog<T>(T x) => new Action((() => DialogHost.CloseDialogCommand.Execute(x, null))).InvokeUiThread();
+        private static void CloseExchangeDialog<T>(T x) => new Action(() => DialogHost.CloseDialogCommand.Execute(x, null)).InvokeUiThread();
 
         private void OnDragOver(DragEventArgs e)
         {

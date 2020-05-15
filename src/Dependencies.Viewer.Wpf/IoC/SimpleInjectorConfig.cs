@@ -10,7 +10,7 @@ using Dragablz;
 using MaterialDesignThemes.Wpf;
 using SimpleInjector;
 
-namespace Dependencies.Viewer.Wpf
+namespace Dependencies.Viewer.Wpf.IoC
 {
     internal static class SimpleInjectorConfig
     {

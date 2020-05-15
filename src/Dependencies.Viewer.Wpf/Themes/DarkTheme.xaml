@@ -1,19 +1,27 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
         <!-- MahApps -->
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Steel.xaml" />
 
         <!-- Material Design -->
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.bluegrey.xaml" />
+        <ResourceDictionary Source="MaterialDesignTheme.Dark.xaml" />
+
+        <ResourceDictionary Source="Colors/MaterialDesignColor.DarkGrey.xaml" />
+        
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
 
-        
+        <ResourceDictionary Source="Colors/GenericColors.xaml" />
+
     </ResourceDictionary.MergedDictionaries>
 
+    <Color x:Key="DV.PrimaryColor">#2C5AA0</Color>
+    <Color x:Key="DV.SecondaryColor">#447821</Color>
+    <Color x:Key="DV.ThirdColor">DarkSalmon</Color>
+
+    <Color x:Key="DV.ErrorColor">Red</Color>
+    <Color x:Key="DV.GlobalColor">DimGray</Color>
+    <Color x:Key="DV.ApplicationHeaderColor">#2c2c2c</Color>
 
 </ResourceDictionary>

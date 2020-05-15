@@ -33,7 +33,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Settings
             }
         }
 
-        private void UpdateTheme(string value) 
+        private void UpdateTheme(string value)
         {
             themeManager.ApplyTheme(value);
             Settings.SelectedTheme = value;

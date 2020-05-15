@@ -11,6 +11,7 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <Platforms>x64</Platforms>
+    <AssemblyName>Dependencies Viewer</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -59,12 +60,6 @@
 
   <ItemGroup>
     <Resource Include="Application.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="Themes\DarkTheme.xaml">
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

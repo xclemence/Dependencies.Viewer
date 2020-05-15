@@ -2,7 +2,7 @@
 using Dependencies.Exchange.Base;
 using SimpleInjector;
 
-namespace Dependencies.Viewer.Wpf
+namespace Dependencies.Viewer.Wpf.IoC
 {
     public class SimpleInjectorExchangeServiceFactory<T> : IExchangeServiceFactory<T>
         where T : class

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Dependencies.Viewer.Wpf.Controls;
+using Dependencies.Viewer.Wpf.IoC;
 using Dependencies.Viewer.Wpf.Properties;
 
 namespace Dependencies.Viewer.Wpf
@@ -10,10 +11,7 @@ namespace Dependencies.Viewer.Wpf
     /// </summary>
     public partial class App
     {
-        public App()
-        {
-            SimpleInjectorConfig.Config();
-        }
+        public App() => SimpleInjectorConfig.Config();
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
@@ -27,12 +25,12 @@ namespace Dependencies.Viewer.Wpf
             MainWindow.Show();
         }
 
-        private void ConfigureTheme()
+        private static void ConfigureTheme()
         {
             var themeManager = SimpleInjectorConfig.Container.GetInstance<ThemeManager>();
 
-            themeManager.AddTheme("Light", new Uri($"pack://application:,,,/Dependencies.Viewer.Wpf;component/Themes/LightTheme.xaml"));
-            themeManager.AddTheme("Dark", new Uri($"pack://application:,,,/Dependencies.Viewer.Wpf;component/Themes/DarkTheme.xaml"));
+            themeManager.AddTheme("Light", new Uri($"pack://application:,,,/Dependencies Viewer;component/Themes/LightTheme.xaml"));
+            themeManager.AddTheme("Dark", new Uri($"pack://application:,,,/Dependencies Viewer;component/Themes/DarkTheme.xaml"));
 
             themeManager.ApplyTheme(Settings.Default.SelectedTheme);
         }

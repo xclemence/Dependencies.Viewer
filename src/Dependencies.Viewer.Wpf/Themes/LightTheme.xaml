@@ -1,14 +1,28 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    >
 
     <ResourceDictionary.MergedDictionaries>
         <!-- MahApps -->
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Steel.xaml" />
 
         <!-- Material Design -->
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+        
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.bluegrey.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
 
+        <ResourceDictionary Source="Colors/GenericColors.xaml" />
+
     </ResourceDictionary.MergedDictionaries>
+
+    <Color x:Key="DV.PrimaryColor">LightBlue</Color>
+    <Color x:Key="DV.SecondaryColor">LightGreen</Color>
+    <Color x:Key="DV.ThirdColor">LightSalmon</Color>
+
+    <Color x:Key="DV.ErrorColor">LightGray</Color>
+    <Color x:Key="DV.GlobalColor">LightGray</Color>
+
+    <Color x:Key="DV.ApplicationHeaderColor">#42565f</Color>
 
 </ResourceDictionary>

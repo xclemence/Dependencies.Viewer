@@ -29,28 +29,28 @@
     </UserControl.Resources>
     <UniformGrid Columns="2" Rows="2">
 
-        <materialDesign:Card Background="LightBlue">
+        <materialDesign:Card Background="{DynamicResource DV.PrimaryColorBrush}">
             <DockPanel>
                 <TextBlock Text="Managed assembly"/>
                 <TextBox Text="{Binding ManagedAssemblyCount, Mode=OneWay}"/>
             </DockPanel>
         </materialDesign:Card>
 
-        <materialDesign:Card Background="LightGray">
+        <materialDesign:Card Background="{DynamicResource DV.GlobalColorBrush}">
             <DockPanel>
                 <TextBlock Text="Direct referenced dlls"/>
                 <TextBox Text="{Binding AssemblyInformation.Links.Count, Mode=OneWay}"/>
             </DockPanel>
         </materialDesign:Card>
 
-        <materialDesign:Card Background="LightGreen">
+        <materialDesign:Card Background="{DynamicResource DV.SecondaryColorBrush}">
             <DockPanel>
                 <TextBlock Text="Native assembly"/>
                 <TextBox Text="{Binding NativeAssemblyCount, Mode=OneWay}"/>
             </DockPanel>
         </materialDesign:Card>
 
-        <materialDesign:Card Background="LightGray">
+        <materialDesign:Card Background="{DynamicResource DV.GlobalColorBrush}">
             <DockPanel>
                 <TextBlock Text="All references"/>
                 <TextBox Text="{Binding AllLinksCount, Mode=OneWay}"/>

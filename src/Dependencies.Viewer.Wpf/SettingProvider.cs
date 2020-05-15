@@ -1,8 +1,10 @@
-﻿using Dependencies.Analyser.Base;
+﻿using System.Diagnostics.CodeAnalysis;
+using Dependencies.Analyser.Base;
 using Dependencies.Viewer.Wpf.Controls;
 
 namespace Dependencies.Viewer.Wpf
 {
+    [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification= "Mask usage of application properties")]
     public class SettingProvider
     {
         public dynamic this[string code]

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Dependencies.Viewer.Wpf.Controls
+﻿namespace Dependencies.Viewer.Wpf.Controls
 {
     public interface IApplicationSettingProvider
     {

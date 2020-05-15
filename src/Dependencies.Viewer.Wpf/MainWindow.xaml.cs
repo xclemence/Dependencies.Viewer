@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Dependencies.Viewer.Wpf.Controls.ViewModels;
+using Dependencies.Viewer.Wpf.IoC;
 
 namespace Dependencies.Viewer.Wpf
 {

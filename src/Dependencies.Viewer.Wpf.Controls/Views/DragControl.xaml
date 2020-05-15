@@ -16,7 +16,7 @@
     </UserControl.Resources>
     <Grid >
         <Grid Background="Gray" Opacity="0.5"/>
-        <Rectangle Stroke="White" StrokeThickness="5" Margin="5" StrokeDashArray="4 4" SnapsToDevicePixels="True" Stretch="Fill" RadiusX="2" RadiusY="2"/>
-        <TextBlock Text="Drag and drop file here" />
+        <Rectangle Stroke="{DynamicResource MaterialDesignBodyLight}" StrokeThickness="5" Margin="5" StrokeDashArray="4 4" SnapsToDevicePixels="True" Stretch="Fill" RadiusX="2" RadiusY="2"/>
+        <TextBlock Text="Drag and drop file here" Foreground="{DynamicResource MaterialDesignBodyLight}"/>
     </Grid>
 </UserControl>

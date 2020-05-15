@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.Loader;
 
-namespace Dependencies.Viewer.Wpf
+namespace Dependencies.Viewer.Wpf.IoC
 {
     internal class PluginLoadContext : AssemblyLoadContext
     {
