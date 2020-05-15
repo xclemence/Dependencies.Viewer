@@ -2,7 +2,7 @@
 using Dependencies.Analyser.Base;
 using SimpleInjector;
 
-namespace Dependencies.Viewer.Wpf
+namespace Dependencies.Viewer.Wpf.IoC
 {
     public class SimpleInjectorAnalyseServiceFactory<T> : IAnalyserServiceFactory<T>
         where T : class

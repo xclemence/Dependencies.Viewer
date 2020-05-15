@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Dependencies.Viewer.Wpf.Controls.Views.Settings.AnalyserSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:base="clr-namespace:Dependencies.Analyser.Base;assembly=Dependencies.Analyser.Base"
+             xmlns:bindings="clr-namespace:Dependencies.Viewer.Wpf.Controls.Bindings">
+    <StackPanel Margin="0">
+        <Expander Header="Analyser">
+            <StackPanel Margin="10 0 10 10">
+                <GroupBox Header="Selected Analyser">
+                    <StackPanel>
+                        <ComboBox ItemsSource="{Binding AnalyserFactories}" SelectedItem="{Binding SelectedAnalyserFactory, Mode=TwoWay}" DisplayMemberPath="Name"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Managed Assemblies">
+                    <StackPanel>
+                        <CheckBox Content="Scan Global Managed Assemblies" IsChecked="{bindings:BindingIndex Path=Settings[], KeyIndex={x:Static base:SettingKeys.ScanGlobalManaged}}"/>
+                        <CheckBox Content="Scan Cli/C++ References" IsChecked="{bindings:BindingIndex Path=Settings[], KeyIndex={x:Static base:SettingKeys.ScanCliReferences}}"/>
+                        <CheckBox Content="Scan Dll Imports" IsChecked="{bindings:BindingIndex Path=Settings[], KeyIndex={x:Static base:SettingKeys.ScanDllImport}}"/>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Native Assemblies">
+                    <StackPanel>
+                        <CheckBox Content="Scan Global Native Assemblies" IsChecked="{bindings:BindingIndex Path=Settings[], KeyIndex={x:Static base:SettingKeys.ScanGlobalNative}}"/>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </Expander>
+        <Border Style="{DynamicResource SettingSeparatorStyle}" />
+    </StackPanel>
+</UserControl>

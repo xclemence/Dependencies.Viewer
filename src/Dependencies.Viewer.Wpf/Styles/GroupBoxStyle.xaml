@@ -35,4 +35,11 @@
         <Setter Property="Margin" Value="9"/>
     </Style>
 
+
+    <!--<Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type GroupBox}}">
+        <Style.Resources>
+            
+        </Style.Resources>
+    </Style>-->
+
 </ResourceDictionary>

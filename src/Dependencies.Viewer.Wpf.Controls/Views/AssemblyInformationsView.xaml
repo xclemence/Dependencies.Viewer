@@ -64,16 +64,16 @@
                     <TextBlock.Style>
                         <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                             <Setter Property="Text" Value="Local"/>
-                            <Setter Property="Background" Value="LightGreen"/>
+                            <Setter Property="Background" Value="{DynamicResource DV.SecondaryColorBrush}"/>
                             <Setter Property="TextAlignment" Value="Center"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsLocalAssembly}" Value="false">
                                     <Setter Property="Text" Value="GAC"/>
-                                    <Setter Property="Background" Value="LightBlue"/>
+                                    <Setter Property="Background" Value="{DynamicResource DV.PrimaryColorBrush}"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsResolved}" Value="false">
                                     <Setter Property="Text" Value="Not found"/>
-                                    <Setter Property="Background" Value="Red"/>
+                                    <Setter Property="Background" Value="{DynamicResource DV.ErrorColorBrush}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -92,12 +92,12 @@
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding TargetProcessor}" Value="x64">
                                     <Setter Property="Text" Value="x64"/>
-                                    <Setter Property="Background" Value="LightBlue"/>
+                                    <Setter Property="Background" Value="{DynamicResource DV.PrimaryColorBrush}"/>
                                 </DataTrigger>
 
                                 <DataTrigger Binding="{Binding TargetProcessor}" Value="AnyCpu">
                                     <Setter Property="Text" Value="Any CPU"/>
-                                    <Setter Property="Background" Value="LightGreen"/>
+                                    <Setter Property="Background" Value="{DynamicResource DV.SecondaryColorBrush}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -112,11 +112,11 @@
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsDebug}" Value="true">
                                     <Setter Property="Text" Value="Debug"/>
-                                    <Setter Property="Background" Value="LightSalmon"/>
+                                    <Setter Property="Background" Value="{DynamicResource DV.ThirdColorBrush}"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsDebug}" Value="false">
                                     <Setter Property="Text" Value="Release"/>
-                                    <Setter Property="Background" Value="LightGreen"/>
+                                    <Setter Property="Background" Value="{DynamicResource DV.SecondaryColorBrush}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -127,12 +127,12 @@
                     <TextBlock.Style>
                         <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                             <Setter Property="Text" Value="Managed"/>
-                            <Setter Property="Background" Value="LightBlue"/>
+                            <Setter Property="Background" Value="{DynamicResource DV.PrimaryColorBrush}"/>
                             <Setter Property="TextAlignment" Value="Center"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsNative}" Value="true">
                                     <Setter Property="Text" Value="Native"/>
-                                    <Setter Property="Background" Value="LightGreen"/>
+                                    <Setter Property="Background" Value="{DynamicResource DV.SecondaryColorBrush}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -142,12 +142,12 @@
                     <TextBlock.Style>
                         <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                             <Setter Property="Text" Value="Library"/>
-                            <Setter Property="Background" Value="LightGreen"/>
+                            <Setter Property="Background" Value="{DynamicResource DV.SecondaryColorBrush}"/>
                             <Setter Property="TextAlignment" Value="Center"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding HasEntryPoint}" Value="true">
                                     <Setter Property="Text" Value="Main"/>
-                                    <Setter Property="Background" Value="LightBlue"/>
+                                    <Setter Property="Background" Value="{DynamicResource DV.PrimaryColorBrush}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

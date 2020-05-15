@@ -10,7 +10,7 @@ using Dragablz;
 using MaterialDesignThemes.Wpf;
 using SimpleInjector;
 
-namespace Dependencies.Viewer.Wpf
+namespace Dependencies.Viewer.Wpf.IoC
 {
     internal static class SimpleInjectorConfig
     {
@@ -22,7 +22,8 @@ namespace Dependencies.Viewer.Wpf
             Container = new Container();
 
             Container.Register<IInterTabClient, KeepOneInterLayoutClient>();
-            Container.Register<ISettingProvider, SettingProvider>(Lifestyle.Singleton);
+            Container.Register<IAnalyserSettingProvider, AnalyserSettingProvider>(Lifestyle.Singleton);
+            Container.Register<IApplicationSettingProvider, ApplicationSettingProvider>(Lifestyle.Singleton);
             Container.Register<INativeAnalyser, NativeAnalyser>(Lifestyle.Transient);
             Container.RegisterInstance<ISnackbarMessageQueue>(new SnackbarMessageQueue());
 
@@ -30,6 +31,7 @@ namespace Dependencies.Viewer.Wpf
             Container.Register(typeof(IAnalyserServiceFactory<>), typeof(SimpleInjectorAnalyseServiceFactory<>), Lifestyle.Singleton);
             Container.Register(typeof(IExchangeServiceFactory<>), typeof(SimpleInjectorExchangeServiceFactory<>), Lifestyle.Singleton);
             Container.Register<AnalyserProvider>(Lifestyle.Singleton);
+            Container.Register<ThemeManager>(Lifestyle.Singleton);
 
             Container.RegisterAnalyser();
             Container.RegisterExchange();

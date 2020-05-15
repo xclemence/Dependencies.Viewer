@@ -6,8 +6,8 @@ using System.Windows.Data;
 using System.Windows.Input;
 using Dependencies.Analyser.Base.Extensions;
 using Dependencies.Analyser.Base.Models;
-using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Base;
+using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References

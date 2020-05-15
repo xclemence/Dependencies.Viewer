@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Dependencies.Viewer.Wpf.IoC;
 
 namespace Dependencies.Viewer.Wpf.Extensions
 {

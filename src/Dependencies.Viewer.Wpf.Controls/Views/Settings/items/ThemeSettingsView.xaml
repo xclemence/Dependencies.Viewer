@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="Dependencies.Viewer.Wpf.Controls.Views.Settings.ThemeSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Margin="0">
+        <Expander Header="Themes">
+            <StackPanel Margin="10 0 10 10">
+                <GroupBox Header="Selected Theme">
+                    <StackPanel>
+                        <ComboBox ItemsSource="{Binding Themes}" SelectedItem="{Binding SelectedTheme, Mode=TwoWay}"/>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </Expander>
+        <Border Style="{DynamicResource SettingSeparatorStyle}" />
+    </StackPanel>
+</UserControl>

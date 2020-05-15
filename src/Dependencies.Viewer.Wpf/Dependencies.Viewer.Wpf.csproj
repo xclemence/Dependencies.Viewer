@@ -11,6 +11,7 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <Platforms>x64</Platforms>
+    <AssemblyName>Dependencies Viewer</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

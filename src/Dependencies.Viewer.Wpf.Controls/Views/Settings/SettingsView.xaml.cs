@@ -1,4 +1,4 @@
-﻿namespace Dependencies.Viewer.Wpf.Controls.Views
+﻿namespace Dependencies.Viewer.Wpf.Controls.Views.Settings
 {
     /// <summary>
     /// Interaction logic for SettingsView.xaml

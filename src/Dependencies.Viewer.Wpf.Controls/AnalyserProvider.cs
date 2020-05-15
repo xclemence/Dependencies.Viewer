@@ -6,7 +6,7 @@ namespace Dependencies.Viewer.Wpf.Controls
 {
     public class AnalyserProvider
     {
-        public AnalyserProvider(IEnumerable<IAssemblyAnalyserFactory> analyserFactories, ISettingProvider settingProvider)
+        public AnalyserProvider(IEnumerable<IAssemblyAnalyserFactory> analyserFactories, IAnalyserSettingProvider settingProvider)
         {
             AnalyserFactories = analyserFactories.ToList();
 
