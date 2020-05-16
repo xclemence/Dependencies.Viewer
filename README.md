@@ -11,7 +11,7 @@ Dependencies Viewer require [**.Net Core 3.1 runtime**](https://dotnet.microsoft
 
 <img src="doc/images/viewer-dark.png"/>
 
-# How to analyse assembly 
+## How to analyse assembly 
 - File-> open File
 - Drag and drop assembly on Dependencies Viewer main window
 - Command Line 
@@ -19,16 +19,16 @@ Dependencies Viewer require [**.Net Core 3.1 runtime**](https://dotnet.microsoft
 "Dependencies Viewer.exe" c:\MyAssembly.dll
 ```
 
-# Plugins
+## Plugins
 
-## Linked projects
+### Linked projects
 |        Project                                        |                Build State                                | 
 | ----------------------------------------------------- | --------------------------------------------------------- | 
 | [**Dependencies Analyser**][analyser-url]             |      [![Build][analyser-badge]][analyser-url]             | 
 | [**Dependencies Exchange**][exchange-url]             |      [![Build][exchange-badge]][exchange-url]             | 
 | [**Dependencies Graph Services**][graph-service-url]  |      [![Build][graph-service-badge]][graph-service-url]   | 
 
-## Analysers
+### Analysers
 
 Dependencies Viewer uses plugins to analyse an assembly. All plugins can be found in [*Depencies Analyser*][analyser-url] project. You can change analyser from the settings view
 
@@ -36,7 +36,7 @@ Dependencies Viewer supports:
 - Mono analyser
 - Microsoft analyser
 
-## Import export 
+### Import export 
 
 Dependencies viewer allows import-export of analysis results. All code of these plugins are located in [*Depencies Exchange*][exchange-url] project.
 
