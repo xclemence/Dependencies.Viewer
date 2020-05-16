@@ -55,6 +55,16 @@ You can choose your favorite theme between light and dark.
 
 Light theme is selected by default. But you can change the theme from the settings view.
 
+## Build project
+
+This project contains sub-modules. They should be retrieved with this repository.
+
+```
+git clone --recursive https://github.com/xclemence/Dependencies.Viewer.git
+```
+
+After, you can open sln file with Visual Studio 2019 (be carefull, you need C++ and CLI/C++ support).
+
 [github-actions]:                  https://github.com/xclemence/Dependencies.Viewer/actions
 [github-actions-badge]:            https://github.com/xclemence/Dependencies.Viewer/workflows/Build/badge.svg?branch=master
 
