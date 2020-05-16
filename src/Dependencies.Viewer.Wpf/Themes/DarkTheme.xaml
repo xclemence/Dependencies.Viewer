@@ -16,8 +16,8 @@
 
     </ResourceDictionary.MergedDictionaries>
 
-    <Color x:Key="DV.PrimaryColor">#2C5AA0</Color>
-    <Color x:Key="DV.SecondaryColor">#447821</Color>
+    <Color x:Key="DV.PrimaryColor">#486289</Color>
+    <Color x:Key="DV.SecondaryColor">#42612c</Color>
     <Color x:Key="DV.ThirdColor">DarkSalmon</Color>
 
     <Color x:Key="DV.ErrorColor">Red</Color>
