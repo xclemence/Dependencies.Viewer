@@ -3,6 +3,10 @@ using System.Windows;
 using Dependencies.Viewer.Wpf.Controls;
 using Dependencies.Viewer.Wpf.IoC;
 using Dependencies.Viewer.Wpf.Properties;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using NLog;
+using NLog.Extensions.Logging;
 
 namespace Dependencies.Viewer.Wpf
 {
@@ -11,10 +15,24 @@ namespace Dependencies.Viewer.Wpf
     /// </summary>
     public partial class App
     {
-        public App() => SimpleInjectorConfig.Config();
+        public App()
+        {
+            var config = new ConfigurationBuilder()
+                      .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+                      .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                      .Build();
+
+            LogManager.Configuration = new NLogLoggingConfiguration(config.GetSection("NLog"));
+
+            SimpleInjectorConfig.Config(config);
+        }
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
+            var logger = SimpleInjectorConfig.Container.GetInstance<ILogger<App>>();
+
+            logger.LogTrace($"Dependencies Viewer v{GetType().Assembly.GetName().Version} started");
+
             ConfigureTheme();
 
             string filename = null;

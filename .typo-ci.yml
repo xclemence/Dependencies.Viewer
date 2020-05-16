@@ -6,6 +6,7 @@ dictionaries:
 excluded_files:
   - "**/bin/**/*"
   - "**/obj/**/*"
+  - ".github/**/*"
   - ".typo-ci.yml"
   - "**/*.svg"
   - "**/.editorconfig"

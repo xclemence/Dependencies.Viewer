@@ -1,1 +1,0 @@
-﻿This resource file generates an execution of post-build event every build: this behavior is necessary to have good plugins versions

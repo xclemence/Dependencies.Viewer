@@ -15,6 +15,7 @@ using Dependencies.Viewer.Wpf.Controls.ViewModels.Settings;
 using Dependencies.Viewer.Wpf.Controls.Views;
 using Dragablz;
 using MaterialDesignThemes.Wpf;
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 
 public class ExchangeCommand
@@ -37,6 +38,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private IInterTabClient interTabClient;
         private readonly AnalyserProvider analyserProvider;
         private readonly IAnalyserServiceFactory<AnalyseResultViewModel> analyserViewModelFactory;
+        private readonly ILogger<AnalyserViewModel> logger;
         private readonly IList<IImportAssembly> importServices;
         private readonly IList<IExportAssembly> exportServices;
 
@@ -49,13 +51,15 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
                                  SettingsViewModel settingsViewModel,
                                  ISnackbarMessageQueue messageQueue,
                                  IEnumerable<IImportAssembly> importServices,
-                                 IEnumerable<IExportAssembly> exportServices)
+                                 IEnumerable<IExportAssembly> exportServices,
+                                 ILogger<AnalyserViewModel> logger)
         {
             this.analyserProvider = analyserProvider;
             this.analyserViewModelFactory = analyserViewModelFactory;
             InterTabClient = interTabClient;
             SettingsViewModel = settingsViewModel;
             MessageQueue = messageQueue;
+            this.logger = logger;
             this.exportServices = exportServices.ToList();
             this.importServices = importServices.ToList();
 
@@ -141,6 +145,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
                     ex = ex.InnerException;
 
                 MessageQueue.Enqueue($"Error : {ex.Message}");
+                logger.LogError(ex, "");
             }
             finally
             {
@@ -233,10 +238,10 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             AddAssemblyResult(result.Assembly.ToInformationModel(result.Dependencies));
         }
 
-        private static async Task<T> CreateExchangeView<T>(UserControl view, IExchangeViewModel<T> viewModel)
+        private async Task<T> CreateExchangeView<T>(UserControl view, IExchangeViewModel<T> viewModel)
         {
             var exchangeView = new ExchangeView();
-            var exchangeViewModel = new ExchangeViewModel<T>((x) => CloseExchangeDialog(x), viewModel);
+            var exchangeViewModel = new ExchangeViewModel<T>((x) => CloseExchangeDialog(x), viewModel, logger);
 
             exchangeView.DataContext = exchangeViewModel;
             exchangeView.Control.Content = view;
