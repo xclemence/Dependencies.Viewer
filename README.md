@@ -22,7 +22,7 @@ Dependencies Viewer required [**.Net Core 3.1 runtime**](https://dotnet.microsof
 
 # Plugins
 
-## Link project
+## Linked projects
 |        Project                                        |                Build State                                | 
 | ----------------------------------------------------- | --------------------------------------------------------- | 
 | [**Dependencies Analyser**][analyser-url]             |      [![Build][analyser-badge]][analyser-url]             | 
