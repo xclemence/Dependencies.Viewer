@@ -30,7 +30,7 @@ Dependencies Viewer require [**.Net Core 3.1 runtime**](https://dotnet.microsoft
 
 ### Analysers
 
-Dependencies Viewer uses plugins to analyse an assembly. All plugins can be found in [*Depencies Analyser*][analyser-url] project. You can change analyser from the settings view
+Dependencies Viewer uses plugins to analyse an assembly. All plugins can be found in [*Dependencies Analyser*][analyser-url] project. You can change analyser from the settings view
 
 Dependencies Viewer supports:
 - Mono analyser
@@ -38,7 +38,7 @@ Dependencies Viewer supports:
 
 ### Import export 
 
-Dependencies viewer allows import-export of analysis results. All code of these plugins are located in [*Depencies Exchange*][exchange-url] project.
+Dependencies viewer allows import-export of analysis results. All code of these plugins are located in [*Dependencies Exchange*][exchange-url] project.
 
 Now, Dependencies Viewer supports:
 - Json file
@@ -63,7 +63,7 @@ This project contains sub-modules. They should be retrieved with this repository
 git clone --recursive https://github.com/xclemence/Dependencies.Viewer.git
 ```
 
-After, you can open sln file with Visual Studio 2019 (be carefull, you need C++ and CLI/C++ support).
+After, you can open sln file with Visual Studio 2019 (be careful, you need C++ and CLI/C++ support).
 
 [github-actions]:                  https://github.com/xclemence/Dependencies.Viewer/actions
 [github-actions-badge]:            https://github.com/xclemence/Dependencies.Viewer/workflows/Build/badge.svg?branch=master
