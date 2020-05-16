@@ -7,12 +7,12 @@ Dependencies Viewer is a dependencies analyser for Microsoft assemblies. It's su
 
 It allows you to find missing assemblies or mismatch versions between referenced assembly and loaded assembly (binding redirect).
 
-Dependencies Viewer require [**.Net Core 3.1 runtime**](https://dotnet.microsoft.com/download/dotnet-core/3.1)
+Dependencies Viewer require [**.Net Core 3.1 runtime**](https://dotnet.microsoft.com/download/dotnet-core/3.1).
 
 <img src="doc/images/viewer-dark.png"/>
 
 ## How to analyse assembly 
-- File-> open File
+- File-> Open File
 - Drag and drop assembly on Dependencies Viewer main window
 - Command Line 
 ```
@@ -36,7 +36,7 @@ Dependencies Viewer supports:
 - Mono analyser
 - Microsoft analyser
 
-### Import export 
+### Import-export 
 
 Dependencies viewer allows import-export of analysis results. All code of these plugins are located in [*Dependencies Exchange*][exchange-url] project.
 
@@ -49,15 +49,15 @@ Now, Dependencies Viewer supports:
 To use Dependencies Graph Services, you need to configure service URL from setting screen (Import/Export part)
 
 ## Themes
-You can choose your favorite theme between light and dark.
+You can choose your favorite theme between light and dark from the settings view.
 
 <img src="doc/images/viewer-light.png" width="420"/>  <img src="doc/images/viewer-dark.png" width="420"/>
 
-Light theme is selected by default. You can change the theme from the settings view.
+Light theme is selected by default.
 
 ## Build project
 
-This project contains sub-modules. They should be retrieved with this repository.
+This project contains sub-modules. It's mandatory to download them with this repository.
 
 ```
 git clone --recursive https://github.com/xclemence/Dependencies.Viewer.git
