@@ -21,7 +21,7 @@ Dependencies Viewer require [**.Net Core 3.1 runtime**](https://dotnet.microsoft
 
 # Plugins
 
-## Link project
+## Linked projects
 |        Project                                        |                Build State                                | 
 | ----------------------------------------------------- | --------------------------------------------------------- | 
 | [**Dependencies Analyser**][analyser-url]             |      [![Build][analyser-badge]][analyser-url]             | 
