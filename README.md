@@ -53,7 +53,7 @@ You can choose your favorite theme between light and dark.
 
 <img src="doc/images/viewer-light.png" width="420"/>  <img src="doc/images/viewer-dark.png" width="420"/>
 
-Light theme is selected by default. But you can change the theme from the settings view.
+Light theme is selected by default. You can change the theme from the settings view.
 
 ## Build project
 
