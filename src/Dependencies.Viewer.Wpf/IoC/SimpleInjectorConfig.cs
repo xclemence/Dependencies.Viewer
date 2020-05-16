@@ -8,6 +8,9 @@ using Dependencies.Viewer.Wpf.Extensions;
 using Dependencies.Viewer.Wpf.Layouts;
 using Dragablz;
 using MaterialDesignThemes.Wpf;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 using SimpleInjector;
 
 namespace Dependencies.Viewer.Wpf.IoC
@@ -17,7 +20,7 @@ namespace Dependencies.Viewer.Wpf.IoC
         public static Container Container { get; private set; }
 
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Dispose method are call by IoC")]
-        public static void Config()
+        public static void Config(IConfigurationRoot configurationRoot)
         {
             Container = new Container();
 
@@ -27,6 +30,8 @@ namespace Dependencies.Viewer.Wpf.IoC
             Container.Register<INativeAnalyser, NativeAnalyser>(Lifestyle.Transient);
             Container.RegisterInstance<ISnackbarMessageQueue>(new SnackbarMessageQueue());
 
+            Container.RegisterInstance(LoggerFactory.Create(x => x.AddNLog(configurationRoot)));
+            Container.Register(typeof(ILogger<>), typeof(Logger<>), Lifestyle.Transient);
 
             Container.Register(typeof(IAnalyserServiceFactory<>), typeof(SimpleInjectorAnalyseServiceFactory<>), Lifestyle.Singleton);
             Container.Register(typeof(IExchangeServiceFactory<>), typeof(SimpleInjectorExchangeServiceFactory<>), Lifestyle.Singleton);
