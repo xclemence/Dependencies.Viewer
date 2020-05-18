@@ -9,7 +9,7 @@
     
     <Grid Margin="1">
         <DataGrid x:Name="grid"
-                  ItemsSource="{Binding FilteredLinks}" 
+                  ItemsSource="{Binding FilteredReferences}" 
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
@@ -64,14 +64,14 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Name" Binding="{Binding Link.Assembly.Name, Mode=OneWay}"/>
-                <DataGridTextColumn Header="Linked Version" Binding="{Binding Link.LinkVersion, Mode=OneWay}"/>
-                <DataGridTextColumn Header="Loaded Version" Binding="{Binding Link.Assembly.LoadedVersion, Mode=OneWay}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding LoadedAssembly.Name, Mode=OneWay}"/>
                 <DataGridCheckBoxColumn Header="Mismatch Version" Binding="{Binding IsMismatchVersion, Mode=OneWay}"/>
-                <DataGridCheckBoxColumn Header="Is Debug" Binding="{Binding Link.Assembly.IsDebug, Mode=OneWay}"/>
-                <DataGridTextColumn Header="Target" Binding="{Binding Link.Assembly.TargetProcessor, Mode=OneWay}"/>
-                <DataGridTextColumn Header="All References" Binding="{Binding AllReferencesCount, Mode=OneWay}"/>
-                <DataGridTextColumn Header="Full Name" Binding="{Binding Link.Assembly.FullName, Mode=OneWay}"/>
+                <DataGridTextColumn Header="Linked Version" Binding="{Binding AssemblyVersion, Mode=OneWay}"/>
+                <DataGridTextColumn Header="Loaded Version" Binding="{Binding LoadedAssembly.Version, Mode=OneWay}"/>
+                <DataGridCheckBoxColumn Header="Is Debug" Binding="{Binding LoadedAssembly.IsDebug, Mode=OneWay}"/>
+                <DataGridTextColumn Header="Target" Binding="{Binding LoadedAssembly.TargetProcessor, Mode=OneWay}"/>
+                <DataGridTextColumn Header="Direct References" Binding="{Binding LoadedAssembly.ReferencedAssemblyNames.Count, Mode=OneWay}"/>
+                <DataGridTextColumn Header="Full Name" Binding="{Binding LoadedAssembly.FullName, Mode=OneWay}"/>
             </DataGrid.Columns>
         </DataGrid>
         

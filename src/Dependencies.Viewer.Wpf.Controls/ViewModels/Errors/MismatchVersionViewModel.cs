@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Dependencies.Analyser.Base.Extensions;
-using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
@@ -10,13 +8,10 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
     {
         public override string Title => "Mismatch Version";
 
-        protected override IEnumerable<ReferenceModel> GetResults(AssemblyInformation information)
+        protected override IEnumerable<ReferenceModel> GetResults(AssemblyModel assembly)
         {
-            return information?.GetAllLinks()
-                               .Where(x => x.LinkVersion != x.Assembly.LoadedVersion)
-                               .Distinct()
-                               .Select(x => new ReferenceModel(x))
-                               .OrderBy(x => x.ToString());
+            return assembly?.ReferenceProvider.Values.Where(x => x.AssemblyVersion != x.LoadedAssembly.Version)
+                                                      .OrderBy(x => x.AssemblyFullName);
         }
     }
 }

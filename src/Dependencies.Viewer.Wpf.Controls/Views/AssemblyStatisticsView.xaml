@@ -39,7 +39,7 @@
         <materialDesign:Card Background="{DynamicResource DV.GlobalColorBrush}">
             <DockPanel>
                 <TextBlock Text="Direct referenced dlls"/>
-                <TextBox Text="{Binding AssemblyInformation.Links.Count, Mode=OneWay}"/>
+                <TextBox Text="{Binding DirectReferencesCount, Mode=OneWay}"/>
             </DockPanel>
         </materialDesign:Card>
 
@@ -53,7 +53,7 @@
         <materialDesign:Card Background="{DynamicResource DV.GlobalColorBrush}">
             <DockPanel>
                 <TextBlock Text="All references"/>
-                <TextBox Text="{Binding AllLinksCount, Mode=OneWay}"/>
+                <TextBox Text="{Binding AllReferencesCount, Mode=OneWay}"/>
             </DockPanel>
         </materialDesign:Card>
     </UniformGrid>

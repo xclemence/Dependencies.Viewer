@@ -1,12 +1,11 @@
-﻿using Dependencies.Exchange.Base.Models;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Dependencies.Exchange.Base.Models;
 using Dependencies.Viewer.UnitTests.DataProviders;
 using Dependencies.Viewer.UnitTests.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
 
 namespace Dependencies.Viewer.UnitTests
 {
@@ -15,19 +14,19 @@ namespace Dependencies.Viewer.UnitTests
     public class AssemblyExchangeConverterTests
     {
         [TestMethod]
-        public void ExchangeToInformation()
+        public void ExchangeToAssemblyModel()
         {
             var assembly = AssemblyExchangeDataProvider.AssemblyTestV4;
 
             var dependencies = Array.Empty<AssemblyExchange>();
 
-            var result = assembly.ToInformationModel(dependencies);
+            var result = assembly.ToAssemblyModel(dependencies);
 
-            Assert.That.DeepEqual(AssemblyInformationDataProvider.AssemblyTestV4, result);
+            Assert.That.DeepEqual(AssemblyModelDataProvider.AssemblyTestV4, result);
         }
 
         [TestMethod]
-        public void ExchangeToInformationWithLink()
+        public void ExchangeToAssemblyWithLink()
         {
             var assembly = AssemblyExchangeDataProvider.AnalyseBase;
 
@@ -37,15 +36,15 @@ namespace Dependencies.Viewer.UnitTests
 
             assembly.AssembliesReferenced.AddRange(dependencies.Select(x => x.Name));
 
-            var result = assembly.ToInformationModel(dependencies);
+            var result = assembly.ToAssemblyModel(dependencies);
 
-            Assert.AreEqual(1, result.Links.Count);
-            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV4.Name, result.Links[0].LinkFullName);
-            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV4.Version, result.Links[0].LinkVersion);
+            Assert.AreEqual(1, result.ReferencedAssemblyNames.Count);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV4.Name, result.References[0].AssemblyFullName);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV4.Version, result.References[0].AssemblyVersion);
         }
 
         [TestMethod]
-        public void ExchangeToInformationMismatchAndTwoVesions()
+        public void ExchangeToAssemblyismatchAndTwoVesions()
         {
             var assembly = AssemblyExchangeDataProvider.AnalyseBase;
 
@@ -56,35 +55,35 @@ namespace Dependencies.Viewer.UnitTests
 
             assembly.AssembliesReferenced.Add(AssemblyExchangeDataProvider.AssemblyTestV2.Name);
 
-            var result = assembly.ToInformationModel(dependencies);
+            var result = assembly.ToAssemblyModel(dependencies);
 
-            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Name, result.Links[0].LinkFullName);
-            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Version, result.Links[0].LinkVersion);
-            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV4.Version, result.Links[0].Assembly.LoadedVersion);
-            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV4.Name, result.Links[0].Assembly.FullName);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Name, result.References[0].AssemblyFullName);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Version, result.References[0].AssemblyVersion);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV4.Version, result.References[0].LoadedAssembly.Version);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV4.Name, result.References[0].LoadedAssembly.FullName);
         }
 
         [TestMethod]
-        public void ExchangeToInformationNoDependency()
+        public void ExchangeToAssemblyNoDependency()
         {
             var assembly = AssemblyExchangeDataProvider.AnalyseBase;
 
             var partialAssembly = AssemblyExchangeDataProvider.AssemblyTestV2;
             partialAssembly.IsPartial = true;
 
-            var dependencies = new [] {
+            var dependencies = new[] {
                 partialAssembly
             };
 
             assembly.AssembliesReferenced.Add(AssemblyExchangeDataProvider.AssemblyTestV2.Name);
 
-            var result = assembly.ToInformationModel(dependencies);
+            var result = assembly.ToAssemblyModel(dependencies);
 
-            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Name, result.Links[0].LinkFullName);
-            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Version, result.Links[0].LinkVersion);
-            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Version, result.Links[0].Assembly.LoadedVersion);
-            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Name, result.Links[0].Assembly.FullName);
-            Assert.AreEqual(false, result.Links[0].Assembly.IsResolved);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Name, result.References[0].AssemblyFullName);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Version, result.References[0].AssemblyVersion);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Version, result.References[0].LoadedAssembly.Version);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Name, result.References[0].LoadedAssembly.FullName);
+            Assert.AreEqual(false, result.References[0].LoadedAssembly.IsResolved);
         }
 
         [TestMethod]
@@ -101,11 +100,38 @@ namespace Dependencies.Viewer.UnitTests
 
             assembly.AssembliesReferenced.Add(AssemblyExchangeDataProvider.AssemblyTestV2.Name);
 
-            var result = assembly.ToInformationModel(dependencies);
+            var result = assembly.ToAssemblyModel(dependencies);
+
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Name, result.References[0].AssemblyFullName);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Version, result.References[0].AssemblyVersion);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV4.Version, result.References[0].LoadedAssembly.Version);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV4.Name, result.References[0].LoadedAssembly.FullName);
+            Assert.AreEqual(true, result.References[0].LoadedAssembly.IsResolved);
         }
 
         [TestMethod]
-        public void ExchangeToInformationTwoSameVersion()
+        public void ExchangeToInformationMissingReference()
+        {
+            var assembly = AssemblyExchangeDataProvider.AnalyseBase;
+
+            var partialAssembly = AssemblyExchangeDataProvider.AssemblyTestV2;
+            partialAssembly.IsPartial = true;
+
+            var dependencies = Array.Empty<AssemblyExchange>();
+
+            assembly.AssembliesReferenced.Add(AssemblyExchangeDataProvider.AssemblyTestV2.Name);
+
+            var result = assembly.ToAssemblyModel(dependencies);
+
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Name, result.References[0].AssemblyFullName);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Version, result.References[0].AssemblyVersion);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Version, result.References[0].LoadedAssembly.Version);
+            Assert.AreEqual(AssemblyExchangeDataProvider.AssemblyTestV2.Name, result.References[0].LoadedAssembly.FullName);
+            Assert.AreEqual(false, result.References[0].LoadedAssembly.IsResolved);
+        }
+
+        [TestMethod]
+        public void ExchangeToAssemblyTwoSameVersion()
         {
             var assembly = AssemblyExchangeDataProvider.AnalyseBase;
 
@@ -116,7 +142,7 @@ namespace Dependencies.Viewer.UnitTests
 
             assembly.AssembliesReferenced.AddRange(dependencies.Select(x => x.Name));
 
-            Assert.ThrowsException<ArgumentException>(() => assembly.ToInformationModel(dependencies));
+            Assert.ThrowsException<ArgumentException>(() => assembly.ToAssemblyModel(dependencies));
         }
     }
 }

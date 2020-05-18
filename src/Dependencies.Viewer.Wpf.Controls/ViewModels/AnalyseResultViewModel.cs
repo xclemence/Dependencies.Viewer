@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
-using Dependencies.Analyser.Base.Models;
-using Dependencies.Exchange.Base.Models;
+﻿using System.Linq;
 using Dependencies.Viewer.Wpf.Controls.Base;
+using Dependencies.Viewer.Wpf.Controls.Models;
 using Dependencies.Viewer.Wpf.Controls.ViewModels.Errors;
 using Dependencies.Viewer.Wpf.Controls.ViewModels.References;
 
@@ -10,7 +8,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 {
     public class AnalyseResultViewModel : ObservableObject
     {
-        private AssemblyInformation assemblyResult;
+        private AssemblyModel assemblyResult;
         private bool isErrorExpended;
 
         public AnalyseResultViewModel(LoadingErrorViewModel errorLoadingViewModel,
@@ -29,17 +27,17 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         public ReferencesViewModel ReferencesViewModel { get; }
         public AssemblyStatisticsViewModel AssemblyStatisticsViewModel { get; }
 
-        public AssemblyInformation AssemblyResult
+        public AssemblyModel AssemblyResult
         {
             get => assemblyResult;
             set
             {
                 if (Set(ref assemblyResult, value))
                 {
-                    ErrorLoadingViewModel.AssemblyInformation = value;
-                    MismatchVersionViewModel.AssemblyInformation = value;
-                    ReferencesViewModel.AssemblyInformation = value;
-                    AssemblyStatisticsViewModel.AssemblyInformation = value;
+                    ErrorLoadingViewModel.Assembly = value;
+                    MismatchVersionViewModel.Assembly = value;
+                    ReferencesViewModel.Assembly = value;
+                    AssemblyStatisticsViewModel.Assembly = value;
                     RaisePropertyChanged(nameof(HasError));
                     RaisePropertyChanged(nameof(HasMismatch));
 
@@ -57,7 +55,5 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         public bool HasError => ErrorLoadingViewModel.DisplayResults?.Any() ?? false;
 
         public bool HasMismatch => MismatchVersionViewModel.DisplayResults?.Any() ?? false;
-
-        internal AssemblyExchange ToAssemblyExchange() => throw new NotImplementedException();
     }
 }

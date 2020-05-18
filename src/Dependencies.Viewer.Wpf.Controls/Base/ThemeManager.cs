@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Windows;
 
-namespace Dependencies.Viewer.Wpf.Controls
+namespace Dependencies.Viewer.Wpf.Controls.Base
 {
     public class ThemeManager
     {

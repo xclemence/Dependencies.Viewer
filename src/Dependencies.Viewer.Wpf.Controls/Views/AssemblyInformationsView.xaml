@@ -49,7 +49,7 @@
 
             <DockPanel>
                 <TextBlock Text="Version :" />
-                <TextBox Text="{Binding LoadedVersion, Mode=OneWay}"/>
+                <TextBox Text="{Binding Version, Mode=OneWay}"/>
             </DockPanel>
             <DockPanel>
                 <TextBlock Text="Creation :" />
@@ -86,7 +86,7 @@
             <TextBlock>
                 <TextBlock.Style>
                     <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                        <Setter Property="Text" Value="(No target info)"/>
+                        <Setter Property="Text" Value="(No info)"/>
                         <Setter Property="TextAlignment" Value="Center"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding TargetProcessor}" Value="x86">
@@ -111,7 +111,7 @@
             <TextBlock>
                 <TextBlock.Style>
                     <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                        <Setter Property="Text" Value="(No Config info)"/>
+                        <Setter Property="Text" Value="(No info)"/>
                         <Setter Property="TextAlignment" Value="Center"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsDebug}" Value="true">

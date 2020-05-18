@@ -4,6 +4,7 @@ using Dependencies.Analyser.Base;
 using Dependencies.Analyser.Native;
 using Dependencies.Exchange.Base;
 using Dependencies.Viewer.Wpf.Controls;
+using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Extensions;
 using Dependencies.Viewer.Wpf.Layouts;
 using Dragablz;
@@ -33,8 +34,9 @@ namespace Dependencies.Viewer.Wpf.IoC
             Container.RegisterInstance(LoggerFactory.Create(x => x.AddNLog(configurationRoot)));
             Container.Register(typeof(ILogger<>), typeof(Logger<>), Lifestyle.Transient);
 
-            Container.Register(typeof(IAnalyserServiceFactory<>), typeof(SimpleInjectorAnalyseServiceFactory<>), Lifestyle.Singleton);
-            Container.Register(typeof(IExchangeServiceFactory<>), typeof(SimpleInjectorExchangeServiceFactory<>), Lifestyle.Singleton);
+            Container.Register(typeof(IAnalyserServiceFactory<>), typeof(SimpleInjectorServiceFactory<>), Lifestyle.Singleton);
+            Container.Register(typeof(IExchangeServiceFactory<>), typeof(SimpleInjectorServiceFactory<>), Lifestyle.Singleton);
+            Container.Register(typeof(IServiceFactory<>), typeof(SimpleInjectorServiceFactory<>), Lifestyle.Singleton);
             Container.Register<AnalyserProvider>(Lifestyle.Singleton);
             Container.Register<ThemeManager>(Lifestyle.Singleton);
 

@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Dependencies.Analyser.Base;
-using Dependencies.Analyser.Base.Models;
 using Dependencies.Exchange.Base;
 using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
+using Dependencies.Viewer.Wpf.Controls.Models;
 using Dependencies.Viewer.Wpf.Controls.ViewModels.Settings;
 using Dependencies.Viewer.Wpf.Controls.Views;
 using Dragablz;
@@ -37,7 +36,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private bool isDragFile;
         private IInterTabClient interTabClient;
         private readonly AnalyserProvider analyserProvider;
-        private readonly IAnalyserServiceFactory<AnalyseResultViewModel> analyserViewModelFactory;
+        private readonly IServiceFactory<AnalyseResultViewModel> analyserViewModelFactory;
         private readonly ILogger<AnalyserViewModel> logger;
         private readonly IList<IImportAssembly> importServices;
         private readonly IList<IExportAssembly> exportServices;
@@ -46,7 +45,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private bool isSettingsOpen;
 
         public AnalyserViewModel(AnalyserProvider analyserProvider,
-                                 IAnalyserServiceFactory<AnalyseResultViewModel> analyserViewModelFactory,
+                                 IServiceFactory<AnalyseResultViewModel> analyserViewModelFactory,
                                  IInterTabClient interTabClient,
                                  SettingsViewModel settingsViewModel,
                                  ISnackbarMessageQueue messageQueue,
@@ -77,7 +76,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
             CloseResultCommand = new Command<AnalyseResultViewModel>(CloseResult);
 
-            GlobalCommand.OpenAssemblyAction = AddAssemblyResult;
+            GlobalCommand.OpenAssemblyAction = x => AddAssemblyResult(x.IsolatedShadowClone());
         }
 
         public ISnackbarMessageQueue MessageQueue { get; }
@@ -185,16 +184,16 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private async Task AnalyseAsync(string filePath)
         {
             var analyser = analyserProvider.CurrentAnalyserFactory.GetAnalyser();
-            AddAssemblyResult(await analyser.AnalyseAsync(filePath).ConfigureAwait(false));
+
+            var result = await analyser.AnalyseAsync(filePath).ConfigureAwait(false);
+
+            AddAssemblyResult(result.ToAssemblyModel());
         }
 
-        private void AddAssemblyResult(AssemblyInformation info)
+        private void AddAssemblyResult(AssemblyModel assembly)
         {
-            if (info == null)
-                return;
-
             var newViewModel = analyserViewModelFactory.Create();
-            newViewModel.AssemblyResult = info;
+            newViewModel.AssemblyResult = assembly;
 
             new Action(() =>
             {
@@ -235,7 +234,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             if (result == default)
                 return;
 
-            AddAssemblyResult(result.Assembly.ToInformationModel(result.Dependencies));
+            AddAssemblyResult(result.Assembly.ToAssemblyModel(result.Dependencies));
         }
 
         private async Task<T> CreateExchangeView<T>(UserControl view, IExchangeViewModel<T> viewModel)

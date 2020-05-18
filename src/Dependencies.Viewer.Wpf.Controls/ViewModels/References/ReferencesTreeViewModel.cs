@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Windows.Data;
 using System.Windows.Input;
-using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Models;
@@ -12,77 +9,71 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 {
     public class ReferencesTreeViewModel : ObservableObject, IReferencesDetailsViewModel
     {
-        private IEnumerable<AssemblyLinkModel> links;
-        private AssemblyInformation assemblyInformation;
-        private ICollectionView filteredLinks;
+        private AssemblyModel assembly;
+        private FilterCollection<AssemblyTreeModel> loadedAssemblies;
 
         public ReferencesTreeViewModel()
         {
-            OpenSubResultCommand = new Command<AssemblyLinkModel>(x => GlobalCommand.OpenAssembly(x.Assembly));
-            OpenParentReferenceCommand = new Command<AssemblyLinkModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(assemblyInformation, x.AssemblyLink).ConfigureAwait(false));
+            OpenSubResultCommand = new Command<AssemblyTreeModel>(x => GlobalCommand.OpenAssembly(x.Reference.LoadedAssembly));
+            OpenParentReferenceCommand = new Command<AssemblyTreeModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(assembly, x.Reference).ConfigureAwait(false));
         }
 
         public ICommand OpenSubResultCommand { get; }
         public ICommand OpenParentReferenceCommand { get; }
 
-        public AssemblyInformation AssemblyInformation
+        public AssemblyModel Assembly
         {
-            get => assemblyInformation;
+            get => assembly;
             set
             {
-                if (Set(ref assemblyInformation, value))
+                if (Set(ref assembly, value))
                     CreateFilteredCollection(value);
             }
         }
 
-        public FilterModel Filter { get; set; }
-
-        public ICollectionView FilteredLinks
+        public FilterCollection<AssemblyTreeModel> LoadedAssemblies
         {
-            get => filteredLinks;
-            private set => Set(ref filteredLinks, value);
+            get => loadedAssemblies;
+            set => Set(ref loadedAssemblies, value);
         }
+
+        public FilterModel Filter { get; set; }
 
         public void RefreshFilteredItems()
         {
-            FilteredLinks.Refresh();
+            LoadedAssemblies.RefreshFilter();
 
-            foreach (var item in links)
-                RefreshFilteredItems(item);
+            RefreshFilteredItems(LoadedAssemblies);
         }
 
-        private void RefreshFilteredItems(AssemblyLinkModel link)
+        private void RefreshFilteredItems(IEnumerable<AssemblyTreeModel> models)
         {
-            link.AssemblyModel.RefreshFilter();
+            foreach (var item in models)
+            {
+                item.Collection.RefreshFilter();
 
-            foreach (var item in link.AssemblyModel.Links)
-                RefreshFilteredItems(item);
+                RefreshFilteredItems(item.Collection);
+            }
         }
 
-        private void CreateFilteredCollection(AssemblyInformation value)
-        {
-            links = value?.ToViewModel(FilterPredicat).Links;
+        private void CreateFilteredCollection(AssemblyModel value) => LoadedAssemblies = value.References.ToFilterModels(FilterPredicate);
 
-            FilteredLinks = CollectionViewSource.GetDefaultView(links);
-            FilteredLinks.Filter = FilterPredicat;
-            FilteredLinks.SortDescriptions.Add(new SortDescription(nameof(AssemblyLinkModel.AssemblyFullName), ListSortDirection.Ascending));
-        }
-
-        private bool FilterPredicat(object obj)
+        private bool FilterPredicate(object obj)
         {
-            if (!(obj is AssemblyLinkModel link))
+            if (!(obj is AssemblyTreeModel model))
                 return false;
 
-            if (link.AssemblyModel.Links.Any(x => FilterPredicat(x)))
-                return true;
-
-            if (Filter.DisplayLocalOnly && !link.Assembly.IsLocalAssembly)
+            if (Filter.DisplayLocalOnly && !model.Reference.LoadedAssembly.IsLocalAssembly)
                 return false;
 
             if (string.IsNullOrWhiteSpace(Filter.Name))
                 return true;
 
-            return link.Assembly.Name.Contains(Filter.Name, System.StringComparison.InvariantCultureIgnoreCase);
+            if (model.Reference.AssemblyFullName.Contains(Filter.Name, System.StringComparison.InvariantCultureIgnoreCase))
+                return true;
+
+            return model.Collection.Any(x => FilterPredicate(x));
         }
+
     }
 }

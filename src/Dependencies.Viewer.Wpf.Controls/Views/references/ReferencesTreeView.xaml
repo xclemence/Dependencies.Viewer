@@ -19,26 +19,23 @@
     </UserControl.Resources>
     
     <Grid>
-        <TreeView ItemsSource="{Binding FilteredLinks}" x:Name="tree">
+        <TreeView ItemsSource="{Binding LoadedAssemblies.FilteredItems}" x:Name="tree">
             <TreeView.Resources>
                 <Style TargetType="TreeViewItem" BasedOn="{StaticResource TestTreeViewItem}">
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
                     <Setter Property="behaviors:TreeItemSelectionBehavior.Attach" Value="True"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Assembly.IsLocalAssembly}" Value="true">
+                        <DataTrigger Binding="{Binding Reference.LoadedAssembly.IsLocalAssembly}" Value="true">
                             <Setter Property="Background" Value="{DynamicResource DV.PrimaryColorBrush}"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Assembly.IsLocalAssembly}" Value="false">
+                        <DataTrigger Binding="{Binding Reference.LoadedAssembly.IsLocalAssembly}" Value="false">
                             <Setter Property="Background" Value="{DynamicResource DV.GlobalColorBrush}"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Assembly.IsNative}" Value="true">
+                        <DataTrigger Binding="{Binding Reference.LoadedAssembly.IsNative}" Value="true">
                             <Setter Property="Background" Value="{DynamicResource DV.SecondaryColorBrush}"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Assembly.IsResolved}" Value="false">
+                        <DataTrigger Binding="{Binding Reference.LoadedAssembly.IsResolved}" Value="false">
                             <Setter Property="Background" Value="{DynamicResource DV.ErrorColorBrush}"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding AssemblyModel.IsVisible}" Value="false">
-                            <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -74,7 +71,7 @@
                 </Style>
             </TreeView.ItemContainerStyle>
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="models:AssemblyLinkModel" ItemsSource="{Binding AssemblyModel.FilteredLinks}">
+                <HierarchicalDataTemplate DataType="models:AssemblyTreeModel" ItemsSource="{Binding Collection.FilteredItems}">
                     <TextBlock Text="{Binding}"/>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
