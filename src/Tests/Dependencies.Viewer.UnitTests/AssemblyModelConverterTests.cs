@@ -1,15 +1,11 @@
-﻿
-using Dependencies.Exchange.Base.Models;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using Dependencies.Viewer.UnitTests.DataProviders;
 using Dependencies.Viewer.UnitTests.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace Dependencies.Viewer.UnitTests
 {
@@ -40,7 +36,7 @@ namespace Dependencies.Viewer.UnitTests
             {
                 [assemblyTest4.FullName] = assemblyTest4.CreateReferenceModel()
             });
-            
+
             var (_, dependencies) = testAssembly.ToExchangeModel();
 
             Assert.AreEqual(1, dependencies.Count);

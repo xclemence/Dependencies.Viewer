@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.Xml;
 using Dependencies.Exchange.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
 namespace Dependencies.Viewer.Wpf.Controls.Extensions
 {
-    public static class ImportExportConverters
+    public static class AssemblyExchangeConvertersExtensions
     {
 
         ////////////////////////////////////////////////////  To Exchange Model /////////////////////////////////////////////////////
@@ -88,7 +87,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
                                                         .Union(assembly.ReferencedAssemblyNames)
                                                         .Distinct()
                                                         .ToList();
-            
+
             var referenceNotFound = referencedAssemblies.Where(x => !referenceProvider.Keys.Contains(x));
 
             foreach (var item in referenceNotFound)
@@ -110,15 +109,14 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
 
             if (referenceCache.TryGetValue(assemblyName.Name, out var reference))
                 return (reference.LoadedAssembly, assemblyName);
-            
+
             return (assemblyName.ToNotFoundAssemblyModel(referenceProvider), assemblyName);
         }
 
-
-        public static ReferenceModel ToReferenceModelWithNewAssembly(this AssemblyExchange assemblyExchange, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) =>
+        private static ReferenceModel ToReferenceModelWithNewAssembly(this AssemblyExchange assemblyExchange, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) =>
             ToReferenceModelWithAssembly(assemblyExchange, assemblyExchange.ToAssemblyModel(referenceProvider));
 
-        public static ReferenceModel ToReferenceModelWithSearchAssembly(this AssemblyExchange assemblyExchange, IReadOnlyDictionary<string, ReferenceModel> assemblyCache) =>
+        private static ReferenceModel ToReferenceModelWithSearchAssembly(this AssemblyExchange assemblyExchange, IReadOnlyDictionary<string, ReferenceModel> assemblyCache) =>
             ToReferenceModelWithAssembly(assemblyExchange, assemblyCache[assemblyExchange.ShortName].LoadedAssembly);
 
         public static ReferenceModel ToReferenceModelWithAssembly(this AssemblyExchange assemblyExchange, AssemblyModel assembly) => new ReferenceModel
@@ -160,7 +158,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             Name = assembly.Name,
             Version = assembly.Version?.ToString(),
             AssemblyName = assembly.FullName,
-            IsResolved = false, 
+            IsResolved = false,
             ReferencedAssemblyNames = ImmutableList.Create<string>()
         };
     }

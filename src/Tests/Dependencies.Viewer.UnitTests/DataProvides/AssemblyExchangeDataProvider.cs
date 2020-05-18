@@ -1,6 +1,6 @@
-﻿using Dependencies.Exchange.Base.Models;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using Dependencies.Exchange.Base.Models;
 
 namespace Dependencies.Viewer.UnitTests.DataProviders
 {

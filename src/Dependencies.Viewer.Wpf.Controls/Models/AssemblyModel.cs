@@ -7,7 +7,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
 {
     public class AssemblyModel : IEquatable<AssemblyModel>
     {
-        public AssemblyModel(IReadOnlyDictionary<string, ReferenceModel> referenceProvider) => 
+        public AssemblyModel(IReadOnlyDictionary<string, ReferenceModel> referenceProvider) =>
             ReferenceProvider = referenceProvider ?? throw new ArgumentNullException(nameof(referenceProvider));
 
         public IReadOnlyDictionary<string, ReferenceModel> ReferenceProvider { get; private set; }

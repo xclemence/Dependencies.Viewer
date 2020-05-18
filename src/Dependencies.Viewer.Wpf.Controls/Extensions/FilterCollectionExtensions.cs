@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Data;
-using Dependencies.Viewer.Wpf.Controls.Models;
 
 namespace Dependencies.Viewer.Wpf.Controls.Extensions
 {
@@ -12,7 +11,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
         {
             var collectionView = CollectionViewSource.GetDefaultView(models);
             collectionView.Filter = predicate;
-            
+
             if (!string.IsNullOrEmpty(sortingProperty))
                 collectionView.SortDescriptions.Add(new SortDescription(sortingProperty, ListSortDirection.Ascending));
 

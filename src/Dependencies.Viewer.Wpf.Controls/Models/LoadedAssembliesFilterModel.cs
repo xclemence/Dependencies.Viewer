@@ -8,10 +8,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
 {
     public class AssemblyTreeModel : ObservableObject
     {
-        public AssemblyTreeModel(ReferenceModel reference)
-        {
-            Reference = reference;
-        }
+        public AssemblyTreeModel(ReferenceModel reference) => Reference = reference;
 
         public FilterCollection<AssemblyTreeModel> Collection { get; set; }
 
@@ -27,10 +24,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
     public class FilterCollection<T> : List<T>
     {
         public FilterCollection(IEnumerable<T> collection, Predicate<object> predicate, string baseSortingProperty)
-            : base(collection)
-        {
-            FilteredItems = this?.GetCollectionView(predicate, baseSortingProperty);
-        }
+            : base(collection) => FilteredItems = this?.GetCollectionView(predicate, baseSortingProperty);
 
         public ICollectionView FilteredItems { get; private set; }
 

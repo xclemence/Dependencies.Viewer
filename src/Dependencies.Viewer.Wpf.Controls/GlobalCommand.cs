@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Models;
 using Dependencies.Viewer.Wpf.Controls.ViewModels;

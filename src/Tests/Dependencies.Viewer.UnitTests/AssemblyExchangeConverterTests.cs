@@ -1,11 +1,11 @@
-﻿using Dependencies.Exchange.Base.Models;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Dependencies.Exchange.Base.Models;
 using Dependencies.Viewer.UnitTests.DataProviders;
 using Dependencies.Viewer.UnitTests.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace Dependencies.Viewer.UnitTests
 {
@@ -71,7 +71,7 @@ namespace Dependencies.Viewer.UnitTests
             var partialAssembly = AssemblyExchangeDataProvider.AssemblyTestV2;
             partialAssembly.IsPartial = true;
 
-            var dependencies = new [] {
+            var dependencies = new[] {
                 partialAssembly
             };
 

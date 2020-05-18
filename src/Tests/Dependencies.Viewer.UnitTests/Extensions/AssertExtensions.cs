@@ -1,6 +1,6 @@
-﻿using KellermanSoftware.CompareNetObjects;
+﻿using System.Diagnostics.CodeAnalysis;
+using KellermanSoftware.CompareNetObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Dependencies.Viewer.UnitTests.Extensions
 {

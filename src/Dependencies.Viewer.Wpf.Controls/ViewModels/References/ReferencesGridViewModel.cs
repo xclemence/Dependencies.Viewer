@@ -74,7 +74,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             return reference.LoadedAssembly.References.Any(x => FilterPredicat(x));
         }
 
-        private static IEnumerable<ReferenceModel> GetResults(AssemblyModel assembly) => 
+        private static IEnumerable<ReferenceModel> GetResults(AssemblyModel assembly) =>
             assembly?.ReferenceProvider.Select(x => x.Value).OrderBy(x => x.AssemblyFullName);
     }
 }

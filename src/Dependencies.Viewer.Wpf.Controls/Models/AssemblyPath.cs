@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Dependencies.Analyser.Base.Models;
 
 namespace Dependencies.Viewer.Wpf.Controls.Models
 {

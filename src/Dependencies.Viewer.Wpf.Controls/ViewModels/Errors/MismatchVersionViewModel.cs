@@ -10,7 +10,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
 
         protected override IEnumerable<ReferenceModel> GetResults(AssemblyModel assembly)
         {
-            return  assembly?.ReferenceProvider.Values.Where(x => x.AssemblyVersion != x.LoadedAssembly.Version)
+            return assembly?.ReferenceProvider.Values.Where(x => x.AssemblyVersion != x.LoadedAssembly.Version)
                                                       .OrderBy(x => x.AssemblyFullName);
         }
     }

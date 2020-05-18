@@ -2,12 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.Xml;
-using System.Windows.Media.Animation;
-using ControlzEx;
-using Dependencies.Analyser.Base.Extensions;
-using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
@@ -34,10 +28,6 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
 
         public static string ToDisplayString(this ReferenceModel reference) => reference.ToDisplayString(x => x.FullName);
 
-        public static int GetAllReferenceCount(this AssemblyInformation assembly) => 
-            assembly.Links.Count + assembly.Links.Sum(x => x.Assembly.Links.Count);
-                  
-
         public static FilterCollection<AssemblyTreeModel> ToFilterModels(this IEnumerable<ReferenceModel> references, Predicate<object> predicate)
         {
             var transform = new ObjectCacheTransformer();
@@ -54,11 +44,8 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
                 Collection = x.LoadedAssembly.References.ToFilterModels(predicate)
             });
         }
-        
-        public static IEnumerable<AssemblyPath> GetAssemblyParentPath(this ReferenceModel reference , AssemblyModel assemblyRoot)
-        {
-            return GetAssemblyParentPath(reference, assemblyRoot, null);
-        }
+
+        public static IEnumerable<AssemblyPath> GetAssemblyParentPath(this ReferenceModel reference, AssemblyModel assemblyRoot) => GetAssemblyParentPath(reference, assemblyRoot, null);
 
         public static IEnumerable<AssemblyPath> GetAssemblyParentPath(this ReferenceModel reference, AssemblyModel assemblyRoot, AssemblyPath currentPath)
         {
@@ -82,7 +69,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
 
             var limitedReferencesProvider = referencedAssemblies.Select(x => assembly.ReferenceProvider[x]).ToDictionary(x => x.AssemblyFullName, x => x.ShadowClone());
 
-            foreach(var item in limitedReferencesProvider)
+            foreach (var item in limitedReferencesProvider)
                 item.Value.LoadedAssembly = item.Value.LoadedAssembly.ShadowClone(limitedReferencesProvider);
 
             return limitedReferencesProvider[assembly.FullName].LoadedAssembly;
@@ -95,7 +82,5 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             foreach (var item in assembly.References.SelectMany(x => GetAllReferencedAssemblyNames(x.LoadedAssembly)))
                 yield return item;
         }
-
-
     }
 }

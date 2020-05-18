@@ -8,9 +8,6 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
     {
         public override string Title => "Loading Errors";
 
-        protected override IEnumerable<ReferenceModel> GetResults(AssemblyModel assembly)
-        {
-            return assembly.ReferenceProvider.Values.Where(x => !x.LoadedAssembly.IsResolved).OrderBy(x => x.AssemblyFullName);
-        }
+        protected override IEnumerable<ReferenceModel> GetResults(AssemblyModel assembly) => assembly.ReferenceProvider.Values.Where(x => !x.LoadedAssembly.IsResolved).OrderBy(x => x.AssemblyFullName);
     }
 }

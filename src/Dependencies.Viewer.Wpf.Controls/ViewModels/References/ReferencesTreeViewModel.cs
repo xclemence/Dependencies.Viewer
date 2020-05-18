@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Windows.Data;
 using System.Windows.Input;
-using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Models;
@@ -59,10 +56,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             }
         }
 
-        private void CreateFilteredCollection(AssemblyModel value)
-        {
-            LoadedAssemblies = value.References.ToFilterModels(FilterPredicat);
-        }
+        private void CreateFilteredCollection(AssemblyModel value) => LoadedAssemblies = value.References.ToFilterModels(FilterPredicat);
 
         private bool FilterPredicat(object obj)
         {

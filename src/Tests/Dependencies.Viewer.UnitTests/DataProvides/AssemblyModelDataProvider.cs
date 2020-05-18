@@ -1,8 +1,7 @@
-﻿using Dependencies.Analyser.Base.Models;
-using Dependencies.Viewer.Wpf.Controls.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Dependencies.Viewer.Wpf.Controls.Models;
 
 namespace Dependencies.Viewer.UnitTests.DataProviders
 {

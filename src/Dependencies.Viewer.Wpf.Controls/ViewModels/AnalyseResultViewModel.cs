@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Models;
 using Dependencies.Viewer.Wpf.Controls.ViewModels.Errors;
