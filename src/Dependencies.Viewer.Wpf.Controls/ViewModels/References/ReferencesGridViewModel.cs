@@ -4,8 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
-using Dependencies.Analyser.Base.Extensions;
-using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Models;
@@ -14,14 +12,14 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 {
     public class ReferencesGridViewModel : ObservableObject, IReferencesDetailsViewModel
     {
-        private ICollectionView filteredLinks;
-        private AssemblyInformation assemblyInformation;
+        private ICollectionView filteredReferences;
+        private AssemblyModel assembly;
         private IEnumerable<ReferenceModel> displayResults;
 
         public ReferencesGridViewModel()
         {
-            OpenSubResultCommand = new Command<ReferenceModel>(x => GlobalCommand.OpenAssembly(x.Link.Assembly));
-            OpenParentReferenceCommand = new Command<ReferenceModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(AssemblyInformation, x.Link).ConfigureAwait(false));
+            OpenSubResultCommand = new Command<ReferenceModel>(x => GlobalCommand.OpenAssembly(x.LoadedAssembly));
+            OpenParentReferenceCommand = new Command<ReferenceModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(Assembly, x).ConfigureAwait(false));
         }
 
         public FilterModel Filter { get; set; }
@@ -29,12 +27,12 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
         public ICommand OpenSubResultCommand { get; }
         public ICommand OpenParentReferenceCommand { get; }
 
-        public AssemblyInformation AssemblyInformation
+        public AssemblyModel Assembly
         {
-            get => assemblyInformation;
+            get => assembly;
             set
             {
-                if (Set(ref assemblyInformation, value))
+                if (Set(ref assembly, value))
                 {
                     displayResults = GetResults(value);
                     CreateFilteredCollection();
@@ -42,20 +40,20 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             }
         }
 
-        public ICollectionView FilteredLinks
+        public ICollectionView FilteredReferences
         {
-            get => filteredLinks;
-            private set => Set(ref filteredLinks, value);
+            get => filteredReferences;
+            private set => Set(ref filteredReferences, value);
         }
 
-        public void RefreshFilteredItems() => new Action(() => filteredLinks.Refresh()).InvokeUiThread();
+        public void RefreshFilteredItems() => new Action(() => filteredReferences.Refresh()).InvokeUiThread();
 
         private void CreateFilteredCollection()
         {
             new Action(() =>
             {
-                FilteredLinks = CollectionViewSource.GetDefaultView(displayResults);
-                FilteredLinks.Filter = FilterPredicat;
+                FilteredReferences = CollectionViewSource.GetDefaultView(displayResults);
+                FilteredReferences.Filter = FilterPredicat;
             }).InvokeUiThread();
         }
 
@@ -64,24 +62,19 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             if (!(obj is ReferenceModel reference))
                 return false;
 
-            if (reference.Link.Assembly.Links.Any(x => FilterPredicat(x)))
-                return true;
-
-            if (Filter.DisplayLocalOnly && !reference.Link.Assembly.IsLocalAssembly)
+            if (Filter.DisplayLocalOnly && !reference.LoadedAssembly.IsLocalAssembly)
                 return false;
 
             if (string.IsNullOrWhiteSpace(Filter.Name))
                 return true;
 
-            return reference.Link.Assembly.Name.Contains(Filter.Name, StringComparison.InvariantCultureIgnoreCase);
+            if (reference.LoadedAssembly.Name.Contains(Filter.Name, StringComparison.InvariantCultureIgnoreCase))
+                return true;
+
+            return reference.LoadedAssembly.References.Any(x => FilterPredicat(x));
         }
 
-        private static IEnumerable<ReferenceModel> GetResults(AssemblyInformation information)
-        {
-            return information?.GetAllLinks()
-                               .Distinct()
-                               .Select(x => new ReferenceModel(x))
-                               .OrderBy(x => x.Link.Assembly.Name);
-        }
+        private static IEnumerable<ReferenceModel> GetResults(AssemblyModel assembly) => 
+            assembly?.ReferenceProvider.Select(x => x.Value).OrderBy(x => x.AssemblyFullName);
     }
 }

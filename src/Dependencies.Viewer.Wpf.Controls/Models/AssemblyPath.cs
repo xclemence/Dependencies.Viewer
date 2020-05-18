@@ -5,7 +5,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
 {
     public class AssemblyPath
     {
-        public AssemblyInformation Assembly { get; set; }
+        public AssemblyModel Assembly { get; set; }
 
         public bool IsRoot { get; set; }
 

@@ -1,46 +1,39 @@
-﻿using System.Globalization;
+﻿using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
-using Dependencies.Analyser.Base.Extensions;
-using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Base;
+using Dependencies.Viewer.Wpf.Controls.Models;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 {
     public class AssemblyStatisticsViewModel : ObservableObject
     {
-        private AssemblyInformation assemblyInformation;
+        private AssemblyModel assembly;
 
-        public AssemblyInformation AssemblyInformation
+        private IImmutableList<AssemblyModel> assemblies;
+
+        public AssemblyModel Assembly
         {
-            get => assemblyInformation;
+            get => assembly;
             set
             {
-                if (Set(ref assemblyInformation, value))
+                if (Set(ref assembly, value))
                 {
+                    assemblies = assembly?.ReferenceProvider.Select(x => x.Value.LoadedAssembly).Distinct().ToImmutableList();
                     RaisePropertyChanged(nameof(ManagedAssemblyCount));
                     RaisePropertyChanged(nameof(NativeAssemblyCount));
-                    RaisePropertyChanged(nameof(AllLinksCount));
+                    RaisePropertyChanged(nameof(AllReferencesCount));
+                    RaisePropertyChanged(nameof(DirectReferencesCount));
                 }
             }
         }
 
-        public string ManagedAssemblyCount => AssemblyInformation?.GetAllLinks()
-                                                                  .Select(x => x.Assembly)
-                                                                  .Where(x => !x.IsNative)
-                                                                  .Distinct()
-                                                                  .Count()
-                                                                  .ToString(CultureInfo.InvariantCulture);
+        public string ManagedAssemblyCount => assemblies?.Count(x => !x.IsNative).ToString(CultureInfo.InvariantCulture);
 
-        public string NativeAssemblyCount => AssemblyInformation?.GetAllLinks()
-                                                                 .Select(x => x.Assembly)
-                                                                 .Where(x => x.IsNative)
-                                                                 .Distinct()
-                                                                 .Count()
-                                                                 .ToString(CultureInfo.InvariantCulture);
+        public string NativeAssemblyCount => assemblies?.Count(x => x.IsNative).ToString(CultureInfo.InvariantCulture);
 
-        public string AllLinksCount => AssemblyInformation?.GetAllLinks()
-                                                           .Distinct()
-                                                           .Count()
-                                                           .ToString(CultureInfo.InvariantCulture);
+        public string AllReferencesCount => Assembly?.ReferenceProvider.Count.ToString(CultureInfo.InvariantCulture);
+
+        public string DirectReferencesCount => Assembly?.ReferencedAssemblyNames.Count.ToString(CultureInfo.InvariantCulture);
     }
 }

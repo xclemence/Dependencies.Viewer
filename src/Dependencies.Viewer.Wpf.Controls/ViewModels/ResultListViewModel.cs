@@ -6,12 +6,13 @@ using System.Windows;
 using System.Windows.Input;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Base;
+using Dependencies.Viewer.Wpf.Controls.Models;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
 {
     public abstract class ResultListViewModel<T> : ObservableObject
     {
-        private AssemblyInformation assemblyInformation;
+        private AssemblyModel assembly;
         private T selectedItem;
         private IReadOnlyList<T> displayResults;
 
@@ -25,12 +26,12 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
         public ICommand CopyToClipboardCommand { get; }
         public abstract string Title { get; }
 
-        public AssemblyInformation AssemblyInformation
+        public AssemblyModel Assembly
         {
-            get => assemblyInformation;
+            get => assembly;
             set
             {
-                if (Set(ref assemblyInformation, value))
+                if (Set(ref assembly, value))
                     DisplayResults = GetResults(value).ToList();
             }
         }
@@ -47,7 +48,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
             set => Set(ref selectedItem, value);
         }
 
-        protected abstract IEnumerable<T> GetResults(AssemblyInformation information);
+        protected abstract IEnumerable<T> GetResults(AssemblyModel information);
 
         protected virtual Task OnOpenResultAsync(T item) => Task.CompletedTask;
 

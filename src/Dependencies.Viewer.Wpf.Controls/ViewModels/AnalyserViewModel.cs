@@ -11,6 +11,7 @@ using Dependencies.Analyser.Base.Models;
 using Dependencies.Exchange.Base;
 using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
+using Dependencies.Viewer.Wpf.Controls.Models;
 using Dependencies.Viewer.Wpf.Controls.ViewModels.Settings;
 using Dependencies.Viewer.Wpf.Controls.Views;
 using Dragablz;
@@ -46,7 +47,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private bool isSettingsOpen;
 
         public AnalyserViewModel(AnalyserProvider analyserProvider,
-                                 IAnalyserServiceFactory<AnalyseResultViewModel> analyserViewModelFactory,
+                                 IAnalyserServiceFactory<AnalyseResultViewModel> analyserViewModelFactory, // TODO change Factort interface for non analyser interface
                                  IInterTabClient interTabClient,
                                  SettingsViewModel settingsViewModel,
                                  ISnackbarMessageQueue messageQueue,
@@ -77,7 +78,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
             CloseResultCommand = new Command<AnalyseResultViewModel>(CloseResult);
 
-            GlobalCommand.OpenAssemblyAction = AddAssemblyResult;
+            GlobalCommand.OpenAssemblyAction = x => AddAssemblyResult(x.IsolatedShadowClone());
         }
 
         public ISnackbarMessageQueue MessageQueue { get; }
@@ -185,16 +186,16 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private async Task AnalyseAsync(string filePath)
         {
             var analyser = analyserProvider.CurrentAnalyserFactory.GetAnalyser();
-            AddAssemblyResult(await analyser.AnalyseAsync(filePath).ConfigureAwait(false));
+
+            var result = await analyser.AnalyseAsync(filePath).ConfigureAwait(false);
+
+            AddAssemblyResult(result.ToAssemblyModel());
         }
 
-        private void AddAssemblyResult(AssemblyInformation info)
+        private void AddAssemblyResult(AssemblyModel assembly)
         {
-            if (info == null)
-                return;
-
             var newViewModel = analyserViewModelFactory.Create();
-            newViewModel.AssemblyResult = info;
+            newViewModel.AssemblyResult = assembly;
 
             new Action(() =>
             {
@@ -223,25 +224,25 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
         private async Task ExportAsync(IExportAssembly exportAssembly)
         {
-            var (assembly, dependencies) = selectedItem.AssemblyResult.ToExchangeModel();
+            //var (assembly, dependencies) = selectedItem.AssemblyResult.ToExchangeModel();
 
-            await exportAssembly.ExportAsync(assembly, dependencies, CreateExchangeView).ConfigureAwait(false);
+            //await exportAssembly.ExportAsync(assembly, dependencies, CreateExchangeView).ConfigureAwait(false);
         }
 
         private async Task ImportAsync(IImportAssembly importAssembly)
         {
-            var result = await importAssembly.ImportAsync(CreateExchangeView).ConfigureAwait(false);
+            //var result = await importAssembly.ImportAsync(CreateExchangeView).ConfigureAwait(false);
 
-            if (result == default)
-                return;
+            //if (result == default)
+            //    return;
 
-            AddAssemblyResult(result.Assembly.ToInformationModel(result.Dependencies));
+            //AddAssemblyResult(result.Assembly.ToInformationModel(result.Dependencies));
         }
 
         private async Task<T> CreateExchangeView<T>(UserControl view, IExchangeViewModel<T> viewModel)
         {
             var exchangeView = new ExchangeView();
-            var exchangeViewModel = new ExchangeViewModel<T>((x) => CloseExchangeDialog(x), viewModel, logger);
+            var exchangeViewModel = new ExchangeViewModel<T>((x) => CloseExchangeDialog(x), viewModel, logger); // TODO use factory
 
             exchangeView.DataContext = exchangeViewModel;
             exchangeView.Control.Content = view;

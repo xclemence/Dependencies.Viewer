@@ -49,7 +49,7 @@
 
             <DockPanel>
                 <TextBlock Text="Version :" />
-                <TextBox Text="{Binding LoadedVersion, Mode=OneWay}"/>
+                <TextBox Text="{Binding Version, Mode=OneWay}"/>
             </DockPanel>
             <DockPanel>
                 <TextBlock Text="Creation :" />

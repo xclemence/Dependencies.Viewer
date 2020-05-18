@@ -1,12 +1,11 @@
-﻿using Dependencies.Analyser.Base.Models;
-using Dependencies.Viewer.Wpf.Controls.Base;
+﻿using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 {
     public class ReferencesViewModel : ObservableObject
     {
-        private AssemblyInformation assemblyInformation;
+        private AssemblyModel assembly;
         private readonly FilterModel filter;
 
         private readonly IReferencesDetailsViewModel[] resultViewModels;
@@ -25,15 +24,15 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             SelectedResultViewModels = resultViewModels[0];
         }
 
-        public AssemblyInformation AssemblyInformation
+        public AssemblyModel Assembly
         {
-            get => assemblyInformation;
+            get => assembly;
             set
             {
-                if (Set(ref assemblyInformation, value))
+                if (Set(ref assembly, value))
                 {
                     foreach (var item in resultViewModels)
-                        item.AssemblyInformation = value;
+                        item.Assembly = value;
                 }
             }
         }
