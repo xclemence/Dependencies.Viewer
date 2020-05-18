@@ -1,34 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
-using Dependencies.Analyser.Base.Extensions;
-using Dependencies.Analyser.Base.Models;
+using System.Security.Cryptography.Xml;
 using Dependencies.Exchange.Base.Models;
+using Dependencies.Viewer.Wpf.Controls.Models;
 
 namespace Dependencies.Viewer.Wpf.Controls.Extensions
 {
     public static class ImportExportConverters
     {
-        public static (AssemblyExchange assembly, IList<AssemblyExchange> dependencies) ToExchangeModel(this AssemblyInformation assemblyInformation)
+
+        ////////////////////////////////////////////////////  To Exchange Model /////////////////////////////////////////////////////
+
+        public static (AssemblyExchange assembly, IList<AssemblyExchange> dependencies) ToExchangeModel(this AssemblyModel assembly)
         {
-            var assembly = assemblyInformation.ToExchange();
+            var assemblyExchange = assembly.ToExchange();
 
-            var allLink = assemblyInformation.GetAllLinks().Distinct().ToList();
-            var assemblies = allLink.Select(x => x.Assembly).Distinct().ToList();
+            var allReferences = assembly.ReferenceProvider.Select(x => x.Value).ToList();
+            var loadedAssemblies = allReferences.Select(x => x.LoadedAssembly).Distinct().ToList();
 
-            var dependencies = assemblies.Select(x => x.ToExchange()).ToList();
+            var dependencies = loadedAssemblies.Select(x => x.ToExchange()).ToList();
 
-            dependencies.AddRange(allLink.Where(x => x.LinkVersion != x.Assembly.LoadedVersion).Select(x => x.ToExchange()));
+            dependencies.AddRange(allReferences.Where(x => x.IsMismatchVersion).Select(x => x.ToExchange()));
 
-            return (assembly, dependencies);
+            return (assemblyExchange, dependencies);
         }
 
-        private static AssemblyExchange ToExchange(this AssemblyInformation assembly) => new AssemblyExchange
+        private static AssemblyExchange ToExchange(this AssemblyModel assembly) => new AssemblyExchange
         {
             Name = assembly.FullName,
             ShortName = assembly.Name,
-            Version = assembly.LoadedVersion,
+            Version = assembly.Version,
             TargetFramework = assembly.TargetFramework,
             TargetProcessor = assembly.TargetProcessor?.ToString(),
             IsDebug = assembly.IsDebug,
@@ -39,37 +43,90 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             CreationDate = assembly.CreationDate,
             HasEntryPoint = assembly.HasEntryPoint,
             IsPartial = !assembly.IsResolved,
-            AssembliesReferenced = assembly.Links.Select(x => x.LinkFullName).ToList()
+            AssembliesReferenced = assembly.ReferencedAssemblyNames.ToList()
         };
 
-        private static AssemblyExchange ToExchange(this AssemblyLink link)
+        private static AssemblyExchange ToExchange(this ReferenceModel reference)
         {
             AssemblyExchange model;
-            if (link.LinkVersion != link.Assembly.LoadedVersion)
-                model = new AssemblyExchange { Name = link.LinkFullName, Version = link.LinkVersion, IsPartial = true, ShortName = link.Assembly.Name, IsLocal = link.Assembly.IsLocalAssembly };
+            if (reference.IsMismatchVersion)
+                model = new AssemblyExchange { Name = reference.AssemblyFullName, Version = reference.AssemblyVersion, IsPartial = true, ShortName = reference.LoadedAssembly.Name, IsLocal = reference.LoadedAssembly.IsLocalAssembly };
             else
-                model = link.Assembly.ToExchange();
+                model = reference.LoadedAssembly.ToExchange();
 
             return model;
         }
 
-        public static AssemblyInformation ToInformationModel(this AssemblyExchange assemblyExchange, IList<AssemblyExchange> dependencies)
+        ////////////////////////////////////////////////////  To Assembly Model /////////////////////////////////////////////////////
+
+
+        public static AssemblyModel ToAssemblyModel(this AssemblyExchange assemblyExchange, IList<AssemblyExchange> dependencies)
         {
-            var dependenciesCache = dependencies.GroupBy(x => x.ShortName)
-                                                .Select(x => GetLoadedItem(x))
-                                                .Select(x => (target: x.ToInformationModel(), baseItem: x)).ToDictionary(x => x.baseItem.ShortName);
+            var referenceProvider = new Dictionary<string, ReferenceModel>();
 
-            var assemblyCache = dependencies.ToDictionary(x => x.Name, x => x);
+            var loadedAssemblies = dependencies.GroupBy(x => x.ShortName).Select(x => GetLoadedItem(x)).ToList();
 
-            var assembly = assemblyExchange.ToInformationModel();
+            var referenceCache = loadedAssemblies.Select(x => x.ToReferenceModelWithNewAssembly(referenceProvider)).ToDictionary(x => x.LoadedAssembly.Name);
+            var notLoadedAssemblies = dependencies.Except(loadedAssemblies).Select(x => x.ToReferenceModelWithSearchAssembly(referenceCache));
 
-            dependenciesCache.Add(assemblyExchange.ShortName, (assembly, assemblyExchange));
+            foreach (var (_, value) in referenceCache)
+                referenceProvider.Add(value.AssemblyFullName, value);
 
-            foreach (var item in dependenciesCache)
-                item.Value.target.AddLinkDependencies(item.Value.baseItem, dependenciesCache, assemblyCache);
+            foreach (var item in notLoadedAssemblies)
+                referenceProvider.Add(item.AssemblyFullName, item);
+
+            var assembly = assemblyExchange.ToAssemblyModel(referenceProvider);
+
+            assembly.ConsolidateMissingAssemblies(referenceProvider, referenceCache);
 
             return assembly;
         }
+
+        private static void ConsolidateMissingAssemblies(this AssemblyModel assembly, Dictionary<string, ReferenceModel> referenceProvider, IReadOnlyDictionary<string, ReferenceModel> referenceCache)
+        {
+            var referencedAssemblies = referenceProvider.SelectMany(x => x.Value.LoadedAssembly.ReferencedAssemblyNames)
+                                                        .Union(assembly.ReferencedAssemblyNames)
+                                                        .Distinct()
+                                                        .ToList();
+            
+            var referenceNotFound = referencedAssemblies.Where(x => !referenceProvider.Keys.Contains(x));
+
+            foreach (var item in referenceNotFound)
+            {
+                var (referencedAssembly, assemblyName) = referenceCache.GetNotFoundAssembly(item, referenceProvider);
+
+                referenceProvider.Add(item, new ReferenceModel
+                {
+                    AssemblyFullName = assemblyName.FullName,
+                    AssemblyVersion = assemblyName.Version.ToString(),
+                    LoadedAssembly = referencedAssembly
+                });
+            }
+        }
+
+        private static (AssemblyModel assemby, AssemblyName assemblyName) GetNotFoundAssembly(this IReadOnlyDictionary<string, ReferenceModel> referenceCache, string assemblyFullName, Dictionary<string, ReferenceModel> referenceProvider)
+        {
+            var assemblyName = new AssemblyName(assemblyFullName);
+
+            if (referenceCache.TryGetValue(assemblyName.Name, out var reference))
+                return (reference.LoadedAssembly, assemblyName);
+            
+            return (assemblyName.ToNotFoundAssemblyModel(referenceProvider), assemblyName);
+        }
+
+
+        public static ReferenceModel ToReferenceModelWithNewAssembly(this AssemblyExchange assemblyExchange, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) =>
+            ToReferenceModelWithAssembly(assemblyExchange, assemblyExchange.ToAssemblyModel(referenceProvider));
+
+        public static ReferenceModel ToReferenceModelWithSearchAssembly(this AssemblyExchange assemblyExchange, IReadOnlyDictionary<string, ReferenceModel> assemblyCache) =>
+            ToReferenceModelWithAssembly(assemblyExchange, assemblyCache[assemblyExchange.ShortName].LoadedAssembly);
+
+        public static ReferenceModel ToReferenceModelWithAssembly(this AssemblyExchange assemblyExchange, AssemblyModel assembly) => new ReferenceModel
+        {
+            AssemblyFullName = assemblyExchange.Name,
+            AssemblyVersion = assemblyExchange.Version,
+            LoadedAssembly = assembly
+        };
 
         private static AssemblyExchange GetLoadedItem(IGrouping<string, AssemblyExchange> collection)
         {
@@ -80,34 +137,13 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             return collection.OrderByDescending(x => new Version(x.Version)).First();
         }
 
-        private static void AddLinkDependencies(this AssemblyInformation assembly,
-                                                AssemblyExchange assemblyExchange,
-                                                IDictionary<string, (AssemblyInformation target, AssemblyExchange baseItem)> assembliesCache,
-                                                IDictionary<string, AssemblyExchange> assemblyExchangeCache) => assembly.Links.AddRange(assemblyExchange.AssembliesReferenced.Select(x => GetAssemblyLinkFromCache(x, assembliesCache, assemblyExchangeCache)));
-
-        private static AssemblyLink GetAssemblyLinkFromCache(string assemblyFullName,
-                                                            IDictionary<string, (AssemblyInformation target, AssemblyExchange baseItem)> assembliesCache,
-                                                            IDictionary<string, AssemblyExchange> assemblyExchangeCache)
+        private static AssemblyModel ToAssemblyModel(this AssemblyExchange assembly, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) => new AssemblyModel(referenceProvider)
         {
-            if (!assemblyExchangeCache.TryGetValue(assemblyFullName, out var assembly))
-            {
-                var assemblyName = new AssemblyName(assemblyFullName);
-                return CreateAssemblyLing(assemblyName.ToInformationModel(), assemblyName.Version.ToString(), assemblyName.FullName);
-            }
-
-            if (assembliesCache.TryGetValue(assembly.ShortName, out var item))
-                return CreateAssemblyLing(item.target, assemblyExchangeCache[assemblyFullName].Version, assemblyFullName);
-
-            return CreateAssemblyLing(assembly.ToInformationModel(), assembly.Version, assemblyFullName);
-        }
-
-        private static AssemblyLink CreateAssemblyLing(AssemblyInformation assembly, string linkVersion, string linkFullName) => new AssemblyLink(assembly, linkVersion, linkFullName);
-
-        private static AssemblyInformation ToInformationModel(this AssemblyExchange assembly) => new AssemblyInformation(assembly.ShortName, assembly.Version, null)
-        {
+            Name = assembly.ShortName,
+            Version = assembly.Version,
             AssemblyName = assembly.Name,
             TargetFramework = assembly.TargetFramework,
-            TargetProcessor = assembly.TargetProcessor == null ? (TargetProcessor?)null : Enum.Parse<TargetProcessor>(assembly.TargetProcessor),
+            TargetProcessor = assembly.TargetProcessor,
             IsDebug = assembly.IsDebug,
             IsILOnly = assembly.IsILOnly,
             IsLocalAssembly = assembly.IsLocal,
@@ -115,13 +151,17 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             Creator = assembly.Creator,
             CreationDate = assembly.CreationDate,
             HasEntryPoint = assembly.HasEntryPoint,
-            IsResolved = !assembly.IsPartial
+            IsResolved = !assembly.IsPartial,
+            ReferencedAssemblyNames = assembly.AssembliesReferenced.ToImmutableList()
         };
 
-        public static AssemblyInformation ToInformationModel(this AssemblyName assembly) => new AssemblyInformation(assembly.Name, assembly.Version.ToString(), null)
+        public static AssemblyModel ToNotFoundAssemblyModel(this AssemblyName assembly, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) => new AssemblyModel(referenceProvider)
         {
+            Name = assembly.Name,
+            Version = assembly.Version?.ToString(),
             AssemblyName = assembly.FullName,
-            IsResolved = false
+            IsResolved = false, 
+            ReferencedAssemblyNames = ImmutableList.Create<string>()
         };
     }
 }

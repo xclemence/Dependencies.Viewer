@@ -5,9 +5,8 @@ using System.Linq;
 
 namespace Dependencies.Viewer.Wpf.Controls.Models
 {
-    public class AssemblyModel
+    public class AssemblyModel : IEquatable<AssemblyModel>
     {
-
         public AssemblyModel(IReadOnlyDictionary<string, ReferenceModel> referenceProvider) => 
             ReferenceProvider = referenceProvider ?? throw new ArgumentNullException(nameof(referenceProvider));
 
@@ -46,6 +45,14 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
 
         public IImmutableList<ReferenceModel> References => ReferencedAssemblyNames.Select(x => ReferenceProvider[x]).ToImmutableList();
 
+        public override bool Equals(object obj) => Equals(obj as AssemblyModel);
+        public bool Equals(AssemblyModel other) => other != null &&
+                                                   FullName == other.FullName &&
+                                                   IsDebug == other.IsDebug &&
+                                                   TargetFramework == other.TargetFramework &&
+                                                   TargetProcessor == other.TargetProcessor;
+        public override int GetHashCode() => HashCode.Combine(FullName, IsDebug, TargetFramework, TargetProcessor);
+
         public AssemblyModel ShadowClone(IReadOnlyDictionary<string, ReferenceModel> referenceProvider)
         {
             var clone = (AssemblyModel)MemberwiseClone();
@@ -54,6 +61,9 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
 
             return clone;
         }
+
+        public static bool operator ==(AssemblyModel left, AssemblyModel right) => EqualityComparer<AssemblyModel>.Default.Equals(left, right);
+        public static bool operator !=(AssemblyModel left, AssemblyModel right) => !(left == right);
     }
 }
 

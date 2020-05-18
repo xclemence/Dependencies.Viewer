@@ -224,19 +224,19 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
         private async Task ExportAsync(IExportAssembly exportAssembly)
         {
-            //var (assembly, dependencies) = selectedItem.AssemblyResult.ToExchangeModel();
+            var (assembly, dependencies) = selectedItem.AssemblyResult.ToExchangeModel();
 
-            //await exportAssembly.ExportAsync(assembly, dependencies, CreateExchangeView).ConfigureAwait(false);
+            await exportAssembly.ExportAsync(assembly, dependencies, CreateExchangeView).ConfigureAwait(false);
         }
 
         private async Task ImportAsync(IImportAssembly importAssembly)
         {
-            //var result = await importAssembly.ImportAsync(CreateExchangeView).ConfigureAwait(false);
+            var result = await importAssembly.ImportAsync(CreateExchangeView).ConfigureAwait(false);
 
-            //if (result == default)
-            //    return;
+            if (result == default)
+                return;
 
-            //AddAssemblyResult(result.Assembly.ToInformationModel(result.Dependencies));
+            AddAssemblyResult(result.Assembly.ToAssemblyModel(result.Dependencies));
         }
 
         private async Task<T> CreateExchangeView<T>(UserControl view, IExchangeViewModel<T> viewModel)

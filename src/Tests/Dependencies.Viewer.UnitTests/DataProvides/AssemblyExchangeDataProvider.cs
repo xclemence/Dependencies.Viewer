@@ -53,7 +53,7 @@ namespace Dependencies.Viewer.UnitTests.DataProviders
             HasEntryPoint = true,
             IsPartial = false,
             Creator = "xce",
-            CreationDate = DateTime.Now,
+            CreationDate = new DateTime(2020, 2, 3),
             TargetFramework = ".NETStandard,Version=v2.0",
             TargetProcessor = "AnyCpu",
         };

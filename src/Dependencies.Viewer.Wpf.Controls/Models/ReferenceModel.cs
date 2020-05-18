@@ -11,8 +11,6 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
 
         public AssemblyModel LoadedAssembly { get; set; }
 
-        public int? AllReferencesCount { get; set; }
-
         public AssemblyType AssemblyType
         {
             get

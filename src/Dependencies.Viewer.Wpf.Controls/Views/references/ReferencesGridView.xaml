@@ -70,7 +70,7 @@
                 <DataGridTextColumn Header="Loaded Version" Binding="{Binding LoadedAssembly.Version, Mode=OneWay}"/>
                 <DataGridCheckBoxColumn Header="Is Debug" Binding="{Binding LoadedAssembly.IsDebug, Mode=OneWay}"/>
                 <DataGridTextColumn Header="Target" Binding="{Binding LoadedAssembly.TargetProcessor, Mode=OneWay}"/>
-                <DataGridTextColumn Header="All References" Binding="{Binding AllReferencesCount, Mode=OneWay}"/>
+                <DataGridTextColumn Header="Direct References" Binding="{Binding LoadedAssembly.ReferencedAssemblyNames.Count, Mode=OneWay}"/>
                 <DataGridTextColumn Header="Full Name" Binding="{Binding LoadedAssembly.FullName, Mode=OneWay}"/>
             </DataGrid.Columns>
         </DataGrid>
