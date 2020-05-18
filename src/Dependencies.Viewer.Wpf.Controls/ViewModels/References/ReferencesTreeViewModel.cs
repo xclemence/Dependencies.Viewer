@@ -56,9 +56,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             }
         }
 
-        private void CreateFilteredCollection(AssemblyModel value) => LoadedAssemblies = value.References.ToFilterModels(FilterPredicat);
+        private void CreateFilteredCollection(AssemblyModel value) => LoadedAssemblies = value.References.ToFilterModels(FilterPredicate);
 
-        private bool FilterPredicat(object obj)
+        private bool FilterPredicate(object obj)
         {
             if (!(obj is AssemblyTreeModel model))
                 return false;
@@ -72,7 +72,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             if (model.Reference.AssemblyFullName.Contains(Filter.Name, System.StringComparison.InvariantCultureIgnoreCase))
                 return true;
 
-            return model.Collection.Any(x => FilterPredicat(x));
+            return model.Collection.Any(x => FilterPredicate(x));
         }
 
     }

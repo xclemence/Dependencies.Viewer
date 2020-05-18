@@ -9,21 +9,21 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
 {
     public static class ReferenceModelExtensions
     {
-        public static string ToDisplayString(this ReferenceModel reference, Func<AssemblyModel, string> namProvider)
+        public static string ToDisplayString(this ReferenceModel reference, Func<AssemblyModel, string> nameProvider)
         {
             if (!reference.LoadedAssembly.IsResolved && !string.IsNullOrEmpty(reference.AssemblyVersion))
-                return $"{namProvider(reference.LoadedAssembly)} (v{reference.AssemblyVersion})";
+                return $"{nameProvider(reference.LoadedAssembly)} (v{reference.AssemblyVersion})";
 
             if (!reference.LoadedAssembly.IsResolved)
-                return namProvider(reference.LoadedAssembly);
+                return nameProvider(reference.LoadedAssembly);
 
             if (reference.AssemblyVersion != reference.LoadedAssembly.Version)
-                return $"{namProvider(reference.LoadedAssembly)}   (v{ reference.AssemblyVersion } ➜ v{ reference.LoadedAssembly.Version})";
+                return $"{nameProvider(reference.LoadedAssembly)}   (v{ reference.AssemblyVersion } ➜ v{ reference.LoadedAssembly.Version})";
 
             if (reference.LoadedAssembly.IsNative)
-                return $"{namProvider(reference.LoadedAssembly)}   (loaded v{ reference.LoadedAssembly.Version })";
+                return $"{nameProvider(reference.LoadedAssembly)}   (loaded v{ reference.LoadedAssembly.Version })";
 
-            return namProvider(reference.LoadedAssembly);
+            return nameProvider(reference.LoadedAssembly);
         }
 
         public static string ToDisplayString(this ReferenceModel reference) => reference.ToDisplayString(x => x.FullName);

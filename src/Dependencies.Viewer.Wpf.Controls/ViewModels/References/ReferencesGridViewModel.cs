@@ -53,11 +53,11 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             new Action(() =>
             {
                 FilteredReferences = CollectionViewSource.GetDefaultView(displayResults);
-                FilteredReferences.Filter = FilterPredicat;
+                FilteredReferences.Filter = FilterPredicate;
             }).InvokeUiThread();
         }
 
-        private bool FilterPredicat(object obj)
+        private bool FilterPredicate(object obj)
         {
             if (!(obj is ReferenceModel reference))
                 return false;
@@ -71,7 +71,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             if (reference.LoadedAssembly.Name.Contains(Filter.Name, StringComparison.InvariantCultureIgnoreCase))
                 return true;
 
-            return reference.LoadedAssembly.References.Any(x => FilterPredicat(x));
+            return reference.LoadedAssembly.References.Any(x => FilterPredicate(x));
         }
 
         private static IEnumerable<ReferenceModel> GetResults(AssemblyModel assembly) =>
