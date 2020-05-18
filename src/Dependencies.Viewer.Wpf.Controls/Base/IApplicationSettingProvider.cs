@@ -1,4 +1,4 @@
-﻿namespace Dependencies.Viewer.Wpf.Controls
+﻿namespace Dependencies.Viewer.Wpf.Controls.Base
 {
     public interface IApplicationSettingProvider
     {

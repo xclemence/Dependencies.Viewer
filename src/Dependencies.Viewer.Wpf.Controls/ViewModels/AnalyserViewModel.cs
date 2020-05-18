@@ -38,7 +38,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private bool isDragFile;
         private IInterTabClient interTabClient;
         private readonly AnalyserProvider analyserProvider;
-        private readonly IAnalyserServiceFactory<AnalyseResultViewModel> analyserViewModelFactory;
+        private readonly IServiceFactory<AnalyseResultViewModel> analyserViewModelFactory;
         private readonly ILogger<AnalyserViewModel> logger;
         private readonly IList<IImportAssembly> importServices;
         private readonly IList<IExportAssembly> exportServices;
@@ -47,7 +47,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private bool isSettingsOpen;
 
         public AnalyserViewModel(AnalyserProvider analyserProvider,
-                                 IAnalyserServiceFactory<AnalyseResultViewModel> analyserViewModelFactory, // TODO change Factort interface for non analyser interface
+                                 IServiceFactory<AnalyseResultViewModel> analyserViewModelFactory,
                                  IInterTabClient interTabClient,
                                  SettingsViewModel settingsViewModel,
                                  ISnackbarMessageQueue messageQueue,
@@ -242,7 +242,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private async Task<T> CreateExchangeView<T>(UserControl view, IExchangeViewModel<T> viewModel)
         {
             var exchangeView = new ExchangeView();
-            var exchangeViewModel = new ExchangeViewModel<T>((x) => CloseExchangeDialog(x), viewModel, logger); // TODO use factory
+            var exchangeViewModel = new ExchangeViewModel<T>((x) => CloseExchangeDialog(x), viewModel, logger);
 
             exchangeView.DataContext = exchangeViewModel;
             exchangeView.Control.Content = view;

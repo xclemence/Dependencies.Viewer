@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Dependencies.Viewer.Wpf.Controls;
+using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.IoC;
 using Dependencies.Viewer.Wpf.Properties;
 using Microsoft.Extensions.Configuration;

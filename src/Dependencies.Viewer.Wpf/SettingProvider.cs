@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Dependencies.Analyser.Base;
-using Dependencies.Viewer.Wpf.Controls;
+using Dependencies.Viewer.Wpf.Controls.Base;
 
 namespace Dependencies.Viewer.Wpf
 {

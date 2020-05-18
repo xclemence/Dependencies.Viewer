@@ -8,6 +8,7 @@ using System.Windows.Media.Animation;
 using ControlzEx;
 using Dependencies.Analyser.Base.Extensions;
 using Dependencies.Analyser.Base.Models;
+using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
 namespace Dependencies.Viewer.Wpf.Controls.Extensions
