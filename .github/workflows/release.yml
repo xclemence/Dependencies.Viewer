@@ -38,7 +38,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: DependenciesViewer
-        path: ./$RELEASE_FILE_NAME
+        path: ./${{ env.RELEASE_FILE_NAME }}
 
     # Release Creation
     #- name: Read Release Notes
