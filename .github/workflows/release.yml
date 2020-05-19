@@ -33,7 +33,7 @@ jobs:
       uses: papeloto/action-zip@v1
       with:
         files: Build/Release/
-        dest: "$RELEASE_FILE_NAME"
+        dest: ${{ env.RELEASE_FILE_NAME }}
     
     - uses: actions/upload-artifact@v2
       with:
