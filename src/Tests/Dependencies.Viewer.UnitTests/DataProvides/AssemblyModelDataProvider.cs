@@ -61,6 +61,60 @@ namespace Dependencies.Viewer.UnitTests.DataProviders
             ReferencedAssemblyNames = ImmutableList.Create<string>()
         };
 
+        public static AssemblyModel AssemblyTest1 => new AssemblyModel(new Dictionary<string, ReferenceModel>())
+        {
+            Name = "Assembly.Test1",
+            Version = "4.0.0.0",
+            AssemblyName = "Assembly.Test1, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e",
+            TargetFramework = ".NETCoreApp,Version=v3.1",
+            TargetProcessor = "AnyCpu",
+            IsDebug = true,
+            IsILOnly = true,
+            IsLocalAssembly = true,
+            IsNative = true,
+            Creator = "xce",
+            CreationDate = new DateTime(2020, 2, 2),
+            HasEntryPoint = true,
+            IsResolved = true,
+            ReferencedAssemblyNames = ImmutableList.Create<string>()
+        };
+
+        public static AssemblyModel AssemblyTest2 => new AssemblyModel(new Dictionary<string, ReferenceModel>())
+        {
+            Name = "Assembly.Test2",
+            Version = "4.0.0.0",
+            AssemblyName = "Assembly.Test2, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e",
+            TargetFramework = ".NETCoreApp,Version=v3.1",
+            TargetProcessor = "AnyCpu",
+            IsDebug = true,
+            IsILOnly = true,
+            IsLocalAssembly = true,
+            IsNative = true,
+            Creator = "xce",
+            CreationDate = new DateTime(2020, 2, 2),
+            HasEntryPoint = true,
+            IsResolved = true,
+            ReferencedAssemblyNames = ImmutableList.Create<string>()
+        };
+
+        public static AssemblyModel AssemblyTest3 => new AssemblyModel(new Dictionary<string, ReferenceModel>())
+        {
+            Name = "Assembly.Test3",
+            Version = "4.0.0.0",
+            AssemblyName = "Assembly.Test3, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e",
+            TargetFramework = ".NETCoreApp,Version=v3.1",
+            TargetProcessor = "AnyCpu",
+            IsDebug = true,
+            IsILOnly = true,
+            IsLocalAssembly = true,
+            IsNative = true,
+            Creator = "xce",
+            CreationDate = new DateTime(2020, 2, 2),
+            HasEntryPoint = true,
+            IsResolved = true,
+            ReferencedAssemblyNames = ImmutableList.Create<string>()
+        };
+
         public static ReferenceModel CreateReferenceModel(this AssemblyModel assembly, string assemblyFullName = null, string assemblyVersion = null) => new ReferenceModel
         {
             LoadedAssembly = assembly,
