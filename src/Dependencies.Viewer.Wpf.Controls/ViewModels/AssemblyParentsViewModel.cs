@@ -7,6 +7,6 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
     {
         public string BaseAssembly { get; set; }
 
-        public IList<AssemblyPath> Paths { get; set; }
+        public IList<AssemblyPathItem> Paths { get; set; }
     }
 }

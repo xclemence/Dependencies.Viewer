@@ -45,22 +45,31 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             });
         }
 
-        public static IEnumerable<AssemblyPath> GetAssemblyParentPath(this ReferenceModel reference, AssemblyModel assemblyRoot) => GetAssemblyParentPath(reference, assemblyRoot, null);
-
-        public static IEnumerable<AssemblyPath> GetAssemblyParentPath(this ReferenceModel reference, AssemblyModel assemblyRoot, AssemblyPath currentPath)
+        public static IList<AssemblyPathItem> GetAssemblyParentPath(this ReferenceModel reference, AssemblyModel assemblyRoot)
         {
-            var path = new AssemblyPath { Assembly = assemblyRoot };
+            var cacheTransformer = new ObjectCacheTransformer();
 
-            if (currentPath != null)
-                path.Parents.Add(currentPath);
+            _ = GetAssemblyParentPath(reference, assemblyRoot, cacheTransformer).ToList();
 
+            return cacheTransformer.GetCacheItems<string, (bool found, AssemblyPathItem pathItem)>().Where(x => x.found).Select(x => x.pathItem).ToArray();
+        }
+
+        private static IEnumerable<AssemblyPathItem> GetAssemblyParentPath(this ReferenceModel reference, AssemblyModel assemblyRoot, ObjectCacheTransformer cacheTransformer)
+        {
             if (assemblyRoot.ReferencedAssemblyNames.Contains(reference.AssemblyFullName))
-                yield return path;
+                yield return cacheTransformer.Transform(assemblyRoot.FullName, _ => (found: true, pathItem: new AssemblyPathItem { Assembly = assemblyRoot })).pathItem;
 
-            var subPaths = assemblyRoot.References.SelectMany(x => reference.GetAssemblyParentPath(x.LoadedAssembly, path));
+            var subPaths = assemblyRoot.References.SelectMany(x => reference.GetAssemblyParentPath(x.LoadedAssembly, cacheTransformer));
+
+            var (found, pathItem) = cacheTransformer.Transform(assemblyRoot.FullName, _ => (found: false, pathItem: new AssemblyPathItem { Assembly = assemblyRoot }));
 
             foreach (var item in subPaths)
-                yield return item;
+            {
+                if (!item.Parents.Contains(pathItem))
+                    item.Parents.Add(pathItem);
+            }
+
+            yield return pathItem;
         }
 
         public static AssemblyModel IsolatedShadowClone(this AssemblyModel assembly)

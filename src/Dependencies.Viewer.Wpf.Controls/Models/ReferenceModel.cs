@@ -1,7 +1,9 @@
-﻿using Dependencies.Viewer.Wpf.Controls.Extensions;
+﻿using System.Diagnostics;
+using Dependencies.Viewer.Wpf.Controls.Extensions;
 
 namespace Dependencies.Viewer.Wpf.Controls.Models
 {
+    [DebuggerDisplay("Assembly = {LoadedAssembly.Name}, Ref Version = {AssemblyVersion}, Loaded version = {LoadedAssembly.Version}")]
     public class ReferenceModel
     {
         public string AssemblyVersion { get; set; }

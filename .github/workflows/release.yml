@@ -1,10 +1,7 @@
-name: Build
+name: Release
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  push
 
 jobs:
   build:
@@ -15,12 +12,15 @@ jobs:
       with:
         submodules: recursive
     
+    - uses: olegtarasov/get-tag@v2
+      id: tagName
+    
+    - name: Set result file names
+      run: echo "::set-env name=RELEASE_FILE_NAME:: DependenciesViewer-${{ steps.tagName.outputs.tag }}.zip"
+
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
     
-    - name: Setup VSTest Path
-      uses: darenm/Setup-VSTest@v1
-  
     - name: Restore nuget packages
       run: msbuild -t:restore
       working-directory: src
@@ -29,11 +29,40 @@ jobs:
       run: msbuild /p:Configuration=Release
       working-directory: src
     
-    - name: VSTest
-      run: vstest.console.exe **/bin/**/Dependencies.Viewer.UnitTests.dll /Platform:x64
-      working-directory: src
-  
+    - name: Zip Folder
+      run: zip -r $RELEASE_FILE_NAME Build/Release/
+    
     - uses: actions/upload-artifact@v2
       with:
         name: DependenciesViewer
-        path: Build/Release/
+        path: ./$RELEASE_FILE_NAME
+
+    # Release Creation
+    #- name: Read Release Notes
+    #  id: release_notes
+    #  uses: juliangruber/read-file-action@v1
+    #  with:
+    #    path: ./doc/releases/${{ steps.tagName.outputs.tag }}.md
+
+    #- name: Create Release
+    #  id: create_release
+    #  uses: actions/create-release@v1
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    tag_name: ${{ github.ref }}
+    #    release_name: Release ${{ github.ref }}
+    #    body: ${{ steps.release_notes.outputs.content }}
+    #    draft: false
+    #    prerelease: false
+    #
+    #- name: Upload Release Asset
+    #    id: upload-release-asset 
+    #    uses: actions/upload-release-asset@v1
+    #    env:
+    #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #    with:
+    #      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #      asset_path: ./DependenciesViewer-${{ steps.tagName.outputs.tag }}.zip
+    #      asset_name: DependenciesViewer-${{ steps.tagName.outputs.tag }}.zip
+    #      asset_content_type: application/zip
