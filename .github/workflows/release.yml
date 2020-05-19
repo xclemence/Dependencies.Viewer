@@ -16,7 +16,7 @@ jobs:
       id: tagName
     
     - name: Set result file names
-      run: echo "::set-env name=RELEASE_FILE_NAME:: DependenciesViewer-${{ steps.tagName.outputs.tag }}.zip"
+      run: echo "::set-env name=RELEASE_FILE_NAME::DependenciesViewer-${{ steps.tagName.outputs.tag }}.zip"
 
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
