@@ -29,8 +29,11 @@ jobs:
       run: msbuild /p:Configuration=Release
       working-directory: src
     
-    - name: Zip Folder
-      run: zip -r $RELEASE_FILE_NAME Build/Release/
+    - name: Archive Release
+      uses: thedoctor0/zip-release@master
+      with:
+        path:  Build/Release/
+        filename: '$RELEASE_FILE_NAME'
     
     - uses: actions/upload-artifact@v2
       with:
