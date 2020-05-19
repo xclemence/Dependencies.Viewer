@@ -109,7 +109,7 @@ namespace Dependencies.Viewer.UnitTests
 
 
         [TestMethod]
-        public void GetPathDUplicateReference()
+        public void GetPathDuplicateReference()
         {
             var baseAssembly = AssemblyModelDataProvider.AnalyseBase;
             var assembltTest1 = AssemblyModelDataProvider.AssemblyTest1;
