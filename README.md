@@ -1,6 +1,6 @@
 # Dependencies Viewer
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](/LICENSE)
 [![Ms Build][github-actions-badge]][github-actions]
 
 Dependencies Viewer is a dependencies analyser for Microsoft assemblies. It's supports managed assemblies (.Net Framework and .Net Core), Native Assemblies (C++), and mix assemblies (managed and native linked with dll import or cli/c++).
