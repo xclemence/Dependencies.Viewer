@@ -37,6 +37,12 @@ jobs:
         files: Build/Release/
         dest: ${{ env.RELEASE_FILE_NAME }}
 
+    - name: Read Release Notes
+      id: release_notes
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ./doc/releases/${{ steps.tagName.outputs.tag }}.md
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
