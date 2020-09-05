@@ -17,6 +17,8 @@ namespace Dependencies.Viewer.Wpf.Controls.Behaviors
                 typeof(InteractivityBehaviorAttach<TBehavior, TTargetElement>),
                 new PropertyMetadata(false, OnAttachChanged));
 
+        protected InteractivityBehaviorAttach() { }
+
         private static void OnAttachChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var behavior = new TBehavior();
@@ -26,5 +28,6 @@ namespace Dependencies.Viewer.Wpf.Controls.Behaviors
         public static void SetAttach(TTargetElement target, bool value) => target.SetValue(ActionProperty, value);
 
         public static bool GetAttach(TTargetElement target) => (bool)target.GetValue(ActionProperty);
+
     }
 }

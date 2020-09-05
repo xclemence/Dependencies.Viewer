@@ -17,14 +17,14 @@ using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 
-public class ExchangeCommand
-{
-    public string Title { get; set; }
-    public ICommand Command { get; set; }
-}
-
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 {
+    public class ExchangeCommand
+    {
+        public string Title { get; set; }
+        public ICommand Command { get; set; }
+    }
+
     public class AnalyserViewModel : ObservableObject
     {
         private const string OpenFileFilter =
@@ -208,7 +208,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             {
                 Title = x.Name,
                 Command = new Command(async () => await BusyAction(async () => await ExportAsync(x).ConfigureAwait(false)).ConfigureAwait(false), () => x.IsReady && !IsBusy && SelectedItem?.AssemblyResult != null)
-            }).ToList(); ;
+            }).ToList();
         }
 
         private void BuildImportCommand()
@@ -217,7 +217,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             {
                 Title = x.Name,
                 Command = new Command(async () => await BusyAction(async () => await ImportAsync(x).ConfigureAwait(false)).ConfigureAwait(false), () => x.IsReady && !IsBusy)
-            }).ToList(); ;
+            }).ToList();
         }
 
         private async Task ExportAsync(IExportAssembly exportAssembly)

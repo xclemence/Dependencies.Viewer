@@ -45,8 +45,6 @@ namespace Dependencies.Viewer.Wpf.IoC
 
             Container.Options.SuppressLifestyleMismatchVerification = true;
             Container.Collection.Container.Options.SuppressLifestyleMismatchVerification = true;
-
-            //Container.Verify();
         }
 
         private static void RegisterAnalyser(this Container container)

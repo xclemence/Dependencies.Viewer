@@ -8,15 +8,10 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewConverters
     {
         public static IValueConverter Converter { get; } = new InverseBooleanConverter();
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (!(value is bool booleanValue))
-                return false;
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => InverseValue(value);
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => InverseValue(value);
 
-            return !booleanValue;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        private static object InverseValue(object value)
         {
             if (!(value is bool booleanValue))
                 return false;

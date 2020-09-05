@@ -19,7 +19,7 @@ namespace Dependencies.Viewer.Wpf.Controls
             var paths = reference.GetAssemblyParentPath(baseAssembly).ToList();
             var vm = new AssemblyParentsViewModel { BaseAssembly = reference.AssemblyFullName, Paths = paths };
 
-            var result = await DialogHost.Show(vm).ConfigureAwait(false);
+            _ = await DialogHost.Show(vm).ConfigureAwait(false);
         }
     }
 }

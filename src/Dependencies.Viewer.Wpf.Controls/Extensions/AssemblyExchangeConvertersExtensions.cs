@@ -103,7 +103,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             }
         }
 
-        private static (AssemblyModel assembly, AssemblyName assemblyName) GetNotFoundAssembly(this IReadOnlyDictionary<string, ReferenceModel> referenceCache, string assemblyFullName, Dictionary<string, ReferenceModel> referenceProvider)
+        private static (AssemblyModel assembly, AssemblyName assemblyName) GetNotFoundAssembly(this IReadOnlyDictionary<string, ReferenceModel> referenceCache, string assemblyFullName, IReadOnlyDictionary<string, ReferenceModel> referenceProvider)
         {
             var assemblyName = new AssemblyName(assemblyFullName);
 
