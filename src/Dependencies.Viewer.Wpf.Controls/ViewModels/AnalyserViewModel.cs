@@ -10,11 +10,11 @@ using Dependencies.Exchange.Base;
 using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Models;
+using Dependencies.Viewer.Wpf.Controls.Services;
 using Dependencies.Viewer.Wpf.Controls.ViewModels.Settings;
 using Dependencies.Viewer.Wpf.Controls.Views;
 using Dragablz;
 using MaterialDesignThemes.Wpf;
-using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels
@@ -37,7 +37,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private IInterTabClient interTabClient;
         private readonly AnalyserProvider analyserProvider;
         private readonly IServiceFactory<AnalyseResultViewModel> analyserViewModelFactory;
-        private readonly ILogger<AnalyserViewModel> logger;
+        private readonly AppLoggerService<AnalyserViewModel> logger;
         private readonly IList<IImportAssembly> importServices;
         private readonly IList<IExportAssembly> exportServices;
 
@@ -48,16 +48,14 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
                                  IServiceFactory<AnalyseResultViewModel> analyserViewModelFactory,
                                  IInterTabClient interTabClient,
                                  SettingsViewModel settingsViewModel,
-                                 ISnackbarMessageQueue messageQueue,
                                  IEnumerable<IImportAssembly> importServices,
                                  IEnumerable<IExportAssembly> exportServices,
-                                 ILogger<AnalyserViewModel> logger)
+                                 AppLoggerService<AnalyserViewModel> logger)
         {
             this.analyserProvider = analyserProvider;
             this.analyserViewModelFactory = analyserViewModelFactory;
             InterTabClient = interTabClient;
             SettingsViewModel = settingsViewModel;
-            MessageQueue = messageQueue;
             this.logger = logger;
             this.exportServices = exportServices.ToList();
             this.importServices = importServices.ToList();
@@ -79,7 +77,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             GlobalCommand.OpenAssemblyAction = x => AddAssemblyResult(x.IsolatedShadowClone());
         }
 
-        public ISnackbarMessageQueue MessageQueue { get; }
+        public ISnackbarMessageQueue MessageQueue => logger.MessageQueue;
 
         public ObservableCollection<AnalyseResultViewModel> AnalyseDetailsViewModels { get; } = new ObservableCollection<AnalyseResultViewModel>();
 
@@ -140,11 +138,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             }
             catch (Exception ex)
             {
-                while (ex.InnerException != null)
-                    ex = ex.InnerException;
-
-                MessageQueue.Enqueue($"Error : {ex.Message}");
-                logger.LogError(ex, "");
+                logger.LogError("", ex);
             }
             finally
             {
@@ -240,7 +234,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private async Task<T> CreateExchangeView<T>(UserControl view, IExchangeViewModel<T> viewModel)
         {
             var exchangeView = new ExchangeView();
-            var exchangeViewModel = new ExchangeViewModel<T>((x) => CloseExchangeDialog(x), viewModel, logger);
+            var exchangeViewModel = new ExchangeViewModel<T>((x) => CloseExchangeDialog(x), viewModel, logger.Logger);
 
             exchangeView.DataContext = exchangeViewModel;
             exchangeView.Control.Content = view;

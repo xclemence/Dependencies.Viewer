@@ -44,7 +44,8 @@ jobs:
       run: dotnet sonarscanner begin /o:xclemence /k:xclemence_Dependencies.Viewer /d:sonar.host.url=https://sonarcloud.io /d:sonar.exclusions=**/obj/**,**/*.dll
     
     - name: Build sources
-      run: msbuild src/Dependencies.Viewer.sln /p:Configuration=Release 
+      run: msbuild /p:Configuration=Release
+      working-directory: src
     
     - name: VSTest
       run: vstest.console.exe **/bin/**/Dependencies.Viewer.UnitTests.dll /Platform:x64 /EnableCodeCoverage
@@ -52,6 +53,7 @@ jobs:
 
     - name: stop sonar scanner
       run: dotnet sonarscanner end 
+      working-directory: src
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

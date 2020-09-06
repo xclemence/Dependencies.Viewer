@@ -110,7 +110,9 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             if (referenceCache.TryGetValue(assemblyName.Name, out var reference))
                 return (reference.LoadedAssembly, assemblyName);
 
-            return (assemblyName.ToNotFoundAssemblyModel(referenceProvider), assemblyName);
+            var assembly = assemblyName.ToNotFoundAssemblyModel(referenceProvider);
+
+            return (assembly, assemblyName);
         }
 
         private static ReferenceModel ToReferenceModelWithNewAssembly(this AssemblyExchange assemblyExchange, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) =>
