@@ -7,7 +7,7 @@ using System.Linq;
 namespace Dependencies.Viewer.Wpf.Controls.Models
 {
     [DebuggerDisplay("Assembly = {Name}, Version = {Version}")]
-    public class AssemblyModel : IEquatable<AssemblyModel>
+    public sealed class AssemblyModel : IEquatable<AssemblyModel>
     {
         public AssemblyModel(IReadOnlyDictionary<string, ReferenceModel> referenceProvider) =>
             ReferenceProvider = referenceProvider ?? throw new ArgumentNullException(nameof(referenceProvider));

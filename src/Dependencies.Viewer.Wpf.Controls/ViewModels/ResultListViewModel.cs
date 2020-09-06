@@ -47,7 +47,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
             set => Set(ref selectedItem, value);
         }
 
-        protected abstract IEnumerable<T> GetResults(AssemblyModel information);
+        protected abstract IEnumerable<T> GetResults(AssemblyModel assembly);
 
         protected virtual Task OnOpenResultAsync(T item) => Task.CompletedTask;
 

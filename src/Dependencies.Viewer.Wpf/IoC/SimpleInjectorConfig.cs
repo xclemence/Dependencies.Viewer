@@ -5,6 +5,7 @@ using Dependencies.Analyser.Native;
 using Dependencies.Exchange.Base;
 using Dependencies.Viewer.Wpf.Controls;
 using Dependencies.Viewer.Wpf.Controls.Base;
+using Dependencies.Viewer.Wpf.Controls.Services;
 using Dependencies.Viewer.Wpf.Extensions;
 using Dependencies.Viewer.Wpf.Layouts;
 using Dragablz;
@@ -35,6 +36,8 @@ namespace Dependencies.Viewer.Wpf.IoC
             Container.Register(typeof(ILogger<>), typeof(Logger<>), Lifestyle.Transient);
 
             Container.Register(typeof(IAnalyserServiceFactory<>), typeof(SimpleInjectorServiceFactory<>), Lifestyle.Singleton);
+            Container.Register(typeof(AppLoggerService<>), typeof(AppLoggerService<>), Lifestyle.Singleton);
+
             Container.Register(typeof(IExchangeServiceFactory<>), typeof(SimpleInjectorServiceFactory<>), Lifestyle.Singleton);
             Container.Register(typeof(IServiceFactory<>), typeof(SimpleInjectorServiceFactory<>), Lifestyle.Singleton);
             Container.Register<AnalyserProvider>(Lifestyle.Singleton);
@@ -43,10 +46,9 @@ namespace Dependencies.Viewer.Wpf.IoC
             Container.RegisterAnalyser();
             Container.RegisterExchange();
 
+            Container.Options.ResolveUnregisteredConcreteTypes = true;
             Container.Options.SuppressLifestyleMismatchVerification = true;
             Container.Collection.Container.Options.SuppressLifestyleMismatchVerification = true;
-
-            //Container.Verify();
         }
 
         private static void RegisterAnalyser(this Container container)

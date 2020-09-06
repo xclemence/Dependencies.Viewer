@@ -1,4 +1,4 @@
-name: Build
+name: Master
 
 on:
   push:
@@ -31,18 +31,33 @@ jobs:
     
     - name: Setup VSTest Path
       uses: darenm/Setup-VSTest@v1
+
+    - name: Install sonar scanner
+      run: dotnet tool install --global dotnet-sonarscanner --version 4.10.0
+      working-directory: src
   
     - name: Restore nuget packages
       run: msbuild -t:restore
       working-directory: src
-    
+
+    - name: start sonar scanner
+      run: dotnet sonarscanner begin /o:xclemence /k:xclemence_Dependencies.Viewer /d:sonar.host.url=https://sonarcloud.io /d:sonar.exclusions=**/obj/**,**/*.dll
+      working-directory: src
+
     - name: Build sources
       run: msbuild /p:Configuration=Release
       working-directory: src
     
     - name: VSTest
-      run: vstest.console.exe **/bin/**/Dependencies.Viewer.UnitTests.dll /Platform:x64
+      run: vstest.console.exe **/bin/**/Dependencies.Viewer.UnitTests.dll /Platform:x64 /EnableCodeCoverage
       working-directory: src
+
+    - name: stop sonar scanner
+      run: dotnet sonarscanner end 
+      working-directory: src
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
     - uses: actions/upload-artifact@v2
       with:
