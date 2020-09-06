@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.Logging;
 

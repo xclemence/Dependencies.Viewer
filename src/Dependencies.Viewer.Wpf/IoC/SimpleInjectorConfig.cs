@@ -46,6 +46,7 @@ namespace Dependencies.Viewer.Wpf.IoC
             Container.RegisterAnalyser();
             Container.RegisterExchange();
 
+            Container.Options.ResolveUnregisteredConcreteTypes = true;
             Container.Options.SuppressLifestyleMismatchVerification = true;
             Container.Collection.Container.Options.SuppressLifestyleMismatchVerification = true;
         }
