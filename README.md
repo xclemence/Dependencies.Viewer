@@ -1,7 +1,8 @@
 # Dependencies Viewer
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](/LICENSE)
-[![Ms Build][github-actions-badge]][github-actions]
+[![Master][github-actions-badge]][github-actions]
+[![Quality Gate Status][sonar-badge]][sonar-url]
 
 Dependencies Viewer is a dependencies analyser for Microsoft assemblies. It's supports managed assemblies (.Net Framework and .Net Core), Native Assemblies (C++), and mix assemblies (managed and native linked with dll import or cli/c++).
 
@@ -51,7 +52,7 @@ To use Dependencies Graph Services, you need to configure service URL from setti
 ## Themes
 You can choose your favorite theme between light and dark from the settings view.
 
-<img src="doc/images/viewer-light.png" width="420"/>  <img src="doc/images/viewer-dark.png" width="420"/>
+<img src="doc/images/viewer-light.png" width="370"/>  <img src="doc/images/viewer-dark.png" width="370"/>
 
 Light theme is selected by default.
 
@@ -66,7 +67,10 @@ git clone --recursive https://github.com/xclemence/Dependencies.Viewer.git
 After, you can open sln file with Visual Studio 2019 (be careful, you need C++ and CLI/C++ support).
 
 [github-actions]:                  https://github.com/xclemence/Dependencies.Viewer/actions
-[github-actions-badge]:            https://github.com/xclemence/Dependencies.Viewer/workflows/Build/badge.svg?branch=master
+[github-actions-badge]:            https://github.com/xclemence/Dependencies.Viewer/workflows/Master/badge.svg?branch=master
+
+[sonar-badge]:                     https://sonarcloud.io/api/project_badges/measure?project=xclemence_Dependencies.Viewer&metric=alert_status
+[sonar-url]:                       https://sonarcloud.io/dashboard?id=xclemence_Dependencies.Viewer
 
 [graph-service-url]:               https://github.com/xclemence/Dependencies-graph-services
 [graph-service-badge]:             https://github.com/xclemence/Dependencies-graph-services/workflows/Build/badge.svg?branch=master
@@ -74,5 +78,5 @@ After, you can open sln file with Visual Studio 2019 (be careful, you need C++ a
 [analyser-badge]:                  https://github.com/xclemence/Dependencies.Viewer/workflows/Ms%20Build/badge.svg
 [analyser-url]:                    https://github.com/xclemence/Dependencies.Viewer
 
-[exchange-badge]:                   https://github.com/xclemence/Dependencies.Exchange/workflows/WPF%20.NET%20Core/badge.svg?branch=master
-[exchange-url]:                     https://github.com/xclemence/Dependencies.Exchange
+[exchange-badge]:                  https://github.com/xclemence/Dependencies.Exchange/workflows/WPF%20.NET%20Core/badge.svg?branch=master
+[exchange-url]:                    https://github.com/xclemence/Dependencies.Exchange
