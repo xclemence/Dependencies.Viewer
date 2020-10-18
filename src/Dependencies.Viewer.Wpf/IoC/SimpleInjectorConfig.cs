@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Dependencies.Analyser.Base;
-using Dependencies.Analyser.Native;
 using Dependencies.Exchange.Base;
 using Dependencies.Viewer.Wpf.Controls;
 using Dependencies.Viewer.Wpf.Controls.Base;
@@ -29,7 +28,6 @@ namespace Dependencies.Viewer.Wpf.IoC
             Container.Register<IInterTabClient, KeepOneInterLayoutClient>();
             Container.Register<IAnalyserSettingProvider, AnalyserSettingProvider>(Lifestyle.Singleton);
             Container.Register<IApplicationSettingProvider, ApplicationSettingProvider>(Lifestyle.Singleton);
-            Container.Register<INativeAnalyser, NativeAnalyser>(Lifestyle.Transient);
             Container.RegisterInstance<ISnackbarMessageQueue>(new SnackbarMessageQueue());
 
             Container.RegisterInstance(LoggerFactory.Create(x => x.AddNLog(configurationRoot)));

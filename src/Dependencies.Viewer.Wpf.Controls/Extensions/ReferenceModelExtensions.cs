@@ -29,19 +29,18 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
 
         public static FilterCollection<AssemblyTreeModel> ToFilterModels(this IEnumerable<ReferenceModel> references, Predicate<object> predicate)
         {
-            var transform = new ObjectCacheTransformer();
+            var models = references.Select(x => {
+                var subItem = x.LoadedAssembly.References.Select(r => new AssemblyTreeModel(r));
 
-            var models = references.Select(x => x.ToFilterModel(predicate, transform));
+                var item = new AssemblyTreeModel(x)
+                {
+                    Collection = new FilterCollection<AssemblyTreeModel>(subItem, predicate, nameof(AssemblyTreeModel.AssemblyFullName))
+                };
+
+                return item;
+            });
 
             return new FilterCollection<AssemblyTreeModel>(models, predicate, nameof(AssemblyTreeModel.AssemblyFullName));
-        }
-
-        internal static AssemblyTreeModel ToFilterModel(this ReferenceModel baseItem, Predicate<object> predicate, ObjectCacheTransformer transformer)
-        {
-            return transformer.Transform(baseItem, x => new AssemblyTreeModel(baseItem)
-            {
-                Collection = x.LoadedAssembly.References.ToFilterModels(predicate)
-            });
         }
 
         public static IList<AssemblyPathItem> GetAssemblyParentPath(this ReferenceModel reference, AssemblyModel assemblyRoot)

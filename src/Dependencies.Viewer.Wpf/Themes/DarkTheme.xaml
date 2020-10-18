@@ -20,7 +20,7 @@
     <Color x:Key="DV.SecondaryColor">#42612c</Color>
     <Color x:Key="DV.ThirdColor">DarkSalmon</Color>
 
-    <Color x:Key="DV.ErrorColor">Red</Color>
+    <Color x:Key="DV.ErrorColor">#C92327</Color>
     <Color x:Key="DV.GlobalColor">DimGray</Color>
     <Color x:Key="DV.ApplicationHeaderColor">#2c2c2c</Color>
 

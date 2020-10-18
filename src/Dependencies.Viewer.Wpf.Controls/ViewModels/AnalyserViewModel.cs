@@ -179,9 +179,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         {
             var analyser = analyserProvider.CurrentAnalyserFactory.GetAnalyser();
 
-            var result = await analyser.AnalyseAsync(filePath).ConfigureAwait(false);
+            var (assembly, links) = await analyser.AnalyseAsync(filePath).ConfigureAwait(false);
 
-            AddAssemblyResult(result.ToAssemblyModel());
+            AddAssemblyResult(assembly.ToAssemblyModel(links.Values));
         }
 
         private void AddAssemblyResult(AssemblyModel assembly)

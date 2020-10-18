@@ -20,7 +20,7 @@
     <Color x:Key="DV.SecondaryColor">LightGreen</Color>
     <Color x:Key="DV.ThirdColor">LightSalmon</Color>
 
-    <Color x:Key="DV.ErrorColor">LightGray</Color>
+    <Color x:Key="DV.ErrorColor">#FF5157</Color>
     <Color x:Key="DV.GlobalColor">LightGray</Color>
 
     <Color x:Key="DV.ApplicationHeaderColor">#42565f</Color>

@@ -9,10 +9,10 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
 {
     public static class AssemblyInformationExtensions
     {
-        public static AssemblyModel ToAssemblyModel(this AssemblyInformation assembly)
+        public static AssemblyModel ToAssemblyModel(this AssemblyInformation assembly, IEnumerable<AssemblyLink> links)
         {
             var referenceProvider = new Dictionary<string, ReferenceModel>();
-            var references = assembly.GetAllLinks().Distinct().Select(x => x.ToReferenceModel(referenceProvider)).ToList();
+            var references = links.Select(x => x.ToReferenceModel(referenceProvider)).ToList();
 
             foreach (var item in references)
                 referenceProvider.Add(item.AssemblyFullName, item);

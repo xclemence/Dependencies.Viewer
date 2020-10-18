@@ -30,15 +30,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.7" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.9" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.6.5" />
     <PackageReference Include="SimpleInjector" Version="5.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\plugins\Analyser\src\Dependencies.Analyser.Base\Dependencies.Analyser.Base.csproj" />
-    <ProjectReference Include="..\..\plugins\Analyser\src\Dependencies.Analyser.Native\Dependencies.Analyser.Native.csproj" />
     <ProjectReference Include="..\..\plugins\Exchange\src\Dependencies.Exchange.Base\Dependencies.Exchange.Base.csproj" />
     <ProjectReference Include="..\Dependencies.Viewer.Wpf.Controls\Dependencies.Viewer.Wpf.Controls.csproj" />
   </ItemGroup>
