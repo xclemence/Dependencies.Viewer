@@ -1,5 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+                    >
 
     <ResourceDictionary.MergedDictionaries>
         <!-- MahApps -->
@@ -9,10 +11,10 @@
         <ResourceDictionary Source="MaterialDesignTheme.Dark.xaml" />
 
         <ResourceDictionary Source="Colors/MaterialDesignColor.DarkGrey.xaml" />
-        
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
 
         <ResourceDictionary Source="Colors/GenericColors.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml"/>
 
     </ResourceDictionary.MergedDictionaries>
 
@@ -23,5 +25,12 @@
     <Color x:Key="DV.ErrorColor">#C92327</Color>
     <Color x:Key="DV.GlobalColor">DimGray</Color>
     <Color x:Key="DV.ApplicationHeaderColor">#2c2c2c</Color>
+
+
+    <!--Only for Dragablz Material Design style -->
+    <SolidColorBrush x:Key="SecondaryAccentBrush" Color="{StaticResource Accent700}" po:Freeze="True" />
+
+    <SolidColorBrush x:Key="DV.CheckboxBackgroundBrush" Color="{StaticResource Accent700}" po:Freeze="True" />
+    <SolidColorBrush x:Key="DV.ToggleButtonBackgroundBrush" Color="{StaticResource Accent700}" po:Freeze="True" />
 
 </ResourceDictionary>

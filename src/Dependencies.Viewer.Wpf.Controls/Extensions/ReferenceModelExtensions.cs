@@ -72,21 +72,23 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
 
         public static AssemblyModel IsolatedShadowClone(this AssemblyModel assembly)
         {
-            var referencedAssemblies = assembly.GetAllReferencedAssemblyNames().Distinct();
+            var referencedAssemblies = assembly.References.SelectMany(x => x.GetAllReferencedAssemblyNames()).Distinct().ToList();
 
             var limitedReferencesProvider = referencedAssemblies.Select(x => assembly.ReferenceProvider[x]).ToDictionary(x => x.AssemblyFullName, x => x.ShadowClone());
 
             foreach (var item in limitedReferencesProvider)
                 item.Value.LoadedAssembly = item.Value.LoadedAssembly.ShadowClone(limitedReferencesProvider);
 
-            return limitedReferencesProvider[assembly.FullName].LoadedAssembly;
+
+
+            return assembly.ShadowClone(limitedReferencesProvider);
         }
 
-        public static IEnumerable<string> GetAllReferencedAssemblyNames(this AssemblyModel assembly)
+        public static IEnumerable<string> GetAllReferencedAssemblyNames(this ReferenceModel reference)
         {
-            yield return assembly.FullName;
+            yield return reference.AssemblyFullName;
 
-            foreach (var item in assembly.References.SelectMany(x => GetAllReferencedAssemblyNames(x.LoadedAssembly)))
+            foreach (var item in reference.LoadedAssembly.References.SelectMany(x => x.GetAllReferencedAssemblyNames()))
                 yield return item;
         }
     }

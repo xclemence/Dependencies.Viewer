@@ -25,6 +25,8 @@ namespace Dependencies.Viewer.Wpf.Controls.Base
             var newResourceDictionary = new ResourceDictionary { Source = uri };
             Application.Current.Resources.MergedDictionaries.Add(newResourceDictionary);
             currentThemeResources = newResourceDictionary;
+
+            Application.Current.MainWindow?.UpdateLayout();
         }
     }
 }
