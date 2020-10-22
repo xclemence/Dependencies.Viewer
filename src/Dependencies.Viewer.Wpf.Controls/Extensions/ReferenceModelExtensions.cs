@@ -79,8 +79,6 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             foreach (var item in limitedReferencesProvider)
                 item.Value.LoadedAssembly = item.Value.LoadedAssembly.ShadowClone(limitedReferencesProvider);
 
-
-
             return assembly.ShadowClone(limitedReferencesProvider);
         }
 
