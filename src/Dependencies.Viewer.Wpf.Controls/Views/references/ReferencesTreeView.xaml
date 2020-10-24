@@ -19,9 +19,10 @@
     </UserControl.Resources>
     
     <Grid>
-        <TreeView ItemsSource="{Binding LoadedAssemblies.FilteredItems}" x:Name="tree">
+        <TreeView ItemsSource="{Binding LoadedAssemblies.FilteredItems}" x:Name="tree"
+                  VirtualizingStackPanel.IsVirtualizing="True">
             <TreeView.Resources>
-                <Style TargetType="TreeViewItem" BasedOn="{StaticResource TestTreeViewItem}">
+                <Style TargetType="TreeViewItem" BasedOn="{StaticResource DependenciesTreeViewItemStyle}">
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
                     <Setter Property="behaviors:TreeItemSelectionBehavior.Attach" Value="True"/>
                     <Style.Triggers>

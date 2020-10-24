@@ -62,9 +62,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
             SettingsCommand = new Command(() => IsSettingsOpen = true);
             CloseCommand = new Command(() => Application.Current.Shutdown());
-            OpenFileCommand = new Command(async () => await BusyAction(OpenFileAsync).ConfigureAwait(false), () => !IsBusy);
+            OpenFileCommand = new Command(async () => await BusyActionAsync(OpenFileAsync).ConfigureAwait(false), () => !IsBusy);
             OnDragOverCommand = new Command<DragEventArgs>(OnDragOver);
-            OnDropCommand = new Command<DragEventArgs>(async (x) => await BusyAction(async () => await OnDrop(x).ConfigureAwait(false)).ConfigureAwait(false), _ => !IsBusy);
+            OnDropCommand = new Command<DragEventArgs>(async (x) => await BusyActionAsync(async () => await OnDrop(x).ConfigureAwait(false)).ConfigureAwait(false), _ => !IsBusy);
 
             OnDragEnterCommand = new Command<DragEventArgs>((x) => IsDragFile = true, CanDrag);
             OnDragLeaveCommand = new Command<DragEventArgs>((x) => IsDragFile = false, CanDrag);
@@ -74,7 +74,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
             CloseResultCommand = new Command<AnalyseResultViewModel>(CloseResult);
 
-            GlobalCommand.OpenAssemblyAction = x => AddAssemblyResult(x.IsolatedShadowClone());
+            GlobalCommand.OpenAssemblyAction = OpenSubAssembly;
         }
 
         public ISnackbarMessageQueue MessageQueue => logger.MessageQueue;
@@ -128,7 +128,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             set => Set(ref isDragFile, value);
         }
 
-        private async Task BusyAction(Func<Task> actionAsync)
+        private async Task BusyActionAsync(Func<Task> actionAsync)
         {
             IsBusy = true;
 
@@ -145,6 +145,26 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
                 IsBusy = false;
             }
         }
+
+        private void BusyAction(Action action)
+        {
+            IsBusy = true;
+
+            try
+            {
+                action();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("", ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+
 
         private async Task OpenFileAsync()
         {
@@ -172,16 +192,16 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             if (filePath == null)
                 return;
 
-            await BusyAction(async () => await AnalyseAsync(filePath).ConfigureAwait(false)).ConfigureAwait(false);
+            await BusyActionAsync(async () => await AnalyseAsync(filePath).ConfigureAwait(false)).ConfigureAwait(false);
         }
 
         private async Task AnalyseAsync(string filePath)
         {
             var analyser = analyserProvider.CurrentAnalyserFactory.GetAnalyser();
 
-            var result = await analyser.AnalyseAsync(filePath).ConfigureAwait(false);
+            var (assembly, links) = await analyser.AnalyseAsync(filePath).ConfigureAwait(false);
 
-            AddAssemblyResult(result.ToAssemblyModel());
+            AddAssemblyResult(assembly.ToAssemblyModel(links.Values));
         }
 
         private void AddAssemblyResult(AssemblyModel assembly)
@@ -196,12 +216,17 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             }).InvokeUiThread();
         }
 
+        private void OpenSubAssembly(AssemblyModel assembly)
+        {
+            Task.Run(() => BusyAction(() => AddAssemblyResult(assembly.IsolatedShadowClone())));
+        }
+
         private void BuildExportCommand()
         {
             ExportCommands = exportServices.Select(x => new ExchangeCommand
             {
                 Title = x.Name,
-                Command = new Command(async () => await BusyAction(async () => await ExportAsync(x).ConfigureAwait(false)).ConfigureAwait(false), () => x.IsReady && !IsBusy && SelectedItem?.AssemblyResult != null)
+                Command = new Command(async () => await BusyActionAsync(async () => await ExportAsync(x).ConfigureAwait(false)).ConfigureAwait(false), () => x.IsReady && !IsBusy && SelectedItem?.AssemblyResult != null)
             }).ToList();
         }
 
@@ -210,7 +235,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             ImportCommands = importServices.Select(x => new ExchangeCommand
             {
                 Title = x.Name,
-                Command = new Command(async () => await BusyAction(async () => await ImportAsync(x).ConfigureAwait(false)).ConfigureAwait(false), () => x.IsReady && !IsBusy)
+                Command = new Command(async () => await BusyActionAsync(async () => await ImportAsync(x).ConfigureAwait(false)).ConfigureAwait(false), () => x.IsReady && !IsBusy)
             }).ToList();
         }
 

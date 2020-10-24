@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:models="clr-namespace:Dependencies.Viewer.Wpf.Controls.Models"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -31,13 +32,13 @@
 
                 <StackPanel Orientation="Horizontal" Margin="10">
                     <TextBlock Text="Assembly Name :"/>
-                    <TextBlock Text="{Binding BaseAssembly}" Margin="10 0" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding AssemblyName}" Margin="10 0" FontWeight="Bold"/>
                 </StackPanel>
 
                 <TreeView Grid.Row="1" ItemsSource="{Binding Paths}" >
                     <TreeView.Resources>
-                        <Style TargetType="TreeViewItem" BasedOn="{StaticResource TestTreeViewItem}">
-                            <Setter Property="IsExpanded" Value="False"/>
+                        <Style TargetType="TreeViewItem" BasedOn="{StaticResource DependenciesTreeViewItemStyle}">
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
                         </Style>
                     </TreeView.Resources>
                     <TreeView.ItemContainerStyle>
@@ -53,7 +54,7 @@
                         </Style>
                     </TreeView.ItemContainerStyle>
                     <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate DataType="models:AssemblyLinkModel" ItemsSource="{Binding Parents}">
+                        <HierarchicalDataTemplate DataType="models:AssemblyRevertLinkItem" ItemsSource="{Binding Parents}">
                             <TextBlock Text="{Binding Assembly.Name}"/>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>

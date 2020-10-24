@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Dependencies.Analyser.Base.Extensions;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
@@ -9,10 +8,10 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
 {
     public static class AssemblyInformationExtensions
     {
-        public static AssemblyModel ToAssemblyModel(this AssemblyInformation assembly)
+        public static AssemblyModel ToAssemblyModel(this AssemblyInformation assembly, IEnumerable<AssemblyLink> links)
         {
             var referenceProvider = new Dictionary<string, ReferenceModel>();
-            var references = assembly.GetAllLinks().Distinct().Select(x => x.ToReferenceModel(referenceProvider)).ToList();
+            var references = links.Select(x => x.ToReferenceModel(referenceProvider)).ToList();
 
             foreach (var item in references)
                 referenceProvider.Add(item.AssemblyFullName, item);
@@ -36,6 +35,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             TargetFramework = assembly.TargetFramework,
             TargetProcessor = assembly.TargetProcessor.ToString(),
             Version = assembly.LoadedVersion,
+            ParentLinkNames = assembly.ParentLinkName.ToHashSet(),
             ReferencedAssemblyNames = assembly.Links.Select(x => x.LinkFullName).ToImmutableList()
         };
 

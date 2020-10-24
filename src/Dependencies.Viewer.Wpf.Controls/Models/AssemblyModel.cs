@@ -47,6 +47,8 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
 
         public IImmutableList<ReferenceModel> References => ReferencedAssemblyNames.Select(x => ReferenceProvider[x]).ToImmutableList();
 
+        public HashSet<string> ParentLinkNames { get; set; } = new HashSet<string>();
+
         public override bool Equals(object obj) => Equals(obj as AssemblyModel);
         public bool Equals(AssemblyModel other) => other != null &&
                                                    FullName == other.FullName &&

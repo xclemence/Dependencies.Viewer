@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using Dependencies.Viewer.Wpf.Controls.Base;
@@ -11,6 +12,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
     {
         private AssemblyModel assembly;
         private FilterCollection<AssemblyTreeModel> loadedAssemblies;
+        private readonly IDictionary<string, bool> filterResultsCache = new Dictionary<string, bool>();
 
         public ReferencesTreeViewModel()
         {
@@ -41,6 +43,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 
         public void RefreshFilteredItems()
         {
+            filterResultsCache.Clear();
             LoadedAssemblies.RefreshFilter();
 
             RefreshFilteredItems(LoadedAssemblies);
@@ -48,9 +51,12 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 
         private void RefreshFilteredItems(IEnumerable<AssemblyTreeModel> models)
         {
+            if (models == null)
+                return;
+
             foreach (var item in models)
             {
-                item.Collection.RefreshFilter();
+                item.Collection?.RefreshFilter();
 
                 RefreshFilteredItems(item.Collection);
             }
@@ -63,17 +69,33 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             if (!(obj is AssemblyTreeModel model))
                 return false;
 
-            if (Filter.DisplayLocalOnly && !model.Reference.LoadedAssembly.IsLocalAssembly)
+            return FilterReferenceWithCache(model.Reference);
+        }
+
+        private bool FilterReferenceWithCache(ReferenceModel reference)
+        {
+            if (filterResultsCache.TryGetValue(reference.AssemblyFullName, out var value))
+                return value;
+            
+            var isFiltered = FilterReference(reference);
+
+            filterResultsCache.Add(reference.AssemblyFullName, isFiltered);
+
+            return isFiltered;
+        }
+
+        private bool FilterReference(ReferenceModel reference)
+        {
+            if (Filter.DisplayLocalOnly && !reference.LoadedAssembly.IsLocalAssembly)
                 return false;
 
             if (string.IsNullOrWhiteSpace(Filter.Name))
                 return true;
 
-            if (model.Reference.AssemblyFullName.Contains(Filter.Name, System.StringComparison.InvariantCultureIgnoreCase))
+            if (reference.AssemblyFullName.Contains(Filter.Name, StringComparison.InvariantCultureIgnoreCase))
                 return true;
 
-            return model.Collection.Any(x => FilterPredicate(x));
+            return reference.LoadedAssembly.References.Any(x => FilterReferenceWithCache(x));
         }
-
     }
 }

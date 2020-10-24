@@ -21,6 +21,9 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="IsReadOnly" Value="True"/>
             <Setter Property="DockPanel.Dock" Value="Top"/>
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="materialDesign:TextFieldAssist.DecorationVisibility" Value="Hidden" />
+            <Setter Property="BorderThickness" Value="0" />
         </Style>
 
         <Style TargetType="materialDesign:Card" BasedOn="{StaticResource {x:Type materialDesign:Card}}">
