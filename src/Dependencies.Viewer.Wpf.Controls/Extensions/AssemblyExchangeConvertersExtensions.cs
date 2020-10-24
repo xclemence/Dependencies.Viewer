@@ -77,12 +77,12 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             var assembly = assemblyExchange.ToAssemblyModel(referenceProvider);
 
             assembly.ConsolidateMissingAssemblies(referenceProvider, referenceCache);
-            assembly.ConsolidatParentLink(referenceProvider);
+            assembly.ConsolidateParentLink(referenceProvider);
 
             return assembly;
         }
 
-        private static void ConsolidatParentLink(this AssemblyModel assembly, Dictionary<string, ReferenceModel> referenceProvider)
+        private static void ConsolidateParentLink(this AssemblyModel assembly, Dictionary<string, ReferenceModel> referenceProvider)
         {
             foreach(var item in referenceProvider.Values)
             {
