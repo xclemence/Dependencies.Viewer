@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Dependencies.Analyser.Base.Extensions;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
@@ -36,6 +35,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             TargetFramework = assembly.TargetFramework,
             TargetProcessor = assembly.TargetProcessor.ToString(),
             Version = assembly.LoadedVersion,
+            ParentLinkNames = assembly.ParentLinkName.ToHashSet(),
             ReferencedAssemblyNames = assembly.Links.Select(x => x.LinkFullName).ToImmutableList()
         };
 
