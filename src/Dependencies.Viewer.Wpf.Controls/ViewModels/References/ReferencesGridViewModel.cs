@@ -71,7 +71,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             if (reference.LoadedAssembly.Name.Contains(Filter.Name, StringComparison.InvariantCultureIgnoreCase))
                 return true;
 
-            return reference.LoadedAssembly.References.Any(x => FilterPredicate(x));
+            return false;
         }
 
         private static IEnumerable<ReferenceModel> GetResults(AssemblyModel assembly) =>

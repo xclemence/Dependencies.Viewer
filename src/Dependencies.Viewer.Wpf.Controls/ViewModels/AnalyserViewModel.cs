@@ -75,6 +75,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             CloseResultCommand = new Command<AnalyseResultViewModel>(CloseResult);
 
             GlobalCommand.OpenAssemblyAction = OpenSubAssembly;
+            GlobalCommand.ViewParentReference = ViewParentReferenceAsync;
         }
 
         public ISnackbarMessageQueue MessageQueue => logger.MessageQueue;
@@ -219,6 +220,16 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private void OpenSubAssembly(AssemblyModel assembly)
         {
             Task.Run(() => BusyAction(() => AddAssemblyResult(assembly.IsolatedShadowClone())));
+        }
+
+        public async Task ViewParentReferenceAsync(AssemblyModel baseAssembly, ReferenceModel reference)
+        {
+            await BusyActionAsync(async () =>
+            {
+                var vm = new AssemblyParentsViewModel(reference.LoadedAssembly, baseAssembly);
+
+                _ = await DialogHost.Show(vm).ConfigureAwait(false);
+            }).ConfigureAwait(false);
         }
 
         private void BuildExportCommand()

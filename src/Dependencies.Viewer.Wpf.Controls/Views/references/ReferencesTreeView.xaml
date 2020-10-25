@@ -29,11 +29,11 @@
                         <DataTrigger Binding="{Binding Reference.LoadedAssembly.IsLocalAssembly}" Value="true">
                             <Setter Property="Background" Value="{DynamicResource DV.PrimaryColorBrush}"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Reference.LoadedAssembly.IsLocalAssembly}" Value="false">
-                            <Setter Property="Background" Value="{DynamicResource DV.GlobalColorBrush}"/>
-                        </DataTrigger>
                         <DataTrigger Binding="{Binding Reference.LoadedAssembly.IsNative}" Value="true">
                             <Setter Property="Background" Value="{DynamicResource DV.SecondaryColorBrush}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Reference.LoadedAssembly.IsLocalAssembly}" Value="false">
+                            <Setter Property="Background" Value="{DynamicResource DV.GlobalColorBrush}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Reference.LoadedAssembly.IsResolved}" Value="false">
                             <Setter Property="Background" Value="{DynamicResource DV.ErrorColorBrush}"/>
