@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <UseWpf>true</UseWpf>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -26,12 +26,12 @@
     <PackageReference Include="Dragablz.NetCore" Version="0.3.3" />
     <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
     <PackageReference Include="MaterialDesignThemes.MahApps" Version="0.1.5" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.9" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.6.5" />
     <PackageReference Include="SimpleInjector" Version="5.1.0" />
   </ItemGroup>
@@ -71,9 +71,9 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;$(SolutionDir)..\plugins\Analyser\src\Dependencies.Analyser.Mono\bin\x64\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Analyser\Mono\&quot; /Y /s" />
-    <Exec Command="xcopy &quot;$(SolutionDir)..\plugins\Analyser\src\Dependencies.Analyser.Microsoft\bin\x64\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Analyser\Microsoft\&quot; /Y /s" />
-    <Exec Command="xcopy &quot;$(SolutionDir)..\plugins\Exchange\src\Dependencies.Exchange.File\bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Exchange\File\&quot; /Y /s" />
-    <Exec Command="xcopy &quot;$(SolutionDir)..\plugins\Exchange\src\Dependencies.Exchange.Graph\bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Exchange\Graph\&quot; /Y /s" />
+    <Exec Command="xcopy &quot;$(SolutionDir)..\plugins\Analyser\src\Dependencies.Analyser.Mono\bin\x64\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Analyser\Mono\&quot; /Y" />
+    <Exec Command="xcopy &quot;$(SolutionDir)..\plugins\Analyser\src\Dependencies.Analyser.Microsoft\bin\x64\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Analyser\Microsoft\&quot; /Y" />
+    <Exec Command="xcopy &quot;$(SolutionDir)..\plugins\Exchange\src\Dependencies.Exchange.File\bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Exchange\File\&quot; /Y" />
+    <Exec Command="xcopy &quot;$(SolutionDir)..\plugins\Exchange\src\Dependencies.Exchange.Graph\bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)plugins\Exchange\Graph\&quot; /Y" />
   </Target>
 </Project>
