@@ -20,7 +20,7 @@ namespace Dependencies.Viewer.UnitTests
 
             var (assembly, dependencies) = baseAssembly.ToExchangeModel();
 
-            Assert.That.DeepEqual(AssemblyExchangeDataProvider.AssemblyTestV4, assembly);
+            Assert.That.DeepEqual(AssemblyExchangeDataProvider.AssemblyTestV4(), assembly);
             Assert.AreEqual(0, dependencies.Count);
         }
 
