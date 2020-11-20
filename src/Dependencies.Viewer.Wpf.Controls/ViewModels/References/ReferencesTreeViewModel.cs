@@ -66,7 +66,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 
         private bool FilterPredicate(object obj)
         {
-            if (!(obj is AssemblyTreeModel model))
+            if (obj is not AssemblyTreeModel model)
                 return false;
 
             return FilterReferenceWithCache(model.Reference);

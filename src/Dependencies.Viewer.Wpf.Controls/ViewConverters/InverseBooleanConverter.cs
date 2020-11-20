@@ -13,7 +13,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewConverters
 
         private static object InverseValue(object value)
         {
-            if (!(value is bool booleanValue))
+            if (value is not bool booleanValue)
                 return false;
 
             return !booleanValue;

@@ -10,7 +10,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Behaviors
             new FrameworkPropertyMetadata(new InputBindingCollection(),
             (sender, e) =>
             {
-                if (!(sender is UIElement element)) return;
+            if (sender is not UIElement element) return;
 
                 element.InputBindings.Clear();
                 element.InputBindings.AddRange((InputBindingCollection)e.NewValue);

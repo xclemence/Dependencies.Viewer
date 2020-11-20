@@ -11,7 +11,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewConverters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(value is ISettingUpdaterProvider settingUpdaterProvider)) return null;
+            if (value is not ISettingUpdaterProvider settingUpdaterProvider) return null;
 
             return settingUpdaterProvider.GetSettingView();
         }

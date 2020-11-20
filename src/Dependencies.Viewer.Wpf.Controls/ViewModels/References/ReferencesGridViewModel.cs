@@ -59,7 +59,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 
         private bool FilterPredicate(object obj)
         {
-            if (!(obj is ReferenceModel reference))
+            if (obj is not ReferenceModel reference)
                 return false;
 
             if (Filter.DisplayLocalOnly && !reference.LoadedAssembly.IsLocalAssembly)
