@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using Dependencies.Analyser.Base;
 using Dependencies.Exchange.Base;
 using Dependencies.Viewer.Wpf.Controls;
@@ -7,6 +6,7 @@ using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Services;
 using Dependencies.Viewer.Wpf.Extensions;
 using Dependencies.Viewer.Wpf.Layouts;
+using Dependencies.Viewer.Wpf.Settings;
 using Dragablz;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.Configuration;
@@ -18,9 +18,8 @@ namespace Dependencies.Viewer.Wpf.IoC
 {
     internal static class SimpleInjectorConfig
     {
-        public static Container Container { get; private set; }
+        public static Container Container { get; private set; } = default!; // Madatory for appliaction
 
-        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Dispose method are call by IoC")]
         public static void Config(IConfigurationRoot configurationRoot)
         {
             Container = new Container();

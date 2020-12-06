@@ -19,7 +19,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             this.closeAction = closeAction;
             ContentViewModel = contentViewModel;
             this.logger = logger;
-            CancelCommand = new Command(() => this.closeAction(default));
+            CancelCommand = new Command(() => this.closeAction(default!));
             ValidateCommand = new Command(async () => await ValidateAsync().ConfigureAwait(false), () => ContentViewModel.CanValidate);
 
             ContentViewModel.RunAsync = ExecuteAsync;

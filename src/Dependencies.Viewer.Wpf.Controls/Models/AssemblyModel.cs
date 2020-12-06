@@ -9,52 +9,63 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
     [DebuggerDisplay("Assembly = {Name}, Version = {Version}")]
     public sealed class AssemblyModel : IEquatable<AssemblyModel>
     {
-        public AssemblyModel(IReadOnlyDictionary<string, ReferenceModel> referenceProvider) =>
-            ReferenceProvider = referenceProvider ?? throw new ArgumentNullException(nameof(referenceProvider));
+        public AssemblyModel(string name, IImmutableList<string> referencedAssemblyNames, IReadOnlyDictionary<string, ReferenceModel> referenceProvider)
+        {
+            Name = name;
+            ReferencedAssemblyNames = referencedAssemblyNames;
+            ReferenceProvider = referenceProvider;
+        }
 
         public IReadOnlyDictionary<string, ReferenceModel> ReferenceProvider { get; private set; }
 
-        public string Name { get; set; }
-        public string Version { get; set; }
+        public string Name { get; }
+        public string? Version { get; init; }
 
-        public string AssemblyName { get; set; }
+        public string? AssemblyName { get; init; }
 
-        public bool IsLocalAssembly { get; set; }
+        public bool IsLocalAssembly { get; init; }
 
-        public bool IsNative { get; set; }
+        public bool IsNative { get; init; }
 
-        public bool IsResolved { get; set; } = true;
+        public bool IsResolved { get; init; } = true;
 
         public string FullName => AssemblyName ?? Name;
 
-        public string FilePath { get; set; }
+        public string? FilePath { get; init; }
 
-        public bool? IsDebug { get; set; }
+        public bool? IsDebug { get; init; }
 
-        public bool IsILOnly { get; set; }
+        public bool IsILOnly { get; init; }
 
-        public string TargetFramework { get; set; }
+        public string? TargetFramework { get; init; }
 
-        public bool HasEntryPoint { get; set; }
+        public bool HasEntryPoint { get; init; }
 
-        public string TargetProcessor { get; set; }
+        public string? TargetProcessor { get; init; }
 
-        public string Creator { get; set; }
+        public string? Creator { get; init; }
 
-        public DateTime CreationDate { get; set; }
+        public DateTime CreationDate { get; init; }
 
-        public IImmutableList<string> ReferencedAssemblyNames { get; set; }
+        public IImmutableList<string> ReferencedAssemblyNames { get; }
 
         public IImmutableList<ReferenceModel> References => ReferencedAssemblyNames.Select(x => ReferenceProvider[x]).ToImmutableList();
 
         public HashSet<string> ParentLinkNames { get; set; } = new HashSet<string>();
 
-        public override bool Equals(object obj) => Equals(obj as AssemblyModel);
-        public bool Equals(AssemblyModel other) => other != null &&
-                                                   FullName == other.FullName &&
-                                                   IsDebug == other.IsDebug &&
-                                                   TargetFramework == other.TargetFramework &&
-                                                   TargetProcessor == other.TargetProcessor;
+        public bool Equals(AssemblyModel? other)
+        {
+            if (other is null)
+                return false;
+
+            return FullName == other.FullName &&
+                   IsDebug == other.IsDebug &&
+                   TargetFramework == other.TargetFramework &&
+                   TargetProcessor == other.TargetProcessor;
+        }
+
+        public override bool Equals(object? obj) => Equals(obj as AssemblyModel);
+
         public override int GetHashCode() => HashCode.Combine(FullName, IsDebug, TargetFramework, TargetProcessor);
 
         public AssemblyModel ShadowClone(IReadOnlyDictionary<string, ReferenceModel> referenceProvider)
@@ -68,6 +79,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
 
         public static bool operator ==(AssemblyModel left, AssemblyModel right) => EqualityComparer<AssemblyModel>.Default.Equals(left, right);
         public static bool operator !=(AssemblyModel left, AssemblyModel right) => !(left == right);
+
     }
 }
 

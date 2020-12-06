@@ -19,8 +19,9 @@ namespace Dependencies.Viewer.Wpf.Controls.Services
         public void LogError(string message, Exception ex)
         {
             var innerException = ex;
-            while (innerException.InnerException != null)
-                innerException = ex.InnerException;
+
+            while (innerException.InnerException is not null)
+                innerException = ex.InnerException!;
 
             MessageQueue.Enqueue($"Error : {innerException.Message}");
             Logger.LogError(ex, message);

@@ -8,10 +8,13 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
     {
         public override string Title => "Mismatch Version";
 
-        protected override IEnumerable<ReferenceModel> GetResults(AssemblyModel assembly)
+        protected override IEnumerable<ReferenceModel> GetResults(AssemblyModel? assembly)
         {
-            return assembly?.ReferenceProvider.Values.Where(x => x.AssemblyVersion != x.LoadedAssembly.Version)
-                                                      .OrderBy(x => x.AssemblyFullName);
+            if (assembly is null)
+                return Enumerable.Empty<ReferenceModel>();
+
+            return assembly.ReferenceProvider.Values.Where(x => x.AssemblyVersion != x.LoadedAssembly.Version)
+                                                     .OrderBy(x => x.AssemblyFullName);
         }
     }
 }

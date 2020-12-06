@@ -8,7 +8,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Base
     public class ThemeManager
     {
         private readonly IDictionary<string, Uri> themes = new Dictionary<string, Uri>();
-        private ResourceDictionary currentThemeResources;
+        private ResourceDictionary? currentThemeResources;
 
         public IImmutableDictionary<string, Uri> Themes => themes.ToImmutableDictionary();
 

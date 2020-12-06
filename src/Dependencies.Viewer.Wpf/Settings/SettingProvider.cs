@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Dependencies.Analyser.Base;
-using Dependencies.Viewer.Wpf.Controls.Base;
 
-namespace Dependencies.Viewer.Wpf
+namespace Dependencies.Viewer.Wpf.Settings
 {
     [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Mask usage of application properties")]
     public class SettingProvider
@@ -25,18 +23,4 @@ namespace Dependencies.Viewer.Wpf
             Properties.Settings.Default.Save();
         }
     }
-
-    public class AnalyserSettingProvider : SettingProvider, IAnalyserSettingProvider { }
-
-    public class ApplicationSettingProvider : SettingProvider, IApplicationSettingProvider
-    {
-        private const string SelectedThemeKey = "SelectedTheme";
-
-        public string SelectedTheme
-        {
-            get => this[SelectedThemeKey];
-            set => this[SelectedThemeKey] = value;
-        }
-    }
-
 }

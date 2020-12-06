@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
     <OutputType>WinExe</OutputType>
     <UseWpf>true</UseWpf>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>

@@ -5,11 +5,11 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 {
     public class ReferencesViewModel : ObservableObject
     {
-        private AssemblyModel assembly;
+        private AssemblyModel? assembly;
         private readonly FilterModel filter;
 
         private readonly IReferencesDetailsViewModel[] resultViewModels;
-        private IReferencesDetailsViewModel selectedResultViewModels;
+        private IReferencesDetailsViewModel? selectedResultViewModels;
 
         public ReferencesViewModel()
         {
@@ -17,14 +17,14 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 
             resultViewModels = new IReferencesDetailsViewModel[]
             {
-                new ReferencesTreeViewModel { Filter = filter },
-                new ReferencesGridViewModel { Filter = filter }
+                new ReferencesTreeViewModel(filter),
+                new ReferencesGridViewModel(filter)
             };
 
             SelectedResultViewModels = resultViewModels[0];
         }
 
-        public AssemblyModel Assembly
+        public AssemblyModel? Assembly
         {
             get => assembly;
             set
@@ -37,7 +37,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             }
         }
 
-        public IReferencesDetailsViewModel SelectedResultViewModels
+        public IReferencesDetailsViewModel? SelectedResultViewModels
         {
             get => selectedResultViewModels;
             private set => Set(ref selectedResultViewModels, value);
@@ -67,11 +67,11 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
                     return;
 
                 filter.DisplayLocalOnly = value;
-                SelectedResultViewModels.RefreshFilteredItems();
+                SelectedResultViewModels?.RefreshFilteredItems();
             }
         }
 
-        public string NameFilter
+        public string? NameFilter
         {
             get => filter.Name;
             set
@@ -80,7 +80,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
                     return;
 
                 filter.Name = value;
-                SelectedResultViewModels.RefreshFilteredItems();
+                SelectedResultViewModels?.RefreshFilteredItems();
             }
         }
     }

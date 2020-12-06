@@ -11,9 +11,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
 {
     public abstract class ResultListViewModel<T> : ObservableObject
     {
-        private AssemblyModel assembly;
-        private T selectedItem;
-        private IReadOnlyList<T> displayResults;
+        private AssemblyModel? assembly;
+        private T? selectedItem;
+        private IReadOnlyList<T>? displayResults;
 
         protected ResultListViewModel()
         {
@@ -25,7 +25,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
         public ICommand CopyToClipboardCommand { get; }
         public abstract string Title { get; }
 
-        public AssemblyModel Assembly
+        public AssemblyModel? Assembly
         {
             get => assembly;
             set
@@ -35,28 +35,28 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
             }
         }
 
-        public virtual IReadOnlyList<T> DisplayResults
+        public virtual IReadOnlyList<T>? DisplayResults
         {
             get => displayResults;
             protected set => Set(ref displayResults, value);
         }
 
-        public T SelectedItem
+        public T? SelectedItem
         {
             get => selectedItem;
             set => Set(ref selectedItem, value);
         }
 
-        protected abstract IEnumerable<T> GetResults(AssemblyModel assembly);
+        protected abstract IEnumerable<T> GetResults(AssemblyModel? assembly);
 
         protected virtual Task OnOpenResultAsync(T item) => Task.CompletedTask;
 
         protected virtual void CopyAllToClipboard()
         {
-            if (!displayResults.Any())
+            if (!(displayResults?.Any() ?? false))
                 return;
 
-            var allText = DisplayResults.Select(x => x.ToString()).Aggregate((x, y) => $"{x}{Environment.NewLine}{y}");
+            var allText = DisplayResults?.Select(x => x?.ToString()).Aggregate((x, y) => $"{x}{Environment.NewLine}{y}");
             Clipboard.SetDataObject(allText);
         }
     }

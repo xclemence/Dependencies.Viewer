@@ -3,6 +3,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
     <UseWpf>true</UseWpf>
+    <Nullable>enable</Nullable>
 
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>

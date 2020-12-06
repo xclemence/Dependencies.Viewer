@@ -9,7 +9,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewConverters
     {
         public static IValueConverter Converter { get; } = new SettingUpdaterViewConverter();
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is not ISettingUpdaterProvider settingUpdaterProvider) return null;
 

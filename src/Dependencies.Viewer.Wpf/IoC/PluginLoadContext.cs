@@ -14,22 +14,22 @@ namespace Dependencies.Viewer.Wpf.IoC
             this.tryDefaultContextLoading = tryDefaultContextLoading;
         }
 
-        protected override Assembly Load(AssemblyName assemblyName)
+        protected override Assembly? Load(AssemblyName assemblyName)
         {
-            Assembly assembly = null;
+            Assembly? assembly = null;
             if (tryDefaultContextLoading)
                 assembly = LoadOnDefaultContext(assemblyName);
 
             return assembly ?? LoadOnPluginContext(assemblyName);
         }
 
-        private static Assembly LoadOnDefaultContext(AssemblyName assemblyName)
+        private static Assembly? LoadOnDefaultContext(AssemblyName assemblyName)
         {
             try
             {
                 var assemblyFromDefaultContext = Default.LoadFromAssemblyName(assemblyName);
 
-                if (assemblyFromDefaultContext != null)
+                if (assemblyFromDefaultContext is not null)
                     return assemblyFromDefaultContext;
             }
             catch
@@ -39,11 +39,11 @@ namespace Dependencies.Viewer.Wpf.IoC
             return null;
         }
 
-        private Assembly LoadOnPluginContext(AssemblyName assemblyName)
+        private Assembly? LoadOnPluginContext(AssemblyName assemblyName)
         {
             var assemblyPath = resolver.ResolveAssemblyToPath(assemblyName);
 
-            if (assemblyPath != null)
+            if (assemblyPath is not null)
                 return LoadFromAssemblyPath(assemblyPath);
 
             return null;

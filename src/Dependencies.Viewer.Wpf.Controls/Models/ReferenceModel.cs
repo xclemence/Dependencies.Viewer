@@ -6,9 +6,15 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
     [DebuggerDisplay("Assembly = {LoadedAssembly.Name}, Ref Version = {AssemblyVersion}, Loaded version = {LoadedAssembly.Version}")]
     public class ReferenceModel
     {
-        public string AssemblyVersion { get; set; }
 
-        public string AssemblyFullName { get; set; }
+        public ReferenceModel(string assemblyFullName, AssemblyModel loadedAssembly)
+        {
+            AssemblyFullName = assemblyFullName;
+            LoadedAssembly = loadedAssembly;
+        }
+        public string? AssemblyVersion { get; init; }
+
+        public string AssemblyFullName { get; }
 
         public AssemblyModel LoadedAssembly { get; set; }
 

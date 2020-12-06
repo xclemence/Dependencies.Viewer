@@ -15,7 +15,7 @@ namespace Dependencies.Viewer.Wpf
         }
 
 
-        public MainWindow(string initialFile)
+        public MainWindow(string? initialFile)
         {
             InitializeComponent();
 
@@ -23,7 +23,7 @@ namespace Dependencies.Viewer.Wpf
 
             DataContext = analyserViewModel;
 
-            if (initialFile != null)
+            if (initialFile is not null)
                 Task.Run(async () => await analyserViewModel.InitialiseAsync(initialFile).ConfigureAwait(false));
         }
     }

@@ -26,9 +26,9 @@ namespace Dependencies.Viewer.Wpf.Controls
 
         public IEnumerable<IAssemblyAnalyserFactory> AnalyserFactories { get; }
 
-        public IAssemblyAnalyserFactory CurrentAnalyserFactory { get; set; }
+        public IAssemblyAnalyserFactory? CurrentAnalyserFactory { get; set; }
 
-        public IAssemblyAnalyser GetAnalyser() => CurrentAnalyserFactory?.GetAnalyser();
+        public IAssemblyAnalyser? GetAnalyser() => CurrentAnalyserFactory?.GetAnalyser();
 
         public void SetCurrentAnalyser(string code)
         {

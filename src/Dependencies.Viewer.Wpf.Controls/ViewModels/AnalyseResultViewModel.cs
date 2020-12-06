@@ -8,7 +8,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 {
     public class AnalyseResultViewModel : ObservableObject
     {
-        private AssemblyModel assemblyResult;
+        private AssemblyModel? assemblyResult;
         private bool isErrorExpended;
 
         public AnalyseResultViewModel(LoadingErrorViewModel errorLoadingViewModel,
@@ -27,7 +27,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         public ReferencesViewModel ReferencesViewModel { get; }
         public AssemblyStatisticsViewModel AssemblyStatisticsViewModel { get; }
 
-        public AssemblyModel AssemblyResult
+        public AssemblyModel? AssemblyResult
         {
             get => assemblyResult;
             set
