@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Dependencies.Viewer.Wpf.Settings
+namespace Dependencies.Viewer.Wpf.ApplicationSettings
 {
     [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Mask usage of application properties")]
     public class SettingProvider

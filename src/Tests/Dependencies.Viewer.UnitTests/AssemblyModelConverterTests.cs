@@ -27,10 +27,8 @@ namespace Dependencies.Viewer.UnitTests
         [TestMethod]
         public void AssemblyToExchangeModelWithReferences()
         {
-            var baseAssembly = AssemblyModelDataProvider.AnalyseBase;
             var assemblyTest4 = AssemblyModelDataProvider.AssemblyTestV4;
-
-            baseAssembly.ReferencedAssemblyNames = ImmutableList.Create(assemblyTest4.FullName);
+            var baseAssembly = AssemblyModelDataProvider.AnalyseBase(ImmutableList.Create(assemblyTest4.FullName));
 
             var testAssembly = baseAssembly.ShadowClone(new Dictionary<string, ReferenceModel>
             {
@@ -46,11 +44,10 @@ namespace Dependencies.Viewer.UnitTests
         [TestMethod]
         public void AssemblyToExchangeModelReferencesTwice()
         {
-            var baseAssembly = AssemblyModelDataProvider.AnalyseBase;
             var assemblyTest4 = AssemblyModelDataProvider.AssemblyTestV4;
             var assemblyTest2 = AssemblyModelDataProvider.AssemblyTestV2;
 
-            baseAssembly.ReferencedAssemblyNames = ImmutableList.Create(assemblyTest4.FullName, assemblyTest2.FullName);
+            var baseAssembly = AssemblyModelDataProvider.AnalyseBase(ImmutableList.Create(assemblyTest4.FullName, assemblyTest2.FullName));
 
             var testAssembly = baseAssembly.ShadowClone(new Dictionary<string, ReferenceModel>
             {

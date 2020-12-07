@@ -1,6 +1,6 @@
 ﻿using Dependencies.Viewer.Wpf.Controls.Base;
 
-namespace Dependencies.Viewer.Wpf.Settings
+namespace Dependencies.Viewer.Wpf.ApplicationSettings
 {
     public class ApplicationSettingProvider : SettingProvider, IApplicationSettingProvider
     {

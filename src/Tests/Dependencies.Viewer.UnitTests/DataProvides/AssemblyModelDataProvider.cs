@@ -7,9 +7,8 @@ namespace Dependencies.Viewer.UnitTests.DataProviders
 {
     public static class AssemblyModelDataProvider
     {
-        public static AssemblyModel AssemblyTestV4 => new AssemblyModel(new Dictionary<string, ReferenceModel>())
+        public static AssemblyModel AssemblyTestV4 => new ("AssemblyTest", ImmutableList.Create<string>(), new Dictionary<string, ReferenceModel>())
         {
-            Name = "AssemblyTest",
             Version = "4.0.0.0",
             AssemblyName = "AssemblyTest, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e",
             TargetFramework = ".NETCoreApp,Version=v3.1",
@@ -22,12 +21,10 @@ namespace Dependencies.Viewer.UnitTests.DataProviders
             CreationDate = new DateTime(2020, 2, 2),
             HasEntryPoint = true,
             IsResolved = true,
-            ReferencedAssemblyNames = ImmutableList.Create<string>()
         };
 
-        public static AssemblyModel AssemblyTestV2 => new AssemblyModel(new Dictionary<string, ReferenceModel>())
+        public static AssemblyModel AssemblyTestV2 => new ("AssemblyTest", ImmutableList.Create<string>(), new Dictionary<string, ReferenceModel>())
         {
-            Name = "AssemblyTest",
             Version = "2.0.0.0",
             AssemblyName = "AssemblyTest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e",
             TargetFramework = ".NETCoreApp,Version=v3.1",
@@ -40,12 +37,12 @@ namespace Dependencies.Viewer.UnitTests.DataProviders
             CreationDate = new DateTime(2020, 2, 2),
             HasEntryPoint = true,
             IsResolved = true,
-            ReferencedAssemblyNames = ImmutableList.Create<string>()
         };
 
-        public static AssemblyModel AnalyseBase => new AssemblyModel(new Dictionary<string, ReferenceModel>())
+        public static AssemblyModel AnalyseBase() => AnalyseBase(ImmutableList.Create<string>());
+        public static AssemblyModel AnalyseBase(IImmutableList<string> referencedAssemblyNames) 
+            => new ("Dependencies.Analyser.Base", referencedAssemblyNames, new Dictionary<string, ReferenceModel>())
         {
-            Name = "Dependencies.Analyser.Base",
             Version = "1.0.0.0",
             AssemblyName = "Dependencies.Analyser.Base, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             TargetFramework = ".NETCoreApp,Version=v3.1",
@@ -58,12 +55,10 @@ namespace Dependencies.Viewer.UnitTests.DataProviders
             CreationDate = new DateTime(2020, 2, 3),
             HasEntryPoint = true,
             IsResolved = true,
-            ReferencedAssemblyNames = ImmutableList.Create<string>()
         };
 
-        public static AssemblyModel AssemblyTest1 => new AssemblyModel(new Dictionary<string, ReferenceModel>())
+        public static AssemblyModel AssemblyTest1 => new ("Assembly.Test1", ImmutableList.Create<string>(), new Dictionary<string, ReferenceModel>())
         {
-            Name = "Assembly.Test1",
             Version = "4.0.0.0",
             AssemblyName = "Assembly.Test1, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e",
             TargetFramework = ".NETCoreApp,Version=v3.1",
@@ -76,12 +71,10 @@ namespace Dependencies.Viewer.UnitTests.DataProviders
             CreationDate = new DateTime(2020, 2, 2),
             HasEntryPoint = true,
             IsResolved = true,
-            ReferencedAssemblyNames = ImmutableList.Create<string>()
         };
 
-        public static AssemblyModel AssemblyTest2 => new AssemblyModel(new Dictionary<string, ReferenceModel>())
+        public static AssemblyModel AssemblyTest2 => new ("Assembly.Test2", ImmutableList.Create<string>(), new Dictionary<string, ReferenceModel>())
         {
-            Name = "Assembly.Test2",
             Version = "4.0.0.0",
             AssemblyName = "Assembly.Test2, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e",
             TargetFramework = ".NETCoreApp,Version=v3.1",
@@ -94,12 +87,10 @@ namespace Dependencies.Viewer.UnitTests.DataProviders
             CreationDate = new DateTime(2020, 2, 2),
             HasEntryPoint = true,
             IsResolved = true,
-            ReferencedAssemblyNames = ImmutableList.Create<string>()
         };
 
-        public static AssemblyModel AssemblyTest3 => new AssemblyModel(new Dictionary<string, ReferenceModel>())
+        public static AssemblyModel AssemblyTest3 => new AssemblyModel("Assembly.Test3", ImmutableList.Create<string>(), new Dictionary<string, ReferenceModel>())
         {
-            Name = "Assembly.Test3",
             Version = "4.0.0.0",
             AssemblyName = "Assembly.Test3, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e",
             TargetFramework = ".NETCoreApp,Version=v3.1",
@@ -112,13 +103,11 @@ namespace Dependencies.Viewer.UnitTests.DataProviders
             CreationDate = new DateTime(2020, 2, 2),
             HasEntryPoint = true,
             IsResolved = true,
-            ReferencedAssemblyNames = ImmutableList.Create<string>()
         };
 
-        public static ReferenceModel CreateReferenceModel(this AssemblyModel assembly, string assemblyFullName = null, string assemblyVersion = null) => new ReferenceModel
+        public static ReferenceModel CreateReferenceModel(this AssemblyModel assembly, string assemblyFullName = null, string assemblyVersion = null) => 
+            new (assemblyFullName ?? assembly.FullName, assembly)
         {
-            LoadedAssembly = assembly,
-            AssemblyFullName = assemblyFullName ?? assembly.FullName,
             AssemblyVersion = assemblyVersion ?? assembly.Version
         };
     }
