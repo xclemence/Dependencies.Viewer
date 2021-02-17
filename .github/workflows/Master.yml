@@ -31,9 +31,9 @@ jobs:
     
     - uses: actions/setup-java@v1 # For sonar
       with:
-      java-version: '11'
-      java-package: jre
-      architecture: x64
+        java-version: '11'
+        java-package: jre
+        architecture: x64
     
     - name: Setup VSTest Path
       uses: darenm/Setup-VSTest@v1
