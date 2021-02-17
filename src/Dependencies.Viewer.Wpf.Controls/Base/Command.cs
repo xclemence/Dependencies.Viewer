@@ -28,7 +28,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Base
         private T TransformParameter(object? parameter)
         {
             if (parameter is null)
-                return default(T)!; // Can be null depends on Tempalte type
+                return default(T)!; // Can be null depends on Template type
 
             return (T)parameter;
         }

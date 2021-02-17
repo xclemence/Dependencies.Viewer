@@ -18,7 +18,7 @@ namespace Dependencies.Viewer.Wpf.IoC
 {
     internal static class SimpleInjectorConfig
     {
-        public static Container Container { get; private set; } = default!; // Madatory for appliaction
+        public static Container Container { get; private set; } = default!; // Mandatory for application
 
         public static void Config(IConfigurationRoot configurationRoot)
         {
