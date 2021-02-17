@@ -33,7 +33,7 @@ jobs:
       uses: darenm/Setup-VSTest@v1
 
     - name: Install sonar scanner
-      run: dotnet tool install --global dotnet-sonarscanner --version 4.10.0
+      run: dotnet tool install --global dotnet-sonarscanner --version 5.0.4
       working-directory: src
   
     - name: Restore nuget packages
