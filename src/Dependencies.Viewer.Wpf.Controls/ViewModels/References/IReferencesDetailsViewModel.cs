@@ -4,8 +4,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 {
     public interface IReferencesDetailsViewModel
     {
-        AssemblyModel Assembly { get; set; }
-        FilterModel Filter { get; set; }
+        AssemblyModel? Assembly { get; set; }
+        FilterModel Filter { get; }
         void RefreshFilteredItems();
     }
 }

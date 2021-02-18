@@ -29,11 +29,17 @@ jobs:
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
     
+    - uses: actions/setup-java@v1 # For sonar
+      with:
+        java-version: '11'
+        java-package: jre
+        architecture: x64
+    
     - name: Setup VSTest Path
       uses: darenm/Setup-VSTest@v1
 
     - name: Install sonar scanner
-      run: dotnet tool install --global dotnet-sonarscanner --version 4.10.0
+      run: dotnet tool install --global dotnet-sonarscanner --version 5.0.4
       working-directory: src
   
     - name: Restore nuget packages

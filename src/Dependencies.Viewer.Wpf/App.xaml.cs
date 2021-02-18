@@ -35,7 +35,8 @@ namespace Dependencies.Viewer.Wpf
 
             ConfigureTheme();
 
-            string filename = null;
+            string? filename = null;
+
             if (e.Args.Length == 1) // make sure an argument is passed
                 filename = e.Args[0];
 

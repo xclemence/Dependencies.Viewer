@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
@@ -13,7 +11,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
 
         public AssemblyTreeModel(ReferenceModel reference) => Reference = reference;
 
-        public FilterCollection<AssemblyTreeModel> Collection { get; set; }
+        public FilterCollection<AssemblyTreeModel>? Collection { get; set; }
 
         public ReferenceModel Reference { get; }
 
@@ -22,13 +20,16 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
             get => isExpanded;
             set
             {
-                if (Set(ref isExpanded, value))
+                if (Set(ref isExpanded, value) && Collection is not null)
                     TryLoadSubCollection(Collection);
             }
         }
 
         private void TryLoadSubCollection(IEnumerable<AssemblyTreeModel> references)
         {
+            if (Collection is null)
+                return;
+            
             var predicate = Collection.Predicate;
             foreach (var item in references.Where(x => x.Collection == null))
             {
@@ -42,19 +43,5 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
         public override string ToString() => Reference.ToDisplayString();
     }
 
-    public class FilterCollection<T> : List<T>
-    {
-        public FilterCollection(IEnumerable<T> collection, Predicate<object> predicate, string baseSortingProperty)
-            : base(collection)
-        {
-            Predicate = predicate;
-            FilteredItems = this?.GetCollectionView(predicate, baseSortingProperty);
-        }
-
-        public Predicate<object> Predicate { get; }
-
-        public ICollectionView FilteredItems { get; private set; }
-
-        public void RefreshFilter() => FilteredItems?.Refresh();
-    }
+   
 }

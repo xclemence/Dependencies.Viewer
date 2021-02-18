@@ -7,10 +7,10 @@ namespace Dependencies.Viewer.Wpf.Controls.Bindings
 {
     public class BindingIndex : Binding
     {
-        private string path;
-        private dynamic keyIndex;
+        private string path = string.Empty;
+        private dynamic? keyIndex;
 
-        public dynamic KeyIndex
+        public dynamic? KeyIndex
         {
             get => keyIndex;
             set => SetPathProperty(ref keyIndex, value);

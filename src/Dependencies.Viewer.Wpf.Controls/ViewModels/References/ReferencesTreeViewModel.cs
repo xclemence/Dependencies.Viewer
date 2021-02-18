@@ -10,51 +10,53 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 {
     public class ReferencesTreeViewModel : ObservableObject, IReferencesDetailsViewModel
     {
-        private AssemblyModel assembly;
-        private FilterCollection<AssemblyTreeModel> loadedAssemblies;
+        private AssemblyModel? assembly;
+        private FilterCollection<AssemblyTreeModel>? loadedAssemblies;
         private readonly IDictionary<string, bool> filterResultsCache = new Dictionary<string, bool>();
 
-        public ReferencesTreeViewModel()
+        public ReferencesTreeViewModel(FilterModel filter)
         {
             OpenSubResultCommand = new Command<AssemblyTreeModel>(x => GlobalCommand.OpenAssembly(x.Reference.LoadedAssembly));
             OpenParentReferenceCommand = new Command<AssemblyTreeModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(assembly, x.Reference).ConfigureAwait(false));
+
+            Filter = filter;
         }
 
         public ICommand OpenSubResultCommand { get; }
         public ICommand OpenParentReferenceCommand { get; }
 
-        public AssemblyModel Assembly
+        public AssemblyModel? Assembly
         {
             get => assembly;
             set
             {
-                if (Set(ref assembly, value))
+                if (Set(ref assembly, value) && value is not null)
                     CreateFilteredCollection(value);
             }
         }
 
-        public FilterCollection<AssemblyTreeModel> LoadedAssemblies
+        public FilterCollection<AssemblyTreeModel>? LoadedAssemblies
         {
             get => loadedAssemblies;
             set => Set(ref loadedAssemblies, value);
         }
 
-        public FilterModel Filter { get; set; }
+        public FilterModel Filter { get; init; }
 
         public void RefreshFilteredItems()
         {
             filterResultsCache.Clear();
-            LoadedAssemblies.RefreshFilter();
+            LoadedAssemblies?.RefreshFilter();
 
             RefreshFilteredItems(LoadedAssemblies);
         }
 
-        private void RefreshFilteredItems(IEnumerable<AssemblyTreeModel> models)
+        private void RefreshFilteredItems(IEnumerable<AssemblyTreeModel>? models)
         {
             if (models == null)
                 return;
 
-            foreach (var item in models)
+            foreach (var item in models.Where(x => x.Collection != null))
             {
                 item.Collection?.RefreshFilter();
 
@@ -66,7 +68,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 
         private bool FilterPredicate(object obj)
         {
-            if (!(obj is AssemblyTreeModel model))
+            if (obj is not AssemblyTreeModel model)
                 return false;
 
             return FilterReferenceWithCache(model.Reference);

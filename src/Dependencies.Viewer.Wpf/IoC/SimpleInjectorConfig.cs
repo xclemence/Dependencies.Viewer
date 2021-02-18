@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using Dependencies.Analyser.Base;
 using Dependencies.Exchange.Base;
+using Dependencies.Viewer.Wpf.ApplicationSettings;
 using Dependencies.Viewer.Wpf.Controls;
 using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Services;
@@ -18,9 +18,8 @@ namespace Dependencies.Viewer.Wpf.IoC
 {
     internal static class SimpleInjectorConfig
     {
-        public static Container Container { get; private set; }
+        public static Container Container { get; private set; } = default!; // Mandatory for application
 
-        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Dispose method are call by IoC")]
         public static void Config(IConfigurationRoot configurationRoot)
         {
             Container = new Container();

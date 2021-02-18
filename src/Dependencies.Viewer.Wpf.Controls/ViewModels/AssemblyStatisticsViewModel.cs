@@ -8,11 +8,11 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 {
     public class AssemblyStatisticsViewModel : ObservableObject
     {
-        private AssemblyModel assembly;
+        private AssemblyModel? assembly;
 
-        private IImmutableList<AssemblyModel> assemblies;
+        private IImmutableList<AssemblyModel>? assemblies;
 
-        public AssemblyModel Assembly
+        public AssemblyModel? Assembly
         {
             get => assembly;
             set
@@ -28,12 +28,12 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             }
         }
 
-        public string ManagedAssemblyCount => assemblies?.Count(x => !x.IsNative).ToString(CultureInfo.InvariantCulture);
+        public string? ManagedAssemblyCount => assemblies?.Count(x => !x.IsNative).ToString(CultureInfo.InvariantCulture);
 
-        public string NativeAssemblyCount => assemblies?.Count(x => x.IsNative).ToString(CultureInfo.InvariantCulture);
+        public string? NativeAssemblyCount => assemblies?.Count(x => x.IsNative).ToString(CultureInfo.InvariantCulture);
 
-        public string AllReferencesCount => Assembly?.ReferenceProvider.Count.ToString(CultureInfo.InvariantCulture);
+        public string? AllReferencesCount => Assembly?.ReferenceProvider.Count.ToString(CultureInfo.InvariantCulture);
 
-        public string DirectReferencesCount => Assembly?.ReferencedAssemblyNames.Count.ToString(CultureInfo.InvariantCulture);
+        public string? DirectReferencesCount => Assembly?.ReferencedAssemblyNames.Count.ToString(CultureInfo.InvariantCulture);
     }
 }

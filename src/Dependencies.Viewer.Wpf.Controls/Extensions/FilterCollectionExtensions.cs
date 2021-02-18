@@ -7,7 +7,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
 {
     public static class FilterCollectionExtensions
     {
-        public static ICollectionView GetCollectionView<T>(this IEnumerable<T> models, Predicate<object> predicate, string sortingProperty = null)
+        public static ICollectionView GetCollectionView<T>(this IEnumerable<T> models, Predicate<object> predicate, string? sortingProperty = null)
         {
             var collectionView = CollectionViewSource.GetDefaultView(models);
             collectionView.Filter = predicate;

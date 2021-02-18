@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Dependencies.Analyser.Base;
-using Dependencies.Exchange.Base;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Settings
 {
@@ -17,9 +16,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Settings
         public IAnalyserSettingProvider Settings { get; }
 
         public IEnumerable<IAssemblyAnalyserFactory> AnalyserFactories => AnalyserProvider.AnalyserFactories;
-        public IList<ISettingUpdaterProvider> SettingUpdaterProviders { get; }
 
-        public IAssemblyAnalyserFactory SelectedAnalyserFactory
+        public IAssemblyAnalyserFactory? SelectedAnalyserFactory
         {
             get => AnalyserProvider.CurrentAnalyserFactory;
             set

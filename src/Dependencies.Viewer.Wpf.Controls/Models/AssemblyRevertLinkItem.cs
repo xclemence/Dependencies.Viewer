@@ -21,7 +21,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
                 Parents = Assembly.ParentLinkNames.Select(x => new AssemblyRevertLinkItem(assemblyProvider(x), this.assemblyProvider)).ToList();
         }
 
-        public AssemblyModel Assembly { get; set; }
+        public AssemblyModel Assembly { get; }
 
         public bool IsExpanded
         {
@@ -33,10 +33,13 @@ namespace Dependencies.Viewer.Wpf.Controls.Models
             }
         }
 
-        public IList<AssemblyRevertLinkItem> Parents { get; set; }
+        public IList<AssemblyRevertLinkItem>? Parents { get; private set; }
 
-        public void LoadSubCollection()
+        private void LoadSubCollection()
         {
+            if (Parents is null)
+                return;
+
             foreach (var item in Parents.Where(x => x.Parents == null))
             {
                 item.Parents = item.Assembly.ParentLinkNames.Select(x => new AssemblyRevertLinkItem(assemblyProvider(x), assemblyProvider)).ToList();

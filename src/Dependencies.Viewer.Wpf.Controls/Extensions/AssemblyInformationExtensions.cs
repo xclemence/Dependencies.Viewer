@@ -19,7 +19,8 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             return assembly.ToAssemblyModel(referenceProvider);
         }
 
-        public static AssemblyModel ToAssemblyModel(this AssemblyInformation assembly, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) => new AssemblyModel(referenceProvider)
+        public static AssemblyModel ToAssemblyModel(this AssemblyInformation assembly, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) => 
+            new AssemblyModel(assembly.Name, assembly.Links.Select(x => x.LinkFullName).ToImmutableList(), referenceProvider)
         {
             AssemblyName = assembly.AssemblyName,
             CreationDate = assembly.CreationDate,
@@ -31,20 +32,16 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             IsLocalAssembly = assembly.IsLocalAssembly,
             IsNative = assembly.IsNative,
             IsResolved = assembly.IsResolved,
-            Name = assembly.Name,
             TargetFramework = assembly.TargetFramework,
-            TargetProcessor = assembly.TargetProcessor.ToString(),
+            TargetProcessor = assembly.TargetProcessor?.ToString(),
             Version = assembly.LoadedVersion,
             ParentLinkNames = assembly.ParentLinkName.ToHashSet(),
-            ReferencedAssemblyNames = assembly.Links.Select(x => x.LinkFullName).ToImmutableList()
         };
 
-        private static ReferenceModel ToReferenceModel(this AssemblyLink link, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) => new ReferenceModel
-        {
-            AssemblyFullName = link.LinkFullName,
-            AssemblyVersion = link.LinkVersion,
-            LoadedAssembly = link.Assembly.ToAssemblyModel(referenceProvider)
+        private static ReferenceModel ToReferenceModel(this AssemblyLink link, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) => 
+            new ReferenceModel(link.LinkFullName, link.Assembly.ToAssemblyModel(referenceProvider))
+        { 
+            AssemblyVersion = link.LinkVersion
         };
-
     }
 }

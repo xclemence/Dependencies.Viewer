@@ -31,9 +31,9 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
         {
             Name = assembly.FullName,
             ShortName = assembly.Name,
-            Version = assembly.Version,
+            Version = assembly.Version ?? string.Empty,
             TargetFramework = assembly.TargetFramework,
-            TargetProcessor = assembly.TargetProcessor?.ToString(),
+            TargetProcessor = assembly.TargetProcessor,
             IsDebug = assembly.IsDebug,
             IsILOnly = assembly.IsILOnly,
             IsLocal = assembly.IsLocalAssembly,
@@ -49,7 +49,14 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
         {
             AssemblyExchange model;
             if (reference.IsMismatchVersion)
-                model = new AssemblyExchange { Name = reference.AssemblyFullName, Version = reference.AssemblyVersion, IsPartial = true, ShortName = reference.LoadedAssembly.Name, IsLocal = reference.LoadedAssembly.IsLocalAssembly };
+                model = new AssemblyExchange 
+                { 
+                    Name = reference.AssemblyFullName, 
+                    Version = reference.AssemblyVersion ?? string.Empty,
+                    IsPartial = true,
+                    ShortName = reference.LoadedAssembly.Name,
+                    IsLocal = reference.LoadedAssembly.IsLocalAssembly
+                };
             else
                 model = reference.LoadedAssembly.ToExchange();
 
@@ -107,11 +114,9 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             {
                 var (referencedAssembly, assemblyName) = referenceCache.GetNotFoundAssembly(item, referenceProvider);
 
-                referenceProvider.Add(item, new ReferenceModel
+                referenceProvider.Add(item, new ReferenceModel(assemblyName.FullName, referencedAssembly)
                 {
-                    AssemblyFullName = assemblyName.FullName,
-                    AssemblyVersion = assemblyName.Version.ToString(),
-                    LoadedAssembly = referencedAssembly
+                    AssemblyVersion = assemblyName.Version?.ToString(),
                 });
             }
         }
@@ -120,7 +125,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
         {
             var assemblyName = new AssemblyName(assemblyFullName);
 
-            if (referenceCache.TryGetValue(assemblyName.Name, out var reference))
+            if (referenceCache.TryGetValue(assemblyName.Name!, out var reference))
                 return (reference.LoadedAssembly, assemblyName);
 
             var assembly = assemblyName.ToNotFoundAssemblyModel(referenceProvider);
@@ -134,11 +139,9 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
         private static ReferenceModel ToReferenceModelWithSearchAssembly(this AssemblyExchange assemblyExchange, IReadOnlyDictionary<string, ReferenceModel> assemblyCache) =>
             ToReferenceModelWithAssembly(assemblyExchange, assemblyCache[assemblyExchange.ShortName].LoadedAssembly);
 
-        public static ReferenceModel ToReferenceModelWithAssembly(this AssemblyExchange assemblyExchange, AssemblyModel assembly) => new ReferenceModel
+        public static ReferenceModel ToReferenceModelWithAssembly(this AssemblyExchange assemblyExchange, AssemblyModel assembly) => new ReferenceModel(assemblyExchange.Name, assembly)
         {
-            AssemblyFullName = assemblyExchange.Name,
-            AssemblyVersion = assemblyExchange.Version,
-            LoadedAssembly = assembly
+            AssemblyVersion = assemblyExchange.Version
         };
 
         private static AssemblyExchange GetLoadedItem(IGrouping<string, AssemblyExchange> collection)
@@ -150,9 +153,9 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             return collection.OrderByDescending(x => new Version(x.Version)).First();
         }
 
-        private static AssemblyModel ToAssemblyModel(this AssemblyExchange assembly, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) => new AssemblyModel(referenceProvider)
+        private static AssemblyModel ToAssemblyModel(this AssemblyExchange assembly, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) => 
+            new AssemblyModel(assembly.ShortName, assembly.AssembliesReferenced.ToImmutableList(), referenceProvider)
         {
-            Name = assembly.ShortName,
             Version = assembly.Version,
             AssemblyName = assembly.Name,
             TargetFramework = assembly.TargetFramework,
@@ -165,16 +168,14 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             CreationDate = assembly.CreationDate,
             HasEntryPoint = assembly.HasEntryPoint,
             IsResolved = !assembly.IsPartial,
-            ReferencedAssemblyNames = assembly.AssembliesReferenced.ToImmutableList()
         };
 
-        public static AssemblyModel ToNotFoundAssemblyModel(this AssemblyName assembly, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) => new AssemblyModel(referenceProvider)
+        public static AssemblyModel ToNotFoundAssemblyModel(this AssemblyName assembly, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) => 
+            new AssemblyModel(assembly.Name!, ImmutableList.Create<string>(), referenceProvider)
         {
-            Name = assembly.Name,
-            Version = assembly.Version?.ToString(),
+            Version = assembly.Version?.ToString() ?? string.Empty,
             AssemblyName = assembly.FullName,
             IsResolved = false,
-            ReferencedAssemblyNames = ImmutableList.Create<string>()
         };
     }
 }

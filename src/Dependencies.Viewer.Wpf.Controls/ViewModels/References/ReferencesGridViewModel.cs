@@ -12,22 +12,24 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 {
     public class ReferencesGridViewModel : ObservableObject, IReferencesDetailsViewModel
     {
-        private ICollectionView filteredReferences;
-        private AssemblyModel assembly;
-        private IEnumerable<ReferenceModel> displayResults;
+        private ICollectionView? filteredReferences;
+        private AssemblyModel? assembly;
+        private IEnumerable<ReferenceModel>? displayResults;
 
-        public ReferencesGridViewModel()
+        public ReferencesGridViewModel(FilterModel filter)
         {
             OpenSubResultCommand = new Command<ReferenceModel>(x => GlobalCommand.OpenAssembly(x.LoadedAssembly));
             OpenParentReferenceCommand = new Command<ReferenceModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(Assembly, x).ConfigureAwait(false));
+
+            Filter = filter;
         }
 
-        public FilterModel Filter { get; set; }
+        public FilterModel Filter { get; }
 
         public ICommand OpenSubResultCommand { get; }
         public ICommand OpenParentReferenceCommand { get; }
 
-        public AssemblyModel Assembly
+        public AssemblyModel? Assembly
         {
             get => assembly;
             set
@@ -40,13 +42,13 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             }
         }
 
-        public ICollectionView FilteredReferences
+        public ICollectionView? FilteredReferences
         {
             get => filteredReferences;
             private set => Set(ref filteredReferences, value);
         }
 
-        public void RefreshFilteredItems() => new Action(() => filteredReferences.Refresh()).InvokeUiThread();
+        public void RefreshFilteredItems() => new Action(() => filteredReferences?.Refresh()).InvokeUiThread();
 
         private void CreateFilteredCollection()
         {
@@ -59,7 +61,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 
         private bool FilterPredicate(object obj)
         {
-            if (!(obj is ReferenceModel reference))
+            if (obj is not ReferenceModel reference)
                 return false;
 
             if (Filter.DisplayLocalOnly && !reference.LoadedAssembly.IsLocalAssembly)
@@ -74,7 +76,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             return false;
         }
 
-        private static IEnumerable<ReferenceModel> GetResults(AssemblyModel assembly) =>
+        private static IEnumerable<ReferenceModel>? GetResults(AssemblyModel? assembly) =>
             assembly?.ReferenceProvider.Select(x => x.Value).OrderBy(x => x.AssemblyFullName);
     }
 }
