@@ -25,7 +25,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Base
 
         public bool CanExecute(object? parameter) => canExecute?.Invoke(TransformParameter(parameter)) ?? true;
 
-        private T TransformParameter(object? parameter)
+        private static T TransformParameter(object? parameter)
         {
             if (parameter is null)
                 return default(T)!; // Can be null depends on Template type
