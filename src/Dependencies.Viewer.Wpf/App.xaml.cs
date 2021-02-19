@@ -17,6 +17,8 @@ namespace Dependencies.Viewer.Wpf
     {
         public App()
         {
+            UpgradeSettings();
+
             var config = new ConfigurationBuilder()
                       .SetBasePath(System.IO.Directory.GetCurrentDirectory())
                       .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -25,6 +27,16 @@ namespace Dependencies.Viewer.Wpf
             LogManager.Configuration = new NLogLoggingConfiguration(config.GetSection("NLog"));
 
             SimpleInjectorConfig.Config(config);
+        }
+
+        public static void UpgradeSettings()
+        {
+            if (!Settings.Default.UpgradeRequired) return;
+
+            Settings.Default.Upgrade();
+
+            Settings.Default.UpgradeRequired = false;
+            Settings.Default.Save();
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)
