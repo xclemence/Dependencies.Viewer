@@ -55,6 +55,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             this.exportServices = exportServices.ToList();
             this.importServices = importServices.ToList();
 
+            Title = $"Dependencies Viewer {typeof(AnalyserViewModel).Assembly.GetName().Version?.ToString(3)}";
+
             SettingsCommand = new Command(() => IsSettingsOpen = true);
             CloseCommand = new Command(() => Application.Current.Shutdown());
             AboutCommand = new Command(async () => await OpenAboutAsync());
@@ -74,6 +76,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             GlobalCommand.OpenAssemblyAction = OpenSubAssembly;
             GlobalCommand.ViewParentReference = ViewParentReferenceAsync;
         }
+
+        public string Title { get; }
         
         public ISnackbarMessageQueue MessageQueue => logger.MessageQueue;
 

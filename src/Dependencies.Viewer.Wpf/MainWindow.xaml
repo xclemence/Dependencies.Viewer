@@ -17,7 +17,7 @@
                    TitleCharacterCasing="Normal"
                    BorderThickness="1"
                    x:Name="view"
-                   Title="Dependencies Viewer" Height="600" Width="900">
+                   Title="{Binding Title}" Height="600" Width="900">
     <metro:MetroWindow.Flyouts>
         <metro:FlyoutsControl>
             <metro:Flyout x:Name="settingsFlyout"
