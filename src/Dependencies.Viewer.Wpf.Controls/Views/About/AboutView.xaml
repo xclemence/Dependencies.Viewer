@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Dependencies.Viewer.Wpf.Controls.Views.About.AboutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:Dependencies.Viewer.Wpf.Controls.Views.About"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Width="600" Height="510" >
+    
+    <GroupBox Header="About">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <local:AboutHeaderView/>
+            
+            <GroupBox Header="Plugins" Grid.Row="1">
+                <local:AboutPluginsView/>
+            </GroupBox>
+
+            <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin="20 5">
+                <Button Content="Close" Command="{x:Static material:DialogHost.CloseDialogCommand}"/>
+            </StackPanel>
+        </Grid>
+    </GroupBox>
+</UserControl>

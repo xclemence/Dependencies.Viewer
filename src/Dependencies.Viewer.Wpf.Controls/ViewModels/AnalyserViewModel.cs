@@ -13,6 +13,7 @@ using Dependencies.Viewer.Wpf.Controls.Models;
 using Dependencies.Viewer.Wpf.Controls.Services;
 using Dependencies.Viewer.Wpf.Controls.ViewModels.Settings;
 using Dependencies.Viewer.Wpf.Controls.Views;
+using Dependencies.Viewer.Wpf.Controls.Views.About;
 using Dragablz;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
@@ -30,7 +31,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private bool isDragFile;
         private IInterTabClient interTabClient;
         private readonly AnalyserProvider analyserProvider;
-        private readonly IServiceFactory<AnalyseResultViewModel> analyserViewModelFactory;
+        private readonly IServiceFactory serviceFactory;
         private readonly AppLoggerService<AnalyserViewModel> logger;
         private readonly IList<IImportAssembly> importServices;
         private readonly IList<IExportAssembly> exportServices;
@@ -39,7 +40,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private bool isSettingsOpen;
 
         public AnalyserViewModel(AnalyserProvider analyserProvider,
-                                 IServiceFactory<AnalyseResultViewModel> analyserViewModelFactory,
+                                 IServiceFactory serviceFactory,
                                  IInterTabClient interTabClient,
                                  SettingsViewModel settingsViewModel,
                                  IEnumerable<IImportAssembly> importServices,
@@ -47,15 +48,19 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
                                  AppLoggerService<AnalyserViewModel> logger)
         {
             this.analyserProvider = analyserProvider;
-            this.analyserViewModelFactory = analyserViewModelFactory;
+            this.serviceFactory = serviceFactory;
             this.interTabClient = interTabClient;
             SettingsViewModel = settingsViewModel;
             this.logger = logger;
             this.exportServices = exportServices.ToList();
             this.importServices = importServices.ToList();
 
+            Title = $"Dependencies Viewer {typeof(AnalyserViewModel).Assembly.GetName().Version?.ToString(3)}";
+
             SettingsCommand = new Command(() => IsSettingsOpen = true);
             CloseCommand = new Command(() => Application.Current.Shutdown());
+            AboutCommand = new Command(async () => await OpenAboutAsync());
+
             OpenFileCommand = new Command(async () => await BusyActionAsync(OpenFileAsync).ConfigureAwait(false), () => !IsBusy);
             OnDragOverCommand = new Command<DragEventArgs>(OnDragOver);
             OnDropCommand = new Command<DragEventArgs>(async (x) => await BusyActionAsync(async () => await OnDrop(x).ConfigureAwait(false)).ConfigureAwait(false), _ => !IsBusy);
@@ -72,6 +77,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             GlobalCommand.ViewParentReference = ViewParentReferenceAsync;
         }
 
+        public string Title { get; }
+        
         public ISnackbarMessageQueue MessageQueue => logger.MessageQueue;
 
         public ObservableCollection<AnalyseResultViewModel> AnalyseDetailsViewModels { get; } = new ObservableCollection<AnalyseResultViewModel>();
@@ -105,6 +112,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         public ICommand OpenFileCommand { get; }
         public ICommand SettingsCommand { get; }
 
+        public ICommand AboutCommand { get; }
         public ICommand CloseCommand { get; }
         public ICommand OnDragOverCommand { get; }
         public ICommand OnDropCommand { get; }
@@ -204,7 +212,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
         private void AddAssemblyResult(AssemblyModel assembly)
         {
-            var newViewModel = analyserViewModelFactory.Create();
+            var newViewModel = serviceFactory.Create<AnalyseResultViewModel>();
             newViewModel.AssemblyResult = assembly;
 
             new Action(() =>
@@ -294,5 +302,16 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private bool CanDrag(DragEventArgs? e) => e is not null && !IsBusy && e.Data.GetDataPresent(DataFormats.FileDrop);
 
         private void CloseResult(AnalyseResultViewModel x) => TabablzControl.CloseItem(x);
+
+        private async Task OpenAboutAsync()
+        {
+            var view = new AboutView
+            {
+                DataContext = serviceFactory.Create<AboutViewModel>()
+            };
+
+            await DialogHost.Show(view).ConfigureAwait(false);
+        }
+
     }
 }
