@@ -135,6 +135,15 @@
                                     </Separator.Style>
                                 </Separator>
 
+
+                                <MenuItem Header="About" Command="{Binding AboutCommand}">
+                                    <MenuItem.Icon>
+                                        <materialDesign:PackIcon Kind="AboutOutline"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+                                <Separator/>
+
                                 <MenuItem Header="Exit" Command="{Binding CloseCommand}">
                                     <MenuItem.Icon>
                                         <materialDesign:PackIcon Kind="ExitToApp"/>

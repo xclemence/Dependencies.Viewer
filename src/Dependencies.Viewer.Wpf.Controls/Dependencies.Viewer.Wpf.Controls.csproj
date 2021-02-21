@@ -16,10 +16,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Icon.png" />
+    <None Remove="Assets\Icon.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Icon.png" />
+    <Resource Include="Assets\Icon.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dragablz.NetCore" Version="0.3.3" />
     <PackageReference Include="MahApps.Metro" Version="2.4.3" />
     <PackageReference Include="MaterialDesignThemes" Version="4.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+    <PackageReference Include="SharpVectors" Version="1.7.1" />
   </ItemGroup>
 
   <ItemGroup>

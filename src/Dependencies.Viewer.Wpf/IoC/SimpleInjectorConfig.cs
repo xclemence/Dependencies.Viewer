@@ -32,11 +32,11 @@ namespace Dependencies.Viewer.Wpf.IoC
             Container.RegisterInstance(LoggerFactory.Create(x => x.AddNLog(configurationRoot)));
             Container.Register(typeof(ILogger<>), typeof(Logger<>), Lifestyle.Transient);
 
-            Container.Register(typeof(IAnalyserServiceFactory<>), typeof(SimpleInjectorServiceFactory<>), Lifestyle.Singleton);
+            Container.Register(typeof(IAnalyserServiceFactory), typeof(SimpleInjectorServiceFactory), Lifestyle.Singleton);
             Container.Register(typeof(AppLoggerService<>), typeof(AppLoggerService<>), Lifestyle.Singleton);
 
-            Container.Register(typeof(IExchangeServiceFactory<>), typeof(SimpleInjectorServiceFactory<>), Lifestyle.Singleton);
-            Container.Register(typeof(IServiceFactory<>), typeof(SimpleInjectorServiceFactory<>), Lifestyle.Singleton);
+            Container.Register(typeof(IExchangeServiceFactory), typeof(SimpleInjectorServiceFactory), Lifestyle.Singleton);
+            Container.Register(typeof(IServiceFactory), typeof(SimpleInjectorServiceFactory), Lifestyle.Singleton);
             Container.Register<AnalyserProvider>(Lifestyle.Singleton);
             Container.Register<ThemeManager>(Lifestyle.Singleton);
 
