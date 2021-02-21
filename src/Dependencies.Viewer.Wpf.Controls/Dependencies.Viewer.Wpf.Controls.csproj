@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\Icon.png" />
     <Resource Include="Assets\Icon.svg" />
   </ItemGroup>
 
