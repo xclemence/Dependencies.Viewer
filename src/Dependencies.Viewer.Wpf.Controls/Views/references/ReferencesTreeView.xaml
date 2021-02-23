@@ -3,25 +3,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:models="clr-namespace:Dependencies.Viewer.Wpf.Controls.Models"
              xmlns:behaviors="clr-namespace:Dependencies.Viewer.Wpf.Controls.Behaviors"
              x:Name="assemblyTreeView"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <InputBindingCollection x:Key="inputCollection" x:Shared="False">
-            <MouseBinding Gesture="MiddleClick" 
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="./ReferencesMenuDataTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <InputBindingCollection x:Key="inputCollection" x:Shared="False">
+                <MouseBinding Gesture="MiddleClick" 
                           Command="{Binding ElementName=assemblyTreeView, Path=DataContext.OpenSubResultCommand}"
                           CommandParameter="{Binding}">
-            </MouseBinding>
-        </InputBindingCollection>
+                </MouseBinding>
+            </InputBindingCollection>
+            
+        </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <Grid>
         <TreeView ItemsSource="{Binding LoadedAssemblies.FilteredItems}" x:Name="tree"
                   VirtualizingStackPanel.IsVirtualizing="True">
             <TreeView.Resources>
+                <Style TargetType="ContextMenu" BasedOn="{StaticResource {x:Type ContextMenu}}">
+                    <Setter Property="Tag" Value="{x:Reference tree}"/>
+                </Style>
+                
                 <Style TargetType="TreeViewItem" BasedOn="{StaticResource DependenciesTreeViewItemStyle}">
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
                     <Setter Property="behaviors:TreeItemSelectionBehavior.Attach" Value="True"/>
@@ -41,22 +51,6 @@
                     </Style.Triggers>
                 </Style>
 
-                <ContextMenu x:Key="itemMenu" Tag="{x:Reference Name=tree}" >
-                    <MenuItem Header="Open Assembly"
-                              Command="{Binding Path=Tag.DataContext.OpenSubResultCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
-                              CommandParameter="{Binding}">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="FileOutline" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Referenced by..."
-                              Command="{Binding Path=Tag.DataContext.OpenParentReferenceCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
-                              CommandParameter="{Binding}">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="Dad" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </ContextMenu>
             </TreeView.Resources>
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">

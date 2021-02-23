@@ -9,21 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid MinWidth="600" Height="500" >
-        <GroupBox>
-            <GroupBox.HeaderTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Assembly Parents"/>
-                        <Button Grid.Column="1" Command="{x:Static material:DialogHost.CloseDialogCommand}">
-                            <material:PackIcon Kind="Close" />
-                        </Button>
-                    </Grid>
-                </DataTemplate>
-            </GroupBox.HeaderTemplate>
+        <GroupBox HeaderTemplate="{StaticResource DialogHeaderDataTemplate}" Header="Assembly Parents">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>

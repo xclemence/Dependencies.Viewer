@@ -19,6 +19,11 @@
             <Setter Property="Margin" Value="5 2"/>
         </Style>
 
+        <Style x:Key="TagTextBlockStyle"  BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+            <Setter Property="Opacity" Value="1"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+
         <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="CheckBox">
             <Setter Property="IsEnabled" Value="False"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -66,10 +71,9 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10 0 0">
             <TextBlock>
                 <TextBlock.Style>
-                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource TagTextBlockStyle}">
                         <Setter Property="Text" Value="Local"/>
                         <Setter Property="Background" Value="{DynamicResource DV.SecondaryColorBrush}"/>
-                        <Setter Property="TextAlignment" Value="Center"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsLocalAssembly}" Value="false">
                                 <Setter Property="Text" Value="GAC"/>
@@ -86,9 +90,8 @@
 
             <TextBlock>
                 <TextBlock.Style>
-                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource TagTextBlockStyle}">
                         <Setter Property="Text" Value="(No info)"/>
-                        <Setter Property="TextAlignment" Value="Center"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding TargetProcessor}" Value="x86">
                                 <Setter Property="Text" Value="x86"/>
@@ -96,7 +99,7 @@
                             </DataTrigger>
                             <DataTrigger Binding="{Binding TargetProcessor}" Value="x64">
                                 <Setter Property="Text" Value="x64"/>
-                     
+
                                 <Setter Property="Background" Value="{DynamicResource DV.PrimaryColorBrush}"/>
                             </DataTrigger>
 
@@ -111,9 +114,8 @@
 
             <TextBlock>
                 <TextBlock.Style>
-                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource TagTextBlockStyle}">
                         <Setter Property="Text" Value="(No info)"/>
-                        <Setter Property="TextAlignment" Value="Center"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsDebug}" Value="true">
                                 <Setter Property="Text" Value="Debug"/>
@@ -130,10 +132,9 @@
 
             <TextBlock>
                 <TextBlock.Style>
-                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource TagTextBlockStyle}">
                         <Setter Property="Text" Value="Managed"/>
                         <Setter Property="Background" Value="{DynamicResource DV.PrimaryColorBrush}"/>
-                        <Setter Property="TextAlignment" Value="Center"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsNative}" Value="true">
                                 <Setter Property="Text" Value="Native"/>
@@ -145,10 +146,9 @@
             </TextBlock>
             <TextBlock>
                 <TextBlock.Style>
-                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource TagTextBlockStyle}">
                         <Setter Property="Text" Value="Library"/>
                         <Setter Property="Background" Value="{DynamicResource DV.SecondaryColorBrush}"/>
-                        <Setter Property="TextAlignment" Value="Center"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding HasEntryPoint}" Value="true">
                                 <Setter Property="Text" Value="Main"/>

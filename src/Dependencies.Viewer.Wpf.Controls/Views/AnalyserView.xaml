@@ -54,7 +54,7 @@
         </msBehaviors:EventTrigger>
     </msBehaviors:Interaction.Triggers>
     <Grid x:Name="mainGrid">
-        <Grid IsEnabled="{Binding IsBusy, Converter={x:Static converters:InverseBooleanConverter.Converter} }">
+        <Grid IsEnabled="{Binding BusyService.IsBusy, Converter={x:Static converters:InverseBooleanConverter.Converter} }">
             <dockablz:Layout>
                 <dragablz:TabablzControl ItemsSource="{Binding AnalyseDetailsViewModels}" 
                                              HeaderMemberPath="AssemblyResult.Name" 
@@ -172,9 +172,9 @@
         </Grid>
 
 
-        <Grid Visibility="{Binding IsBusy, Converter={x:Static converters:VisibilityConverter.Converter}}">
+        <Grid Visibility="{Binding BusyService.IsBusy, Converter={x:Static converters:VisibilityConverter.Converter}}">
             <Rectangle Fill="Black" Opacity="0.2"/>
-            <mahapps:ProgressRing IsActive="{Binding IsBusy}"/>
+            <mahapps:ProgressRing IsActive="{Binding BusyService.IsBusy}"/>
         </Grid>
     </Grid>
 </UserControl>

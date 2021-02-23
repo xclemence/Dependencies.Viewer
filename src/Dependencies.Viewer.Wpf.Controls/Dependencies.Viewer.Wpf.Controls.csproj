@@ -10,13 +10,7 @@
     <AnalysisLevel>5.0</AnalysisLevel>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
   <ItemGroup>
-    <None Remove="Assets\Icon.png" />
     <None Remove="Assets\Icon.svg" />
   </ItemGroup>
 
@@ -35,6 +29,23 @@
   <ItemGroup>
     <ProjectReference Include="..\..\plugins\Analyser\src\Dependencies.Analyser.Base\Dependencies.Analyser.Base.csproj" />
     <ProjectReference Include="..\..\plugins\Exchange\src\Dependencies.Exchange.Base\Dependencies.Exchange.Base.csproj" />
+    <ProjectReference Include="..\Dependencies.Check\Dependencies.Check.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\Check\CircularResultView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Check\CircularResultView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\references\ReferencesMenuDataTemplates.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
   </ItemGroup>
 
 </Project>

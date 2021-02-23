@@ -2,6 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:vm="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewModels"
                     xmlns:vmResults="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewModels.References"
+                    xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+
                     xmlns:v="clr-namespace:Dependencies.Viewer.Wpf.Controls.Views">
 
     <DataTemplate DataType="{x:Type vm:AssemblyParentsViewModel}">
@@ -14,6 +16,19 @@
 
     <DataTemplate DataType="{x:Type vmResults:ReferencesTreeViewModel}">
         <v:ReferencesTreeView DataContext="{Binding}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DialogHeaderDataTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding}"/>
+            <Button Grid.Column="1" Command="{x:Static material:DialogHost.CloseDialogCommand}">
+                <material:PackIcon Kind="Close" />
+            </Button>
+        </Grid>
     </DataTemplate>
 
 </ResourceDictionary>
