@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewConverters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             x:Name="circularRsultView">
+             x:Name="circularResultView">
 
     <UserControl.Resources>
         <Style TargetType="materialDesign:Card" BasedOn="{StaticResource {x:Type materialDesign:Card}}">
@@ -15,7 +15,7 @@
                     <DataTrigger.Binding>
                         <MultiBinding Converter="{x:Static converters:IsErrorCycleCheckConverter.Converter}">
                             <Binding Path="."/>
-                            <Binding Path="DataContext" ElementName="circularRsultView"/>
+                            <Binding Path="DataContext" ElementName="circularResultView"/>
                         </MultiBinding>
                     </DataTrigger.Binding>
                     <Setter Property="Background" Value="Red"/>
