@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="Dependencies.Viewer.Wpf.Controls.Views.Check.CircularDependenciesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:Dependencies.Viewer.Wpf.Controls.Views.Check"
+             Width="700" Height="400" >
+
+    <GroupBox Header="Circular Dependencies results" HeaderTemplate="{StaticResource DialogHeaderDataTemplate}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <ListView ItemsSource="{Binding .}" Margin="0 10">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <local:CircularResultView/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <TextBlock Text="No circular dependencies error" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0.5">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Count}" Value="0">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <StackPanel Grid.Row="1" HorizontalAlignment="Right" Margin="0 0 20 10">
+                <Button Content="Close" Command="{x:Static material:DialogHost.CloseDialogCommand}"/>
+            </StackPanel>
+        </Grid>
+    </GroupBox>
+</UserControl>

@@ -8,6 +8,7 @@
              xmlns:converters="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewConverters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    
     <DockPanel>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
@@ -32,7 +33,7 @@
             </GroupBox>
 
             <Expander ExpandDirection="Right" VerticalAlignment="Stretch" Grid.Column="1" VerticalContentAlignment="Stretch" 
-                      IsExpanded="{Binding IsErrorExpended}">
+                      IsExpanded="{Binding IsErrorExpended}" materialDesign:ExpanderAssist.HeaderBackground="Transparent">
                 <Expander.Header>
                     <StackPanel VerticalAlignment="Top">
                         <StackPanel.Resources>
@@ -45,6 +46,7 @@
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
                                 <Setter Property="VerticalAlignment" Value="Center"/>
                             </Style>
+
                         </StackPanel.Resources>
                         <TextBlock Text="Errors" RenderTransformOrigin=".5,.5">
                             <TextBlock.LayoutTransform>

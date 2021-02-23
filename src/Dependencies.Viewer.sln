@@ -47,6 +47,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{09F89146
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Viewer.UnitTests", "Tests\Dependencies.Viewer.UnitTests\Dependencies.Viewer.UnitTests.csproj", "{FB392A4C-F2C7-4C64-AAB0-682134E1CE46}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Check", "Dependencies.Check\Dependencies.Check.csproj", "{D9B5328C-5A06-4C15-BECE-69B2BB954865}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -101,6 +103,10 @@ Global
 		{FB392A4C-F2C7-4C64-AAB0-682134E1CE46}.Debug|x64.Build.0 = Debug|Any CPU
 		{FB392A4C-F2C7-4C64-AAB0-682134E1CE46}.Release|x64.ActiveCfg = Release|Any CPU
 		{FB392A4C-F2C7-4C64-AAB0-682134E1CE46}.Release|x64.Build.0 = Release|Any CPU
+		{D9B5328C-5A06-4C15-BECE-69B2BB954865}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D9B5328C-5A06-4C15-BECE-69B2BB954865}.Debug|x64.Build.0 = Debug|Any CPU
+		{D9B5328C-5A06-4C15-BECE-69B2BB954865}.Release|x64.ActiveCfg = Release|Any CPU
+		{D9B5328C-5A06-4C15-BECE-69B2BB954865}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
 using Dependencies.Viewer.Wpf.Controls.Base;
+using Dependencies.Viewer.Wpf.Controls.Commands;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
@@ -16,10 +17,19 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
         private AssemblyModel? assembly;
         private IEnumerable<ReferenceModel>? displayResults;
 
-        public ReferencesGridViewModel(FilterModel filter)
+        private readonly CheckCommand checkCommand;
+        private readonly OpenCommand openCommand;
+
+        public ReferencesGridViewModel(FilterModel filter, CheckCommand checkCommand, OpenCommand openCommand)
         {
-            OpenSubResultCommand = new Command<ReferenceModel>(x => GlobalCommand.OpenAssembly(x.LoadedAssembly));
-            OpenParentReferenceCommand = new Command<ReferenceModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(Assembly, x).ConfigureAwait(false));
+            this.checkCommand = checkCommand;
+            this.openCommand = openCommand;
+
+            OpenSubResultCommand = new Command<ReferenceModel>(x => this.openCommand.OpenSubAssembly(x.LoadedAssembly));
+            OpenParentReferenceCommand = new Command<ReferenceModel>(async (x) => await this.openCommand.ViewParentReferenceAsync(Assembly, x).ConfigureAwait(false));
+
+            CircularDependenciesCheckCommand = new Command<ReferenceModel>(async (x) => await this.checkCommand.CircularDependenciesCheck(x.LoadedAssembly).ConfigureAwait(false));
+
 
             Filter = filter;
         }
@@ -28,6 +38,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 
         public ICommand OpenSubResultCommand { get; }
         public ICommand OpenParentReferenceCommand { get; }
+        public ICommand CircularDependenciesCheckCommand { get; }
 
         public AssemblyModel? Assembly
         {

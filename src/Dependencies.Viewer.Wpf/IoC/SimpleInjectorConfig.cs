@@ -5,6 +5,7 @@ using Dependencies.Viewer.Wpf.ApplicationSettings;
 using Dependencies.Viewer.Wpf.Controls;
 using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Services;
+using Dependencies.Viewer.Wpf.Controls.ViewModels;
 using Dependencies.Viewer.Wpf.Extensions;
 using Dependencies.Viewer.Wpf.Layouts;
 using Dragablz;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using SimpleInjector;
+using SimpleInjector.Diagnostics;
 
 namespace Dependencies.Viewer.Wpf.IoC
 {
@@ -23,6 +25,11 @@ namespace Dependencies.Viewer.Wpf.IoC
         public static void Config(IConfigurationRoot configurationRoot)
         {
             Container = new Container();
+            Container.Options.ResolveUnregisteredConcreteTypes = true;
+            Container.Options.SuppressLifestyleMismatchVerification = true;
+            Container.Collection.Container.Options.SuppressLifestyleMismatchVerification = true;
+            Container.Options.UseStrictLifestyleMismatchBehavior = false;
+            Container.Options.EnableAutoVerification = false;
 
             Container.Register<IInterTabClient, KeepOneInterLayoutClient>();
             Container.Register<IAnalyserSettingProvider, AnalyserSettingProvider>(Lifestyle.Singleton);
@@ -40,12 +47,14 @@ namespace Dependencies.Viewer.Wpf.IoC
             Container.Register<AnalyserProvider>(Lifestyle.Singleton);
             Container.Register<ThemeManager>(Lifestyle.Singleton);
 
+            Container.Register<MainBusyService>(Lifestyle.Singleton);
+
+            Container.Register<AnalyserViewModel>(Lifestyle.Singleton);
+
             Container.RegisterAnalyser();
             Container.RegisterExchange();
 
-            Container.Options.ResolveUnregisteredConcreteTypes = true;
-            Container.Options.SuppressLifestyleMismatchVerification = true;
-            Container.Collection.Container.Options.SuppressLifestyleMismatchVerification = true;
+            
         }
 
         private static void RegisterAnalyser(this Container container)

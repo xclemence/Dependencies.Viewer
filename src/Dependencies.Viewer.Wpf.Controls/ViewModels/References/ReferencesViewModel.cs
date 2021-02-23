@@ -1,4 +1,5 @@
 ﻿using Dependencies.Viewer.Wpf.Controls.Base;
+using Dependencies.Viewer.Wpf.Controls.Commands;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
@@ -11,14 +12,14 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
         private readonly IReferencesDetailsViewModel[] resultViewModels;
         private IReferencesDetailsViewModel? selectedResultViewModels;
 
-        public ReferencesViewModel()
+        public ReferencesViewModel(CheckCommand checkCommand, OpenCommand openCommand)
         {
             filter = new FilterModel();
 
             resultViewModels = new IReferencesDetailsViewModel[]
             {
-                new ReferencesTreeViewModel(filter),
-                new ReferencesGridViewModel(filter)
+                new ReferencesTreeViewModel(filter, checkCommand, openCommand),
+                new ReferencesGridViewModel(filter, checkCommand, openCommand)
             };
 
             SelectedResultViewModels = resultViewModels[0];

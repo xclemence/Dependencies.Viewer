@@ -6,6 +6,14 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="./ReferencesMenuDataTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     
     <Grid Margin="1">
         <DataGrid x:Name="grid"
@@ -15,22 +23,9 @@
                   CanUserDeleteRows="False"
                   IsReadOnly="True">
             <DataGrid.Resources>
-                <ContextMenu x:Key="itemMenu" Tag="{x:Reference Name=grid}" >
-                    <MenuItem Header="Open Assembly"
-                              Command="{Binding Path=Tag.DataContext.OpenSubResultCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
-                              CommandParameter="{Binding}">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="FileOutline" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Referenced by..."
-                              Command="{Binding Path=Tag.DataContext.OpenParentReferenceCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
-                              CommandParameter="{Binding}">
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="Dad" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </ContextMenu>
+                <Style TargetType="ContextMenu" BasedOn="{StaticResource {x:Type ContextMenu}}">
+                    <Setter Property="Tag" Value="{x:Reference grid}"/>
+                </Style>
             </DataGrid.Resources>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">

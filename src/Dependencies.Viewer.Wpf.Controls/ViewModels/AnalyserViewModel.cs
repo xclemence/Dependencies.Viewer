@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,7 +28,6 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             "Assembly (*.dll)|*.dll|" +
             "All Files|*.*";
 
-        private bool isBusy;
         private bool isDragFile;
         private IInterTabClient interTabClient;
         private readonly AnalyserProvider analyserProvider;
@@ -39,7 +39,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private AnalyseResultViewModel? selectedItem;
         private bool isSettingsOpen;
 
+        [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Main view model resolve by ioc")]
         public AnalyserViewModel(AnalyserProvider analyserProvider,
+                                 MainBusyService busyService,
                                  IServiceFactory serviceFactory,
                                  IInterTabClient interTabClient,
                                  SettingsViewModel settingsViewModel,
@@ -48,6 +50,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
                                  AppLoggerService<AnalyserViewModel> logger)
         {
             this.analyserProvider = analyserProvider;
+            BusyService = busyService;
             this.serviceFactory = serviceFactory;
             this.interTabClient = interTabClient;
             SettingsViewModel = settingsViewModel;
@@ -61,9 +64,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             CloseCommand = new Command(() => Application.Current.Shutdown());
             AboutCommand = new Command(async () => await OpenAboutAsync());
 
-            OpenFileCommand = new Command(async () => await BusyActionAsync(OpenFileAsync).ConfigureAwait(false), () => !IsBusy);
+            OpenFileCommand = new Command(async () => await BusyService.RunActionAsync(OpenFileAsync).ConfigureAwait(false), () => !BusyService.IsBusy);
             OnDragOverCommand = new Command<DragEventArgs>(OnDragOver);
-            OnDropCommand = new Command<DragEventArgs>(async (x) => await BusyActionAsync(async () => await OnDrop(x).ConfigureAwait(false)).ConfigureAwait(false), _ => !IsBusy);
+            OnDropCommand = new Command<DragEventArgs>(async (x) => await BusyService.RunActionAsync(async () => await OnDrop(x).ConfigureAwait(false)).ConfigureAwait(false), _ => !BusyService.IsBusy);
 
             OnDragEnterCommand = new Command<DragEventArgs>((x) => IsDragFile = true, CanDrag);
             OnDragLeaveCommand = new Command<DragEventArgs>((x) => IsDragFile = false, CanDrag);
@@ -73,8 +76,6 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
             CloseResultCommand = new Command<AnalyseResultViewModel>(CloseResult);
 
-            GlobalCommand.OpenAssemblyAction = OpenSubAssembly;
-            GlobalCommand.ViewParentReference = ViewParentReferenceAsync;
         }
 
         public string Title { get; }
@@ -100,14 +101,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             get => interTabClient;
             private set => Set(ref interTabClient, value);
         }
-
+        public MainBusyService BusyService { get; }
         public SettingsViewModel SettingsViewModel { get; }
-
-        public bool IsBusy
-        {
-            get => isBusy;
-            private set => Set(ref isBusy, value);
-        }
 
         public ICommand OpenFileCommand { get; }
         public ICommand SettingsCommand { get; }
@@ -130,44 +125,6 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             get => isDragFile;
             set => Set(ref isDragFile, value);
         }
-
-        private async Task BusyActionAsync(Func<Task> actionAsync)
-        {
-            IsBusy = true;
-
-            try
-            {
-                await actionAsync().ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError("", ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        private void BusyAction(Action action)
-        {
-            IsBusy = true;
-
-            try
-            {
-                action();
-            }
-            catch (Exception ex)
-            {
-                logger.LogError("", ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-
 
         private async Task OpenFileAsync()
         {
@@ -196,7 +153,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             if (filePath == null)
                 return;
 
-            await BusyActionAsync(async () => await AnalyseAsync(filePath).ConfigureAwait(false)).ConfigureAwait(false);
+            await BusyService.RunActionAsync(async () => await AnalyseAsync(filePath).ConfigureAwait(false)).ConfigureAwait(false);
         }
 
         private async Task AnalyseAsync(string filePath)
@@ -210,7 +167,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             AddAssemblyResult(assembly.ToAssemblyModel(links.Values));
         }
 
-        private void AddAssemblyResult(AssemblyModel assembly)
+        internal void AddAssemblyResult(AssemblyModel assembly)
         {
             var newViewModel = serviceFactory.Create<AnalyseResultViewModel>();
             newViewModel.AssemblyResult = assembly;
@@ -222,27 +179,12 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             }).InvokeUiThread();
         }
 
-        private void OpenSubAssembly(AssemblyModel assembly)
-        {
-            Task.Run(() => BusyAction(() => AddAssemblyResult(assembly.IsolatedShadowClone())));
-        }
-
-        public async Task ViewParentReferenceAsync(AssemblyModel baseAssembly, ReferenceModel reference)
-        {
-            await BusyActionAsync(async () =>
-            {
-                var vm = new AssemblyParentsViewModel(reference.LoadedAssembly, baseAssembly);
-
-                _ = await DialogHost.Show(vm).ConfigureAwait(false);
-            }).ConfigureAwait(false);
-        }
-
         private IList<ExchangeCommand> GenerateExportCommand()
         {
             return exportServices.Select(x => new ExchangeCommand
             (
                 x.Name,
-                new Command(async () => await BusyActionAsync(async () => await ExportAsync(x).ConfigureAwait(false)).ConfigureAwait(false), () => x.IsReady && !IsBusy && SelectedItem?.AssemblyResult is not null)
+                new Command(async () => await BusyService.RunActionAsync(async () => await ExportAsync(x).ConfigureAwait(false)).ConfigureAwait(false), () => x.IsReady && !BusyService.IsBusy && SelectedItem?.AssemblyResult is not null)
             )).ToList();
         }
 
@@ -251,7 +193,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             return importServices.Select(x => new ExchangeCommand
             (
                 x.Name,
-                new Command(async () => await BusyActionAsync(async () => await ImportAsync(x).ConfigureAwait(false)).ConfigureAwait(false), () => x.IsReady && !IsBusy)
+                new Command(async () => await BusyService.RunActionAsync(async () => await ImportAsync(x).ConfigureAwait(false)).ConfigureAwait(false), () => x.IsReady && !BusyService.IsBusy)
             )).ToList();
         }
 
@@ -299,7 +241,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             e.Handled = true;
         }
 
-        private bool CanDrag(DragEventArgs? e) => e is not null && !IsBusy && e.Data.GetDataPresent(DataFormats.FileDrop);
+        private bool CanDrag(DragEventArgs? e) => e is not null && !BusyService.IsBusy && e.Data.GetDataPresent(DataFormats.FileDrop);
 
         private void CloseResult(AnalyseResultViewModel x) => TabablzControl.CloseItem(x);
 

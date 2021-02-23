@@ -3,27 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using Dependencies.Viewer.Wpf.Controls.Base;
+using Dependencies.Viewer.Wpf.Controls.Commands;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
 namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
 {
     public class ReferencesTreeViewModel : ObservableObject, IReferencesDetailsViewModel
-    {
+    { 
         private AssemblyModel? assembly;
         private FilterCollection<AssemblyTreeModel>? loadedAssemblies;
         private readonly IDictionary<string, bool> filterResultsCache = new Dictionary<string, bool>();
+        private readonly CheckCommand checkCommand;
+        private readonly OpenCommand openCommand;
 
-        public ReferencesTreeViewModel(FilterModel filter)
+        public ReferencesTreeViewModel(FilterModel filter, CheckCommand checkCommand, OpenCommand openCommand)
         {
-            OpenSubResultCommand = new Command<AssemblyTreeModel>(x => GlobalCommand.OpenAssembly(x.Reference.LoadedAssembly));
-            OpenParentReferenceCommand = new Command<AssemblyTreeModel>(async (x) => await GlobalCommand.ViewParentReferenceAsync(assembly, x.Reference).ConfigureAwait(false));
+
+            this.checkCommand = checkCommand;
+            this.openCommand = openCommand;
+
+            OpenSubResultCommand = new Command<AssemblyTreeModel>(x => this.openCommand.OpenSubAssembly(x.Reference.LoadedAssembly));
+            OpenParentReferenceCommand = new Command<AssemblyTreeModel>(async (x) => await this.openCommand.ViewParentReferenceAsync(assembly, x.Reference).ConfigureAwait(false));
+            
+            CircularDependenciesCheckCommand = new Command<AssemblyTreeModel>(async (x) => await this.checkCommand.CircularDependenciesCheck(x.Reference.LoadedAssembly).ConfigureAwait(false));
 
             Filter = filter;
         }
 
+        public FilterModel Filter { get; }
+
         public ICommand OpenSubResultCommand { get; }
         public ICommand OpenParentReferenceCommand { get; }
+        public ICommand CircularDependenciesCheckCommand { get; }
 
         public AssemblyModel? Assembly
         {
@@ -41,7 +53,6 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             set => Set(ref loadedAssemblies, value);
         }
 
-        public FilterModel Filter { get; init; }
 
         public void RefreshFilteredItems()
         {
