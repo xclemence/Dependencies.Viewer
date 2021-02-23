@@ -16,7 +16,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewConverters
 
             var list = values[1] as IImmutableList<string>;
 
-            return currentValue == list?.Last();
+            return currentValue == list?[^1];
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotSupportedException();

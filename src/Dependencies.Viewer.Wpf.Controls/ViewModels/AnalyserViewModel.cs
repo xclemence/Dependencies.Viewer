@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -38,6 +39,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private AnalyseResultViewModel? selectedItem;
         private bool isSettingsOpen;
 
+        [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Main view model resolve by ioc")]
         public AnalyserViewModel(AnalyserProvider analyserProvider,
                                  MainBusyService busyService,
                                  IServiceFactory serviceFactory,
