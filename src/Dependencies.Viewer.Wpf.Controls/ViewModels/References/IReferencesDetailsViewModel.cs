@@ -8,6 +8,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
         ICommand CircularDependenciesCheckCommand { get; }
         ICommand OpenSubResultCommand { get; }
         ICommand OpenParentReferenceCommand { get; }
+        ICommand MissingentryPointCheckCommand { get; }
 
         AssemblyModel? Assembly { get; set; }
         FilterModel Filter { get; }

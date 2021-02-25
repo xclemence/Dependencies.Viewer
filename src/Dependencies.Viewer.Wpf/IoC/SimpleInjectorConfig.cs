@@ -1,5 +1,7 @@
 ﻿using System;
 using Dependencies.Analyser.Base;
+using Dependencies.Check;
+using Dependencies.Check.Interfaces;
 using Dependencies.Exchange.Base;
 using Dependencies.Viewer.Wpf.ApplicationSettings;
 using Dependencies.Viewer.Wpf.Controls;
@@ -14,7 +16,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using SimpleInjector;
-using SimpleInjector.Diagnostics;
 
 namespace Dependencies.Viewer.Wpf.IoC
 {
@@ -44,8 +45,14 @@ namespace Dependencies.Viewer.Wpf.IoC
 
             Container.Register(typeof(IExchangeServiceFactory), typeof(SimpleInjectorServiceFactory), Lifestyle.Singleton);
             Container.Register(typeof(IServiceFactory), typeof(SimpleInjectorServiceFactory), Lifestyle.Singleton);
+
+            Container.Register<ICircularReferenceCheck, CircularReferenceCheck>();
+            Container.Register<IMissingEntryPointCheck, MissingEntryPointCheck>();
+
+
             Container.Register<AnalyserProvider>(Lifestyle.Singleton);
             Container.Register<ThemeManager>(Lifestyle.Singleton);
+
 
             Container.Register<MainBusyService>(Lifestyle.Singleton);
 

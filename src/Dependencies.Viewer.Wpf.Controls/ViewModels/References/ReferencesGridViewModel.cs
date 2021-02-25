@@ -29,7 +29,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
             OpenParentReferenceCommand = new Command<ReferenceModel>(async (x) => await this.openCommand.ViewParentReferenceAsync(Assembly, x).ConfigureAwait(false));
 
             CircularDependenciesCheckCommand = new Command<ReferenceModel>(async (x) => await this.checkCommand.CircularDependenciesCheck(x.LoadedAssembly).ConfigureAwait(false));
-
+            MissingentryPointCheckCommand = new Command<ReferenceModel>(async (x) => await this.checkCommand.EntryPointNotFoundCheck(x.LoadedAssembly).ConfigureAwait(false));
 
             Filter = filter;
         }
@@ -39,6 +39,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.References
         public ICommand OpenSubResultCommand { get; }
         public ICommand OpenParentReferenceCommand { get; }
         public ICommand CircularDependenciesCheckCommand { get; }
+        public ICommand MissingentryPointCheckCommand { get; }
 
         public AssemblyModel? Assembly
         {

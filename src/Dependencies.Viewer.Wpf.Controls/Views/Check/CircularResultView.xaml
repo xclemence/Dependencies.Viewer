@@ -15,7 +15,7 @@
                     <DataTrigger.Binding>
                         <MultiBinding Converter="{x:Static converters:IsErrorCycleCheckConverter.Converter}">
                             <Binding Path="."/>
-                            <Binding Path="DataContext" ElementName="circularResultView"/>
+                            <Binding Path="DataContext.References" ElementName="circularResultView"/>
                         </MultiBinding>
                     </DataTrigger.Binding>
                     <Setter Property="Background" Value="Red"/>
@@ -30,7 +30,7 @@
 
     </UserControl.Resources>
 
-    <ItemsControl ItemsSource="{Binding .}" Margin="10">
+    <ItemsControl ItemsSource="{Binding References}" Margin="10">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <StackPanel Orientation="Horizontal"/>
