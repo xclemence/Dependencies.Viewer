@@ -3,7 +3,6 @@
                     xmlns:vm="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewModels"
                     xmlns:vmResults="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewModels.References"
                     xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
-
                     xmlns:v="clr-namespace:Dependencies.Viewer.Wpf.Controls.Views">
 
     <DataTemplate DataType="{x:Type vm:AssemblyParentsViewModel}">

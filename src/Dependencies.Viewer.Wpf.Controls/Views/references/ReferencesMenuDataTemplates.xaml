@@ -22,9 +22,18 @@
                               Command="{Binding Path=Tag.DataContext.CircularDependenciesCheckCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
                               CommandParameter="{Binding}">
             <MenuItem.Icon>
-                <materialDesign:PackIcon Kind="Autorenew" />
+                <materialDesign:PackIcon Kind="RepeatVariant" />
             </MenuItem.Icon>
         </MenuItem>
+
+        <MenuItem Header="Missing entry point (native) check"
+                              Command="{Binding Path=Tag.DataContext.MissingentryPointCheckCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
+                              CommandParameter="{Binding}">
+            <MenuItem.Icon>
+                <materialDesign:PackIcon Kind="LinkVariantOff" />
+            </MenuItem.Icon>
+        </MenuItem>
+        
     </ContextMenu>
 
 </ResourceDictionary>

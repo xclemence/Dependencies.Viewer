@@ -1,31 +1,42 @@
-﻿<UserControl x:Class="Dependencies.Viewer.Wpf.Controls.Views.Check.CircularDependenciesView"
+﻿<UserControl x:Class="Dependencies.Viewer.Wpf.Controls.Views.Check.CheckResultsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:Dependencies.Viewer.Wpf.Controls.Views.Check"
+             xmlns:models="clr-namespace:Dependencies.Check.Models;assembly=Dependencies.Check"
              Width="700" Height="400" >
 
-    <GroupBox Header="Circular Dependencies results" HeaderTemplate="{StaticResource DialogHeaderDataTemplate}">
+    <GroupBox Header="{Binding Title}" HeaderTemplate="{StaticResource DialogHeaderDataTemplate}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <ListView ItemsSource="{Binding .}" Margin="0 10">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <local:CircularResultView/>
+            <ListView ItemsSource="{Binding Errors}" Margin="0 5">
+                <ListBox.Resources>
+                    <DataTemplate DataType="{x:Type models:CircularReferenceError}">
+                        <local:CircularResultView DataContext="{Binding}"/>
                     </DataTemplate>
-                </ListView.ItemTemplate>
+
+                    <DataTemplate DataType="{x:Type models:MissingEntryPointError}">
+                        <local:MissingEntryPointResultView DataContext="{Binding}"/>
+                    </DataTemplate>
+                    
+                </ListBox.Resources>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                        <Setter Property="HorizontalContentAlignment"  Value="Stretch"></Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
             </ListView>
 
-            <TextBlock Text="No circular dependencies error" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0.5">
+            <TextBlock Text="No error found" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0.5">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                         <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Count}" Value="0">
+                            <DataTrigger Binding="{Binding Errors.Count}" Value="0">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>

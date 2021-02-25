@@ -2,22 +2,23 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Dependencies.Check.Model;
+using System.Threading.Tasks;
+using Dependencies.Check.Models;
 
 namespace Dependencies.Check
 {
     public class CircularReferenceCheck
     {
-        public IEnumerable<IImmutableList<string>> Analyse(string entry, IDictionary<string, AssemblyCheck> context) => 
-            Analyse(entry, ImmutableList<string>.Empty, context);
+        public Task<IList<CircularReferenceError>> AnalyseAsync(string entry, IDictionary<string, AssemblyCheck> context) =>
+            Task.Run(() => Analyse(entry, ImmutableList<string>.Empty, context).ToList() as IList<CircularReferenceError>);
 
-        private IEnumerable<IImmutableList<string>> Analyse(string assemblyName, IImmutableList<string> parent, IDictionary<string, AssemblyCheck> context)
+        private IEnumerable<CircularReferenceError> Analyse(string assemblyName, IImmutableList<string> parent, IDictionary<string, AssemblyCheck> context)
         {
             var hasCycle = parent.Contains(assemblyName);
             var currentPath = parent.Add(assemblyName);
 
             if (hasCycle) {
-                yield return currentPath;
+                yield return new CircularReferenceError(currentPath);
                 yield break;
             }
             
