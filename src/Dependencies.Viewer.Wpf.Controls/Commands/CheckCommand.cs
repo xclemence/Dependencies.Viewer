@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Dependencies.Check;
+using Dependencies.Check.Interfaces;
 using Dependencies.Check.Models;
+using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
 using Dependencies.Viewer.Wpf.Controls.Models;
 using Dependencies.Viewer.Wpf.Controls.Services;
@@ -14,10 +15,12 @@ namespace Dependencies.Viewer.Wpf.Controls.Commands
     public class CheckCommand
     {
         private readonly MainBusyService busyService;
+        private readonly IServiceFactory serviceFactory;
 
-        public CheckCommand(MainBusyService busyService)
+        public CheckCommand(MainBusyService busyService, IServiceFactory serviceFactory)
         {
             this.busyService = busyService;
+            this.serviceFactory = serviceFactory;
         }
 
         public async Task CircularDependenciesCheck(AssemblyModel assembly)
@@ -33,7 +36,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Commands
                     assemblies.Add(assembly.Name, assembly.ToCheckModel());
 
 
-                var service = new CircularReferenceCheck();
+                var service = serviceFactory.Create<ICircularReferenceCheck>();
 
                 var results = await service.AnalyseAsync(assembly.Name, assemblies).ConfigureAwait(true);
 
@@ -59,7 +62,7 @@ namespace Dependencies.Viewer.Wpf.Controls.Commands
                 if (!assemblies.ContainsKey(assembly.Name))
                     assemblies.Add(assembly.Name, assembly.ToCheckModel());
 
-                var service = new MissingEntryPointCheck();
+                var service = serviceFactory.Create<IMissingEntryPointCheck>();
 
                 var results = await service.AnalyseAsync(assemblies).ConfigureAwait(true);
 

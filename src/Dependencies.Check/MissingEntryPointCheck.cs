@@ -2,12 +2,13 @@
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Dependencies.Check.Interfaces;
 using Dependencies.Check.Models;
 using PeNet;
 
 namespace Dependencies.Check
 {
-    public class MissingEntryPointCheck
+    public class MissingEntryPointCheck : IMissingEntryPointCheck
     {
         private static MissingEntryPointError? FindMissingMethod(string baseName, string targetName, string? basePath, string? targetPath)
         {
@@ -30,7 +31,7 @@ namespace Dependencies.Check
         public Task<IList<MissingEntryPointError>> AnalyseAsync(IDictionary<string, AssemblyCheck> assemblies) =>
             Task.Run(() => Analyse(assemblies).ToList() as IList<MissingEntryPointError>);
 
-        private IEnumerable<MissingEntryPointError> Analyse(IDictionary<string, AssemblyCheck> assemblies)
+        private static IEnumerable<MissingEntryPointError> Analyse(IDictionary<string, AssemblyCheck> assemblies)
         {
             foreach (var assembly in assemblies)
             {
@@ -39,11 +40,11 @@ namespace Dependencies.Check
             }
         }
 
-        private IEnumerable<MissingEntryPointError> Analyse(string assemblyName, IDictionary<string, AssemblyCheck> context)
+        private static IEnumerable<MissingEntryPointError> Analyse(string assemblyName, IDictionary<string, AssemblyCheck> context)
         {
             var assembly = context[assemblyName];
 
-            foreach(var child in assembly.AssembliesReferenced)
+            foreach (var child in assembly.AssembliesReferenced)
             {
                 var childAssembly = context[child];
 
