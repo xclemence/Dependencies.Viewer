@@ -4,7 +4,7 @@
              xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:Dependencies.Viewer.Wpf.Controls.Views.Check"
              xmlns:models="clr-namespace:Dependencies.Check.Models;assembly=Dependencies.Check"
-             Width="700" Height="400" >
+             Width="750" Height="400" >
 
     <GroupBox Header="{Binding Title}" HeaderTemplate="{StaticResource DialogHeaderDataTemplate}">
         <Grid>

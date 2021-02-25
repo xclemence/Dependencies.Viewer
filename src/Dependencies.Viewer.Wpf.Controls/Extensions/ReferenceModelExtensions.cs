@@ -19,7 +19,10 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
                 return $"{nameProvider(reference.LoadedAssembly)}   (v{ reference.AssemblyVersion } ➜ v{ reference.LoadedAssembly.Version})";
 
             if (reference.LoadedAssembly.IsNative)
-                return $"{nameProvider(reference.LoadedAssembly)}   (loaded v{ reference.LoadedAssembly.Version })";
+            {
+                var version = string.IsNullOrEmpty(reference.LoadedAssembly.Version) ? "No version" : $"loaded v{ reference.LoadedAssembly.Version }";
+                return $"{nameProvider(reference.LoadedAssembly)}   ({ version })";
+            }
 
             return nameProvider(reference.LoadedAssembly);
         }

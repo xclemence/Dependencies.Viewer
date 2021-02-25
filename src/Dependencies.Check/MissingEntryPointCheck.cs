@@ -9,7 +9,7 @@ namespace Dependencies.Check
 {
     public class MissingEntryPointCheck
     {
-        private MissingEntryPointError? FindMissingMethod(string baseName, string targetName, string? basePath, string? targetPath)
+        private static MissingEntryPointError? FindMissingMethod(string baseName, string targetName, string? basePath, string? targetPath)
         {
             if (basePath == null || targetPath == null)
                 return null;
