@@ -3,9 +3,9 @@
     /// <summary>
     /// Interaction logic for CircularDependenciesView.xaml
     /// </summary>
-    public partial class CircularDependenciesView
+    public partial class CheckResultsView
     {
-        public CircularDependenciesView()
+        public CheckResultsView()
         {
             InitializeComponent();
         }
