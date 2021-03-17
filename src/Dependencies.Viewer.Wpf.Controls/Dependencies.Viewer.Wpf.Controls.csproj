@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\plugins\Analyser\src\Dependencies.Analyser.Base\Dependencies.Analyser.Base.csproj" />
+    <ProjectReference Include="..\..\plugins\Analyser\src\Dependencies.Analyser.Mono\Dependencies.Analyser.Mono.csproj" />
     <ProjectReference Include="..\..\plugins\Exchange\src\Dependencies.Exchange.Base\Dependencies.Exchange.Base.csproj" />
     <ProjectReference Include="..\Dependencies.Check\Dependencies.Check.csproj" />
   </ItemGroup>

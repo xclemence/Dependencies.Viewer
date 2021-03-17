@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Dependencies.Analyser.Base;
+using Dependencies.Analyser.Mono;
 using Dependencies.Exchange.Base;
 using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.Extensions;
@@ -33,6 +35,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private readonly AnalyserProvider analyserProvider;
         private readonly IServiceFactory serviceFactory;
         private readonly AppLoggerService<AnalyserViewModel> logger;
+        private readonly IAnalyserSettingProvider analyserSettingProvider;
         private readonly IList<IImportAssembly> importServices;
         private readonly IList<IExportAssembly> exportServices;
 
@@ -47,7 +50,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
                                  SettingsViewModel settingsViewModel,
                                  IEnumerable<IImportAssembly> importServices,
                                  IEnumerable<IExportAssembly> exportServices,
-                                 AppLoggerService<AnalyserViewModel> logger)
+                                 AppLoggerService<AnalyserViewModel> logger,
+                                 IAnalyserSettingProvider analyserSettingProvider)
         {
             this.analyserProvider = analyserProvider;
             BusyService = busyService;
@@ -55,6 +59,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             this.interTabClient = interTabClient;
             SettingsViewModel = settingsViewModel;
             this.logger = logger;
+            this.analyserSettingProvider = analyserSettingProvider;
             this.exportServices = exportServices.ToList();
             this.importServices = importServices.ToList();
 
@@ -158,7 +163,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
         private async Task AnalyseAsync(string filePath)
         {
-            var analyser = analyserProvider.CurrentAnalyserFactory?.GetAnalyser();
+            //var analyser = analyserProvider.CurrentAnalyserFactory?.GetAnalyser();
+
+            var analyser = new AssemblyScanner(analyserSettingProvider, new MonoScanner(), null);
 
             if (analyser is null) return;
 
