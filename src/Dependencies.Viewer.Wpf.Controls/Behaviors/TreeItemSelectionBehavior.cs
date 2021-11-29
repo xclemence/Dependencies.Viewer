@@ -3,35 +3,34 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace Dependencies.Viewer.Wpf.Controls.Behaviors
+namespace Dependencies.Viewer.Wpf.Controls.Behaviors;
+
+public class TreeItemSelectionBehavior : InteractivityBehaviorAttach<TreeItemSelectionInteractivityBehavior, TreeViewItem> { }
+
+public class TreeItemSelectionInteractivityBehavior : InteractivityBehaviorBase<TreeViewItem>
 {
-    public class TreeItemSelectionBehavior : InteractivityBehaviorAttach<TreeItemSelectionInteractivityBehavior, TreeViewItem> { }
+    protected override void OnLoaded() =>
+        AssociatedObject.PreviewMouseRightButtonDown += AssociatedObjectPreviewMouseRightButtonDown;
 
-    public class TreeItemSelectionInteractivityBehavior : InteractivityBehaviorBase<TreeViewItem>
+    protected override void OnCleanup() =>
+        AssociatedObject.PreviewMouseRightButtonDown -= AssociatedObjectPreviewMouseRightButtonDown;
+
+    private void AssociatedObjectPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
     {
-        protected override void OnLoaded() =>
-            AssociatedObject.PreviewMouseRightButtonDown += AssociatedObjectPreviewMouseRightButtonDown;
+        var treeViewItem = VisualUpwardSearch(e.OriginalSource as DependencyObject);
 
-        protected override void OnCleanup() =>
-            AssociatedObject.PreviewMouseRightButtonDown -= AssociatedObjectPreviewMouseRightButtonDown;
-
-        private void AssociatedObjectPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        if (treeViewItem != null)
         {
-            var treeViewItem = VisualUpwardSearch(e.OriginalSource as DependencyObject);
-
-            if (treeViewItem != null)
-            {
-                treeViewItem.Focus();
-                e.Handled = true;
-            }
+            treeViewItem.Focus();
+            e.Handled = true;
         }
+    }
 
-        private static TreeViewItem? VisualUpwardSearch(DependencyObject? source)
-        {
-            while (source != null && !(source is TreeViewItem))
-                source = VisualTreeHelper.GetParent(source);
+    private static TreeViewItem? VisualUpwardSearch(DependencyObject? source)
+    {
+        while (source != null && source is not TreeViewItem)
+            source = VisualTreeHelper.GetParent(source);
 
-            return source as TreeViewItem;
-        }
+        return source as TreeViewItem;
     }
 }

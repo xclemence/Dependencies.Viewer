@@ -82,7 +82,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         
         public ISnackbarMessageQueue MessageQueue => logger.MessageQueue;
 
-        public ObservableCollection<AnalyseResultViewModel> AnalyseDetailsViewModels { get; } = new ObservableCollection<AnalyseResultViewModel>();
+        public ObservableCollection<AnalyseResultViewModel> AnalyseDetailsViewModels { get; } = new ();
 
         public AnalyseResultViewModel? SelectedItem
         {

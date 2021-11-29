@@ -4,23 +4,23 @@ using System.Linq;
 using Dependencies.Analyser.Base.Models;
 using Dependencies.Viewer.Wpf.Controls.Models;
 
-namespace Dependencies.Viewer.Wpf.Controls.Extensions
+namespace Dependencies.Viewer.Wpf.Controls.Extensions;
+
+public static class AssemblyInformationExtensions
 {
-    public static class AssemblyInformationExtensions
+    public static AssemblyModel ToAssemblyModel(this AssemblyInformation assembly, IEnumerable<AssemblyLink> links)
     {
-        public static AssemblyModel ToAssemblyModel(this AssemblyInformation assembly, IEnumerable<AssemblyLink> links)
-        {
-            var referenceProvider = new Dictionary<string, ReferenceModel>();
-            var references = links.Select(x => x.ToReferenceModel(referenceProvider)).ToList();
+        var referenceProvider = new Dictionary<string, ReferenceModel>();
+        var references = links.Select(x => x.ToReferenceModel(referenceProvider)).ToList();
 
-            foreach (var item in references)
-                referenceProvider.Add(item.AssemblyFullName, item);
+        foreach (var item in references)
+            referenceProvider.Add(item.AssemblyFullName, item);
 
-            return assembly.ToAssemblyModel(referenceProvider);
-        }
+        return assembly.ToAssemblyModel(referenceProvider);
+    }
 
-        public static AssemblyModel ToAssemblyModel(this AssemblyInformation assembly, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) => 
-            new AssemblyModel(assembly.Name, assembly.Links.Select(x => x.LinkFullName).ToImmutableList(), referenceProvider)
+    public static AssemblyModel ToAssemblyModel(this AssemblyInformation assembly, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) =>
+        new(assembly.Name, assembly.Links.Select(x => x.LinkFullName).ToImmutableList(), referenceProvider)
         {
             AssemblyName = assembly.AssemblyName,
             CreationDate = assembly.CreationDate,
@@ -38,10 +38,9 @@ namespace Dependencies.Viewer.Wpf.Controls.Extensions
             ParentLinkNames = assembly.ParentLinkName.ToHashSet(),
         };
 
-        private static ReferenceModel ToReferenceModel(this AssemblyLink link, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) => 
-            new ReferenceModel(link.LinkFullName, link.Assembly.ToAssemblyModel(referenceProvider))
-        { 
+    private static ReferenceModel ToReferenceModel(this AssemblyLink link, IReadOnlyDictionary<string, ReferenceModel> referenceProvider) =>
+        new(link.LinkFullName, link.Assembly.ToAssemblyModel(referenceProvider))
+        {
             AssemblyVersion = link.LinkVersion
         };
-    }
 }

@@ -1,7 +1,6 @@
-﻿namespace Dependencies.Viewer.Wpf.Controls.Base
+﻿namespace Dependencies.Viewer.Wpf.Controls.Base;
+
+public interface IApplicationSettingProvider
 {
-    public interface IApplicationSettingProvider
-    {
-        string SelectedTheme { get; set; }
-    }
+    string SelectedTheme { get; set; }
 }
