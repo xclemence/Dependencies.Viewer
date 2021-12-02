@@ -164,7 +164,13 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
             var (assembly, links) = await analyser.AnalyseAsync(filePath).ConfigureAwait(false);
 
-            AddAssemblyResult(assembly.ToAssemblyModel(links.Values));
+            if (assembly.AssemblyName != null)
+                AddAssemblyResult(assembly.ToAssemblyModel(links.Values));
+            else
+            {
+                var message = $"{filePath} is not recognized as an assembly";
+                logger.LogError(message, new NotSupportedException(message));
+            }
         }
 
         internal void AddAssemblyResult(AssemblyModel assembly)
@@ -228,7 +234,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             var result = await DialogHost.Show(exchangeView).ConfigureAwait(false);
 
             if (result is null)
-                return default(T)!;
+                return default!;
 
             return (T)result;
         }
