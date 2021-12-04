@@ -41,11 +41,11 @@ internal static class SimpleInjectorConfig
         Container.RegisterInstance(LoggerFactory.Create(x => x.AddNLog(configurationRoot)));
         Container.Register(typeof(ILogger<>), typeof(Logger<>), Lifestyle.Transient);
 
-        Container.Register(typeof(IAnalyserServiceFactory), typeof(SimpleInjectorServiceFactory), Lifestyle.Singleton);
+        Container.Register(typeof(IAnalyserServiceFactory), typeof(SimpleInjectorServiceFactory), Lifestyle.Scoped);
         Container.Register(typeof(AppLoggerService<>), typeof(AppLoggerService<>), Lifestyle.Singleton);
 
-        Container.Register(typeof(IExchangeServiceFactory), typeof(SimpleInjectorServiceFactory), Lifestyle.Singleton);
-        Container.Register(typeof(IServiceFactory), typeof(SimpleInjectorServiceFactory), Lifestyle.Singleton);
+        Container.Register(typeof(IExchangeServiceFactory), typeof(SimpleInjectorServiceFactory), Lifestyle.Scoped);
+        Container.Register(typeof(IServiceFactory), typeof(SimpleInjectorServiceFactory), Lifestyle.Scoped);
 
         Container.Register<ICircularReferenceCheck, CircularReferenceCheck>();
         Container.Register<IMissingEntryPointCheck, MissingEntryPointCheck>();

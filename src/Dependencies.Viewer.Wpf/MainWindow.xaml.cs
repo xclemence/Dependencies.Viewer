@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Threading.Tasks;
+using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.ViewModels;
 using Dependencies.Viewer.Wpf.IoC;
 using SimpleInjector;
@@ -10,7 +11,7 @@ namespace Dependencies.Viewer.Wpf;
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow
+public partial class MainWindow: IFactoryHolder
 {
     private readonly Scope scope;
 
@@ -33,6 +34,8 @@ public partial class MainWindow
         if (initialFile is not null)
             Task.Run(async () => await analyserViewModel.InitialiseAsync(initialFile).ConfigureAwait(false));
     }
+
+    public IServiceFactory ServiceFactory => scope.GetInstance<IServiceFactory>();
 
     protected override void OnClosing(CancelEventArgs e)
     {

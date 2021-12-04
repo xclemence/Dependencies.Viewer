@@ -36,7 +36,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         private readonly IList<IImportAssembly> importServices;
         private readonly IList<IExportAssembly> exportServices;
 
-        private AnalyseResultViewModel? selectedItem;
+        private AssemblyModel? selectedItem;
         private bool isSettingsOpen;
 
         [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Main view model resolve by ioc")]
@@ -74,7 +74,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             ExportCommands = GenerateExportCommand();
             ImportCommands= GenerateImportCommand();
 
-            CloseResultCommand = new Command<AnalyseResultViewModel>(CloseResult);
+            CloseResultCommand = new Command<AssemblyModel>(CloseResult);
 
         }
 
@@ -82,9 +82,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
         
         public ISnackbarMessageQueue MessageQueue => logger.MessageQueue;
 
-        public ObservableCollection<AnalyseResultViewModel> AnalyseDetailsViewModels { get; } = new ();
+        public ObservableCollection<AssemblyModel> AssemblyModels { get; } = new();
 
-        public AnalyseResultViewModel? SelectedItem
+        public AssemblyModel? SelectedItem
         {
             get => selectedItem;
             set => Set(ref selectedItem, value);
@@ -175,13 +175,13 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
         internal void AddAssemblyResult(AssemblyModel assembly)
         {
-            var newViewModel = serviceFactory.Create<AnalyseResultViewModel>();
-            newViewModel.AssemblyResult = assembly;
+            //var newViewModel = serviceFactory.Create<AssemblyModel>();
+            //newViewModel.AssemblyResult = assembly;
 
             new Action(() =>
             {
-                AnalyseDetailsViewModels.Add(newViewModel);
-                SelectedItem = newViewModel;
+                AssemblyModels.Add(assembly);
+                SelectedItem = assembly;
             }).InvokeUiThread();
         }
 
@@ -190,7 +190,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             return exportServices.Select(x => new ExchangeCommand
             (
                 x.Name,
-                new Command(async () => await BusyService.RunActionAsync(async () => await ExportAsync(x).ConfigureAwait(false)).ConfigureAwait(false), () => x.IsReady && !BusyService.IsBusy && SelectedItem?.AssemblyResult is not null)
+                new Command(async () => await BusyService.RunActionAsync(async () => await ExportAsync(x).ConfigureAwait(false)).ConfigureAwait(false), () => x.IsReady && !BusyService.IsBusy && SelectedItem is not null)
             )).ToList();
         }
 
@@ -205,9 +205,9 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
         private async Task ExportAsync(IExportAssembly exportAssembly)
         {
-            if (selectedItem?.AssemblyResult is null) return;
+            if (selectedItem is null) return;
 
-            var (assembly, dependencies) = selectedItem.AssemblyResult.ToExchangeModel();
+            var (assembly, dependencies) = selectedItem.ToExchangeModel();
 
             await exportAssembly.ExportAsync(assembly, dependencies, CreateExchangeView).ConfigureAwait(false);
         }
@@ -249,7 +249,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
         private bool CanDrag(DragEventArgs? e) => e is not null && !BusyService.IsBusy && e.Data.GetDataPresent(DataFormats.FileDrop);
 
-        private void CloseResult(AnalyseResultViewModel x) => TabablzControl.CloseItem(x);
+        private void CloseResult(AssemblyModel x) => TabablzControl.CloseItem(x);
 
         private async Task OpenAboutAsync()
         {
