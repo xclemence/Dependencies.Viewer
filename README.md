@@ -8,7 +8,7 @@ Dependencies Viewer is a dependencies analyser for Microsoft assemblies. It's su
 
 It allows you to find missing assemblies or mismatch versions between referenced assembly and loaded assembly (binding redirect).
 
-Dependencies Viewer require [**.Net 5.0 runtime**](https://dotnet.microsoft.com/download/dotnet/5.0).
+Dependencies Viewer require [**.Net 6.0 runtime**](https://dotnet.microsoft.com/download/dotnet/6.0).
 
 <img src="doc/images/viewer-dark.png"/>
 
