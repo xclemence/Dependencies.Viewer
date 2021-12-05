@@ -11,11 +11,13 @@ public class OpenCommand
 {
     private readonly MainBusyService busyService;
     private readonly AnalyserViewModel analyserViewModel;
+    private readonly MainViewIdentifier mainViewIdentifier;
 
-    public OpenCommand(MainBusyService busyService, AnalyserViewModel analyserViewModel)
+    public OpenCommand(MainBusyService busyService, AnalyserViewModel analyserViewModel, MainViewIdentifier mainViewIdentifier)
     {
         this.busyService = busyService;
         this.analyserViewModel = analyserViewModel;
+        this.mainViewIdentifier = mainViewIdentifier;
     }
 
     public async Task ViewParentReferenceAsync(AssemblyModel? baseAssembly, ReferenceModel reference)
@@ -27,7 +29,7 @@ public class OpenCommand
         {
             var vm = new AssemblyParentsViewModel(reference.LoadedAssembly, baseAssembly);
 
-            _ = await DialogHost.Show(vm).ConfigureAwait(false);
+            _ = await DialogHost.Show(vm, mainViewIdentifier.Id).ConfigureAwait(false);
         }).ConfigureAwait(false);
     }
 

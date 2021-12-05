@@ -18,6 +18,7 @@ using NLog.Extensions.Logging;
 using SimpleInjector;
 
 namespace Dependencies.Viewer.Wpf.IoC;
+
 internal static class SimpleInjectorConfig
 {
     public static Container Container { get; private set; } = default!; // Mandatory for application
@@ -56,8 +57,8 @@ internal static class SimpleInjectorConfig
 
 
         Container.Register<MainBusyService>(Lifestyle.Scoped);
-
         Container.Register<AnalyserViewModel>(Lifestyle.Scoped);
+        Container.Register<MainViewIdentifier>(Lifestyle.Scoped);
 
         Container.RegisterAnalyser();
         Container.RegisterExchange();

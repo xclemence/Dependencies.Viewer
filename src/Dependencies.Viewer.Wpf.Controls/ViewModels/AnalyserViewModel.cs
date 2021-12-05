@@ -47,7 +47,8 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
                                  SettingsViewModel settingsViewModel,
                                  IEnumerable<IImportAssembly> importServices,
                                  IEnumerable<IExportAssembly> exportServices,
-                                 AppLoggerService<AnalyserViewModel> logger)
+                                 AppLoggerService<AnalyserViewModel> logger,
+                                 MainViewIdentifier mainViewIdentifier)
         {
             this.analyserProvider = analyserProvider;
             BusyService = busyService;
@@ -59,6 +60,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             this.importServices = importServices.ToList();
 
             Title = $"Dependencies Viewer {typeof(AnalyserViewModel).Assembly.GetName().Version?.ToString(3)}";
+            MainViewId = mainViewIdentifier.Id;
 
             SettingsCommand = new Command(() => IsSettingsOpen = true);
             CloseCommand = new Command(() => Application.Current.Shutdown());
@@ -76,9 +78,11 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
             CloseResultCommand = new Command<AssemblyModel>(CloseResult);
 
+
         }
 
         public string Title { get; }
+        public Guid MainViewId { get; }
         
         public ISnackbarMessageQueue MessageQueue => logger.MessageQueue;
 
@@ -175,9 +179,6 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
 
         internal void AddAssemblyResult(AssemblyModel assembly)
         {
-            //var newViewModel = serviceFactory.Create<AssemblyModel>();
-            //newViewModel.AssemblyResult = assembly;
-
             new Action(() =>
             {
                 AssemblyModels.Add(assembly);
@@ -231,7 +232,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
             exchangeView.Control.Content = view;
             view.DataContext = viewModel;
 
-            var result = await DialogHost.Show(exchangeView).ConfigureAwait(false);
+            var result = await DialogHost.Show(exchangeView, MainViewId).ConfigureAwait(false);
 
             if (result is null)
                 return default!;
@@ -258,7 +259,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels
                 DataContext = serviceFactory.Create<AboutViewModel>()
             };
 
-            await DialogHost.Show(view).ConfigureAwait(false);
+            await DialogHost.Show(view, MainViewId).ConfigureAwait(false);
         }
 
     }

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Immutable;
 using System.Globalization;
-using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using Dependencies.Viewer.Wpf.Controls.Base;
@@ -17,7 +15,6 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewConverters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             var control = values[0] as DependencyObject;
-
             var assembly = values[1] as AssemblyModel;
             
             if (Window.GetWindow(control) is IFactoryHolder factoryHolder)
@@ -28,7 +25,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewConverters
                 return newViewModel;
             }
 
-            return null;
+            return DependencyProperty.UnsetValue;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotSupportedException();

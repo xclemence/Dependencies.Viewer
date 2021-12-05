@@ -36,7 +36,7 @@
     </metro:MetroWindow.Flyouts>
         
     <Grid>
-        <materialDesign:DialogHost CloseOnClickAway="True" SnackbarMessageQueue="{Binding ElementName=snackbar, Path=MessageQueue}">
+        <materialDesign:DialogHost CloseOnClickAway="True" Identifier="{Binding MainViewId}" SnackbarMessageQueue="{Binding ElementName=snackbar, Path=MessageQueue}">
             <Grid>
                 <daw:AnalyserView/>
                 <materialDesign:Snackbar x:Name="snackbar" MessageQueue="{Binding MessageQueue}" HorizontalAlignment="Stretch" />

@@ -16,11 +16,13 @@ public class CheckCommand
 {
     private readonly MainBusyService busyService;
     private readonly IServiceFactory serviceFactory;
+    private readonly MainViewIdentifier mainViewIdentifier;
 
-    public CheckCommand(MainBusyService busyService, IServiceFactory serviceFactory)
+    public CheckCommand(MainBusyService busyService, IServiceFactory serviceFactory, MainViewIdentifier mainViewIdentifier)
     {
         this.busyService = busyService;
         this.serviceFactory = serviceFactory;
+        this.mainViewIdentifier = mainViewIdentifier;
     }
 
     public async Task CircularDependenciesCheck(AssemblyModel assembly)
@@ -45,7 +47,7 @@ public class CheckCommand
                 DataContext = new CheckResultsViewModel<CircularReferenceError>("Circular Dependencies results", results)
             };
 
-            await DialogHost.Show(view).ConfigureAwait(false);
+            await DialogHost.Show(view, mainViewIdentifier.Id).ConfigureAwait(false);
         }).ConfigureAwait(false);
     }
 
@@ -71,7 +73,7 @@ public class CheckCommand
                 DataContext = new CheckResultsViewModel<MissingEntryPointError>("Missing entry point results", results)
             };
 
-            await DialogHost.Show(view).ConfigureAwait(false);
+            await DialogHost.Show(view, mainViewIdentifier.Id).ConfigureAwait(false);
         }).ConfigureAwait(false);
     }
 }
