@@ -3,14 +3,13 @@ using Dependencies.Exchange.Base;
 using Dependencies.Viewer.Wpf.Controls.Base;
 using SimpleInjector;
 
-namespace Dependencies.Viewer.Wpf.IoC
+namespace Dependencies.Viewer.Wpf.IoC;
+
+public class SimpleInjectorServiceFactory : IExchangeServiceFactory, IAnalyserServiceFactory, IServiceFactory
 {
-    public class SimpleInjectorServiceFactory : IExchangeServiceFactory, IAnalyserServiceFactory, IServiceFactory
-    {
-        private readonly Container container;
+    private readonly Scope scope;
 
-        public SimpleInjectorServiceFactory(Container container) => this.container = container;
+    public SimpleInjectorServiceFactory(Scope scope) => this.scope = scope;
 
-        public T Create<T>() where T : class => container.GetInstance<T>();
-    }
+    public T Create<T>() where T : class => scope.GetInstance<T>();
 }

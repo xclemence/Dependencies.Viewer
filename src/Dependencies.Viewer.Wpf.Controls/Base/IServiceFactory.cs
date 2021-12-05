@@ -1,7 +1,6 @@
-﻿namespace Dependencies.Viewer.Wpf.Controls.Base
+﻿namespace Dependencies.Viewer.Wpf.Controls.Base;
+
+public interface IServiceFactory
 {
-    public interface IServiceFactory
-    {
-        T Create<T>() where T : class;
-    }
+    T Create<T>() where T : class;
 }

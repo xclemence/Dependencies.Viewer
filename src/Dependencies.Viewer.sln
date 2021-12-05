@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28621.142
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Viewer.Wpf", "Dependencies.Viewer.Wpf\Dependencies.Viewer.Wpf.csproj", "{837063EC-524D-49D7-850C-87135525C559}"
 	ProjectSection(ProjectDependencies) = postProject

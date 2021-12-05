@@ -1,69 +1,81 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Media;
 using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.IoC;
 using Dependencies.Viewer.Wpf.Properties;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Logging;
 
-namespace Dependencies.Viewer.Wpf
+namespace Dependencies.Viewer.Wpf;
+
+/// <summary>
+/// Interaction logic for App.xaml
+/// </summary>
+public partial class App
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App
+    public App()
     {
-        public App()
+        UpgradeSettings();
+
+        var config = new ConfigurationBuilder()
+                  .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+                  .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                  .Build();
+
+        LogManager.Configuration = new NLogLoggingConfiguration(config.GetSection("NLog"));
+
+        SimpleInjectorConfig.Config(config);
+
+        var helper = new PaletteHelper();
+        if (helper.GetThemeManager() is { } themeManager)
         {
-            UpgradeSettings();
-
-            var config = new ConfigurationBuilder()
-                      .SetBasePath(System.IO.Directory.GetCurrentDirectory())
-                      .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                      .Build();
-
-            LogManager.Configuration = new NLogLoggingConfiguration(config.GetSection("NLog"));
-
-            SimpleInjectorConfig.Config(config);
+            themeManager.ThemeChanged += OnThemeManagerThemeChanged;
         }
+    }
 
-        public static void UpgradeSettings()
-        {
-            if (!Settings.Default.UpgradeRequired) return;
+    private void OnThemeManagerThemeChanged(object? sender, ThemeChangedEventArgs e)
+    {
+        Resources["SecondaryAccentBrush"] = new SolidColorBrush(e.NewTheme.SecondaryMid.Color);
+    }
 
-            Settings.Default.Upgrade();
+    public static void UpgradeSettings()
+    {
+        if (!Settings.Default.UpgradeRequired) return;
 
-            Settings.Default.UpgradeRequired = false;
-            Settings.Default.Save();
-        }
+        Settings.Default.Upgrade();
 
-        private void App_OnStartup(object sender, StartupEventArgs e)
-        {
-            var logger = SimpleInjectorConfig.Container.GetInstance<ILogger<App>>();
+        Settings.Default.UpgradeRequired = false;
+        Settings.Default.Save();
+    }
 
-            logger.LogTrace($"Dependencies Viewer v{GetType().Assembly.GetName().Version} started");
+    private void App_OnStartup(object sender, StartupEventArgs e)
+    {
+        var logger = SimpleInjectorConfig.Container.GetInstance<ILogger<App>>();
 
-            ConfigureTheme();
+        logger.LogTrace($"Dependencies Viewer v{GetType().Assembly.GetName().Version} started");
 
-            string? filename = null;
+        ConfigureTheme();
 
-            if (e.Args.Length == 1) // make sure an argument is passed
-                filename = e.Args[0];
+        string? filename = null;
 
-            MainWindow = new MainWindow(filename);
-            MainWindow.Show();
-        }
+        if (e.Args.Length == 1) // make sure an argument is passed
+            filename = e.Args[0];
 
-        private static void ConfigureTheme()
-        {
-            var themeManager = SimpleInjectorConfig.Container.GetInstance<ThemeManager>();
+        MainWindow = new MainWindow(filename);
+        MainWindow.Show();
+    }
 
-            themeManager.AddTheme("Light", new Uri($"pack://application:,,,/Dependencies Viewer;component/Themes/LightTheme.xaml"));
-            themeManager.AddTheme("Dark", new Uri($"pack://application:,,,/Dependencies Viewer;component/Themes/DarkTheme.xaml"));
+    private static void ConfigureTheme()
+    {
+        var themeManager = SimpleInjectorConfig.Container.GetInstance<ThemeManager>();
 
-            themeManager.ApplyTheme(Settings.Default.SelectedTheme);
-        }
+        themeManager.AddTheme("Light", new Uri($"pack://application:,,,/Dependencies Viewer;component/Themes/LightTheme.xaml"));
+        themeManager.AddTheme("Dark", new Uri($"pack://application:,,,/Dependencies Viewer;component/Themes/DarkTheme.xaml"));
+
+        themeManager.ApplyTheme(Settings.Default.SelectedTheme);
     }
 }

@@ -2,6 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:vm="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewModels"
                     xmlns:vmResults="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewModels.References"
+                    xmlns:converters="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewConverters"
+                    xmlns:models="clr-namespace:Dependencies.Viewer.Wpf.Controls.Models"
                     xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:v="clr-namespace:Dependencies.Viewer.Wpf.Controls.Views">
 
@@ -17,6 +19,17 @@
         <v:ReferencesTreeView DataContext="{Binding}"/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type models:AssemblyModel}">
+        <v:AnalyseResultView >
+            <v:AnalyseResultView.DataContext>
+                <MultiBinding Converter="{x:Static converters:AnalyseResultViewModelFactoryConverter.Converter}">
+                    <Binding RelativeSource="{RelativeSource Self}"/>
+                    <Binding />
+                </MultiBinding>
+            </v:AnalyseResultView.DataContext>
+        </v:AnalyseResultView>
+    </DataTemplate>
+
     <DataTemplate x:Key="DialogHeaderDataTemplate">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -29,5 +42,7 @@
             </Button>
         </Grid>
     </DataTemplate>
+    
+    
 
 </ResourceDictionary>

@@ -14,6 +14,7 @@
              xmlns:converters="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewConverters"
              x:Name="analyserView"
              AllowDrop="True"
+             d:DataContext="{d:DesignInstance Type=vm:AnalyserViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -56,8 +57,8 @@
     <Grid x:Name="mainGrid">
         <Grid IsEnabled="{Binding BusyService.IsBusy, Converter={x:Static converters:InverseBooleanConverter.Converter} }">
             <dockablz:Layout>
-                <dragablz:TabablzControl ItemsSource="{Binding AnalyseDetailsViewModels}" 
-                                             HeaderMemberPath="AssemblyResult.Name" 
+                <dragablz:TabablzControl ItemsSource="{Binding AssemblyModels}" 
+                                             HeaderMemberPath="Name" 
                                              ShowDefaultCloseButton="True"
                                              SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
                     <dragablz:TabablzControl.ItemContainerStyle>

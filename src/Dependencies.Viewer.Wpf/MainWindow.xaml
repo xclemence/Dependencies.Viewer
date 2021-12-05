@@ -1,9 +1,12 @@
 ﻿<metro:MetroWindow x:Class="Dependencies.Viewer.Wpf.MainWindow"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                   xmlns:daw="https://schemas.daw.com/winfx/xaml/analyser"
-                   xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                   xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:vm="clr-namespace:Dependencies.Viewer.Wpf.Controls.ViewModels;assembly=Dependencies.Viewer.Wpf.Controls"
+                   xmlns:daw="https://schemas.daw.com/winfx/xaml/analyser"
                    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                    Background="{DynamicResource MaterialDesignBackground}"
                    Icon="Application.ico"
@@ -17,6 +20,8 @@
                    TitleCharacterCasing="Normal"
                    BorderThickness="1"
                    x:Name="view"
+                   mc:Ignorable="d"
+                   d:DataContext="{d:DesignInstance Type=vm:AnalyserViewModel, IsDesignTimeCreatable=True}"
                    Title="{Binding Title}" Height="600" Width="900">
     <metro:MetroWindow.Flyouts>
         <metro:FlyoutsControl>
@@ -31,7 +36,7 @@
     </metro:MetroWindow.Flyouts>
         
     <Grid>
-        <materialDesign:DialogHost Identifier="RootDialog" CloseOnClickAway="True" SnackbarMessageQueue="{Binding ElementName=snackbar, Path=MessageQueue}">
+        <materialDesign:DialogHost CloseOnClickAway="True" Identifier="{Binding MainViewId}" SnackbarMessageQueue="{Binding ElementName=snackbar, Path=MessageQueue}">
             <Grid>
                 <daw:AnalyserView/>
                 <materialDesign:Snackbar x:Name="snackbar" MessageQueue="{Binding MessageQueue}" HorizontalAlignment="Stretch" />

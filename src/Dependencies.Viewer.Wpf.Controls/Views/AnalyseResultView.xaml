@@ -50,6 +50,7 @@
 
             <Expander ExpandDirection="Right" VerticalAlignment="Stretch" Grid.Column="1" VerticalContentAlignment="Stretch" 
                       IsExpanded="{Binding IsErrorExpended}" materialDesign:ExpanderAssist.HeaderBackground="Transparent">
+
                 <Expander.Header>
                     <StackPanel VerticalAlignment="Top">
                         <StackPanel.Resources>

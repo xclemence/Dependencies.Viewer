@@ -1,30 +1,46 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
+using Dependencies.Viewer.Wpf.Controls.Base;
 using Dependencies.Viewer.Wpf.Controls.ViewModels;
 using Dependencies.Viewer.Wpf.IoC;
+using SimpleInjector;
+using SimpleInjector.Lifestyles;
 
-namespace Dependencies.Viewer.Wpf
+namespace Dependencies.Viewer.Wpf;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow: IFactoryHolder
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow
+    private readonly Scope scope;
+
+    public MainWindow() : this(null)
+    {
+    }
+
+
+    public MainWindow(string? initialFile)
     {
 
-        public MainWindow() : this(null)
-        {
-        }
+        InitializeComponent();
 
+        scope = AsyncScopedLifestyle.BeginScope(SimpleInjectorConfig.Container);
 
-        public MainWindow(string? initialFile)
-        {
-            InitializeComponent();
+        var analyserViewModel = scope.GetInstance<AnalyserViewModel>();
 
-            var analyserViewModel = SimpleInjectorConfig.Container.GetInstance<AnalyserViewModel>();
+        DataContext = analyserViewModel;
 
-            DataContext = analyserViewModel;
+        if (initialFile is not null)
+            Task.Run(async () => await analyserViewModel.InitialiseAsync(initialFile).ConfigureAwait(false));
+    }
 
-            if (initialFile is not null)
-                Task.Run(async () => await analyserViewModel.InitialiseAsync(initialFile).ConfigureAwait(false));
-        }
+    public IServiceFactory ServiceFactory => scope.GetInstance<IServiceFactory>();
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        base.OnClosing(e);
+        scope?.Dispose();
     }
 }
+
