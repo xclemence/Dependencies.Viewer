@@ -108,7 +108,7 @@ public static class AssemblyExchangeConvertersExtensions
                                                     .Distinct()
                                                     .ToList();
 
-        var referenceNotFound = referencedAssemblies.Where(x => !referenceProvider.Keys.Contains(x));
+        var referenceNotFound = referencedAssemblies.Where(x => !referenceProvider.ContainsKey(x));
 
         foreach (var item in referenceNotFound)
         {

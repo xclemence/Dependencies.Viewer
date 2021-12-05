@@ -33,7 +33,7 @@ public partial class App
         var helper = new PaletteHelper();
         if (helper.GetThemeManager() is { } themeManager)
         {
-            themeManager.ThemeChanged += OnThemeManagerThemeChanged; ;
+            themeManager.ThemeChanged += OnThemeManagerThemeChanged;
         }
     }
 

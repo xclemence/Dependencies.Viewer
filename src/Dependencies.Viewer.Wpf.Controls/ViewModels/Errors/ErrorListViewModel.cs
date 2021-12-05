@@ -9,7 +9,7 @@ namespace Dependencies.Viewer.Wpf.Controls.ViewModels.Errors
     {
         private readonly MainViewIdentifier mainViewIdentifier;
 
-        public ErrorListViewModel(MainViewIdentifier mainViewIdentifier)
+        protected ErrorListViewModel(MainViewIdentifier mainViewIdentifier)
         {
             this.mainViewIdentifier = mainViewIdentifier;
         }
