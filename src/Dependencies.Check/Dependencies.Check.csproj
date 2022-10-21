@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <Nullable>enable</Nullable>
-    <TargetFramework>net6</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AnalysisLevel>6.0</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="PeNet" Version="2.9.1" />
+    <PackageReference Include="PeNet" Version="2.9.9" />
   </ItemGroup>
 
 </Project>
